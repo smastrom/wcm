@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-   <div>WCM</div>
+   <RouterView />
 </template>
 
 <style scoped></style>

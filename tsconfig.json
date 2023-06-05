@@ -1,7 +1,6 @@
 {
    "compilerOptions": {
       "target": "ES2020",
-      "useDefineForClassFields": true,
       "module": "ESNext",
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
       "skipLibCheck": true,
@@ -10,18 +9,17 @@
       "resolveJsonModule": true,
       "isolatedModules": true,
       "noEmit": true,
-      "jsx": "preserve",
       "strict": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": ".",
+      "paths": {
+         "@/assets/*": ["assets/*"],
+         "@/components/*": ["components/*"],
+         "@/lib/*": ["lib/*"]
+      }
    },
-   "include": [
-      "vite.config.ts",
-      "src/**/*.ts",
-      "src/**/*.d.ts",
-      "src/**/*.tsx",
-      "src/**/*.vue"
-   ]
+   "include": ["vite.config.ts", "./**/*.ts", "./**/*.d.ts", "./**/*.vue"]
 }

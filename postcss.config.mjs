@@ -1,6 +1,9 @@
 import autoprefixer from 'autoprefixer'
 import presetEnv from 'postcss-preset-env'
+import jitProps from 'postcss-jit-props'
 import hoverMediaFeature from 'postcss-hover-media-feature'
+
+import OpenProps from 'open-props'
 
 export default {
    plugins: [
@@ -12,6 +15,7 @@ export default {
          }
       }),
       autoprefixer(),
-      hoverMediaFeature()
+      hoverMediaFeature(),
+      jitProps(OpenProps)
    ]
 }
