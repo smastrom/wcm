@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { db } from '@/lib/db'
-import { useStore } from '@/lib/store'
 import { fetchFonts } from '@/lib/fetch'
-const store = useStore()
-
-watchEffect(() => {
-   console.log(store.editor.computed.selectedFontTypes)
-})
+import { getFonts } from '@/lib/fonts'
 
 onBeforeMount(async () => {
    const y = await db.getAll()
@@ -25,17 +20,24 @@ onBeforeMount(async () => {
    })
    console.log(x)
 
-   const fonts = await fetchFonts()
-   console.log(fonts)
+   let fonts = await fetchFonts()
+
+   if (!fonts) return
+
+   console.log('fonts', fonts)
+
+   const { sans, serif, display, handwriting } = getFonts(fonts)
+
+   console.log('sans', sans)
+   console.log('serif', serif)
+   console.log('display', display)
+   console.log('handwriting', handwriting)
 })
 </script>
 
 <template>
    <div class="div">
       <span>IndexPage</span>
-
-      <input type="checkbox" v-model="store.editor.fontTypes.sans" />
-      <input type="checkbox" v-model="store.editor.fontTypes.serif" />
    </div>
 </template>
 
@@ -48,3 +50,4 @@ onBeforeMount(async () => {
    }
 }
 </style>
+\

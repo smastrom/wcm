@@ -1,7 +1,14 @@
 export type GoogleAPISortCriteria = 'alpha' | 'date' | 'popularity' | 'trending'
 
-interface GoogleFont {
-   category: string
+export type GoogleAPIFontCateogry =
+   | 'display'
+   | 'handwriting'
+   | 'sans-serif'
+   | 'serif'
+   | 'monospace'
+
+export interface GoogleFont {
+   category: GoogleAPIFontCateogry
    family: string
    files: Record<string, string>
    kind: string
