@@ -1,43 +1,46 @@
 <script setup lang="ts">
-import { db } from '@/lib/db'
+import { useStore } from '@/lib/store'
 import { fetchFonts } from '@/lib/fetch'
 import { getFonts } from '@/lib/fonts'
 
+const store = useStore()
+
 onBeforeMount(async () => {
-   const y = await db.getAll()
-   if (!y) db.init()
-   const x = await db.create({
-      name: 'Test',
-      previewText: 'Test Test Test',
-      headline: {
-         family: 'Roboto',
-         weight: '700'
-      },
-      body: {
-         family: 'Roboto',
-         weight: '400'
-      }
-   })
-   console.log(x)
+   let fontsRes = await fetchFonts()
+   if (!fontsRes) return
 
-   let fonts = await fetchFonts()
+   const fonts = getFonts(fontsRes)
+   store.fonts.actions.setFonts(fonts)
+})
 
-   if (!fonts) return
-
-   console.log('fonts', fonts)
-
-   const { sans, serif, display, handwriting } = getFonts(fonts)
-
-   console.log('sans', sans)
-   console.log('serif', serif)
-   console.log('display', display)
-   console.log('handwriting', handwriting)
+watchEffect(() => {
+   console.log(store.editor.searchValueModel)
+   console.log('store.editor.activeFonts', store.editor.activeFontsComputed)
 })
 </script>
 
 <template>
    <div class="div">
       <span>IndexPage</span>
+      <input type="text" v-model="store.editor.searchValueModel" />
+      <input
+         type="radio"
+         name="test"
+         v-model="store.editor.activeCategoryModel"
+         value="sans"
+      />
+      <input
+         type="radio"
+         name="test"
+         v-model="store.editor.activeCategoryModel"
+         value="serif"
+      />
+      <input
+         type="radio"
+         name="test"
+         v-model="store.editor.activeCategoryModel"
+         value="display"
+      />
    </div>
 </template>
 

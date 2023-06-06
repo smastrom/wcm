@@ -3,7 +3,7 @@ import { DB_NAME, DB_STORE_NAME, DB_COMBINATION_KEY } from './constants'
 
 import type { DBCombination } from '@/types/db'
 
-export const db = { config, init, get, getAll, create, remove }
+export const db = { config, init, get, getAll, create, update, remove }
 
 // TODO: Streamline conditions once dev is done
 

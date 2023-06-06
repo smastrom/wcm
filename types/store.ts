@@ -1,47 +1,70 @@
 import { EditingStatus } from '@/lib/constants'
-import type { GoogleAPISortCriteria } from '@/types/fetch'
+import type { GoogleFont, GoogleAPISortCriteria } from '@/types/fetch'
+import { DBFontFamilyData } from './db'
+
+/* Fonts */
+
+export type AppFontCategories = 'sans' | 'display' | 'serif' | 'handwriting'
+export type AppFontVariants = 'normal' | 'italic' | 'condensed'
+
+export type StoreFontVariants = Record<AppFontVariants, GoogleFont[]>
+export type StoreFonts = Record<AppFontCategories, StoreFontVariants>
 
 /* Editor */
 
-export type StoreEditorFontSizes = '1rem' | '2rem' | '3rem'
+export type StoreEditorFontSizes =
+   | '0.75rem'
+   | '0.875rem'
+   | '1rem'
+   | '2rem'
+   | '3rem'
+   | '4rem'
+   | '5rem'
+   | '6rem'
+
+export type StoreEditorTabs = 'fonts' | 'combination'
 
 export interface StoreEditor {
-   searchValue: string
-   inputValue: string
-   fontSize: StoreEditorFontSizes
-   currentlyEditing: string | undefined
+   activeId: string | undefined
+   activeName: string | undefined
+   activeTab: StoreEditorTabs
+   assignedHeadlineFont: DBFontFamilyData | undefined
+   assignedBodyFont: DBFontFamilyData | undefined
    editingStatus: EditingStatus
-   sortCriteria: GoogleAPISortCriteria
-   fontTypes: {
-      sans: boolean
-      serif: boolean
+   searchValueModel: string
+   inputValueModel: string
+   fontSizeModel: StoreEditorFontSizes
+   sortCriteriaModel: GoogleAPISortCriteria
+   activeCategoryModel: AppFontCategories
+   activeVariantModel: AppFontVariants
+   activeFontsComputed: GoogleFont[]
+   actions: {
+      setActiveId(id: string): void
+      setActiveName(name: string): void
+      setEditingStatus(status: EditingStatus): void
+      setActiveTab(view: StoreEditorTabs): void
+      assignFont(target: 'headline' | 'body', data: DBFontFamilyData): void
    }
-   fontVariants: {
-      normal: boolean
-      italic: boolean
-      condensed: boolean
-   }
-   computed: {
-      selectedFontTypes: string[]
-      selectedFontVariants: string[]
-   }
-   actions: {}
 }
 
 /* Preview */
 
-export type DigitalPreview = 'blog-post' | 'saas'
-export type PrintPreview = 'business-card' | 'letterhead'
+export type StorePreviewTypesDigital = 'blog-post' | 'saas'
+export type StorePreviewTypesPrint = 'business-card' | 'letterhead'
 
-export type PreviewTypes = DigitalPreview | PrintPreview
+export type StorePreviewTypes = StorePreviewTypesDigital | StorePreviewTypesPrint
 
 export interface StorePreview {
-   type: PreviewTypes | undefined
-   language: string
+   headlineFont: DBFontFamilyData
+   bodyFont: DBFontFamilyData
+   typeModel: StorePreviewTypes | undefined
+   languageModel: string
    isFullScreen: boolean
    isProducingCanvas: boolean
    actions: {
       toggleFullScreen(): void
       toggleCanvas(): void
+      setHeadlineFont: (data: DBFontFamilyData) => void
+      setBodyFont: (data: DBFontFamilyData) => void
    }
 }

@@ -1,19 +1,14 @@
-export interface DBCombinationInternal {
+export interface DBFontFamilyData {
+   family: string
+   weight: string
+}
+
+export interface DBCombination {
    id: string
    lastUpdated: number
-}
-
-export interface DBCombinationShared {
    name: string
-   previewText: string
-   headline: {
-      family: string
-      weight: string
-   }
-   body: {
-      family: string
-      weight: string
-   }
+   headline: DBFontFamilyData
+   body: DBFontFamilyData
+   family: string
+   weight: string
 }
-
-export interface DBCombination extends DBCombinationInternal, DBCombinationShared {}
