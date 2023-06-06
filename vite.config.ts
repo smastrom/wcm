@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import Unimport from 'unimport/unplugin'
+import VueMacros from 'unplugin-vue-macros/vite'
 
 export default defineConfig({
    resolve: {
@@ -9,5 +11,16 @@ export default defineConfig({
          '@/components': './components'
       }
    },
-   plugins: [vue()]
+   plugins: [
+      VueMacros({
+         plugins: { vue: vue() },
+         defineProp: { edition: 'johnsonEdition' }
+      }),
+      Unimport.vite({
+         dts: true,
+         addons: { vueTemplate: true },
+         presets: ['vue', 'vue-router'],
+         imports: [{ name: 'default', as: 'indexedDB', from: 'localforage' }]
+      })
+   ]
 })

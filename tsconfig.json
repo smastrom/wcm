@@ -19,7 +19,12 @@
          "@/assets/*": ["assets/*"],
          "@/components/*": ["components/*"],
          "@/lib/*": ["lib/*"]
-      }
+      },
+      "types": ["unplugin-vue-macros/macros-global", "vite/client"]
+   },
+   "vueCompilerOptions": {
+      "plugins": ["@vue-macros/volar/define-prop"],
+      "experimentalDefinePropProposal": "johnsonEdition"
    },
    "include": ["vite.config.ts", "./**/*.ts", "./**/*.d.ts", "./**/*.vue"]
 }

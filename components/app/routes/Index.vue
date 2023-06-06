@@ -1,7 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const x = ref(0)
+
+const c = defineProp(0)
+
+console.log(c.value)
+</script>
 
 <template>
-   <div class="div"><span>IndexPage</span></div>
+   <div class="div">
+      <span>IndexPage</span>
+   </div>
 </template>
 
 <style>
