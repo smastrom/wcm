@@ -18,7 +18,8 @@
       "paths": {
          "@/assets/*": ["assets/*"],
          "@/components/*": ["components/*"],
-         "@/lib/*": ["lib/*"]
+         "@/lib/*": ["lib/*"],
+         "@/types/*": ["types/*"]
       },
       "types": ["unplugin-vue-macros/macros-global", "vite/client"]
    },

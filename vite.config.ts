@@ -2,13 +2,16 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Unimport from 'unimport/unplugin'
 import VueMacros from 'unplugin-vue-macros/vite'
+import { resolve } from 'path'
 
 export default defineConfig({
    resolve: {
       alias: {
-         '@': '.',
-         '@/assets': './assets',
-         '@/components': './components'
+         '@': resolve(__dirname, '.'),
+         '@/assets': resolve(__dirname, './assets'),
+         '@/components': resolve(__dirname, './components'),
+         '@/lib': resolve(__dirname, './lib'),
+         '@/types': resolve(__dirname, './types')
       }
    },
    plugins: [

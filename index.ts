@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { storeInjectionKey, createStore } from '@/lib/store'
 
 import App from '@/components/app/App.vue'
 import IndexPage from '@/components/app/routes/Index.vue'
@@ -21,4 +22,5 @@ const router = createRouter({
 })
 
 app.use(router)
+app.provide(storeInjectionKey, createStore())
 app.mount('#app')
