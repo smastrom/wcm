@@ -22,8 +22,7 @@ export default defineConfig({
       Unimport.vite({
          dts: true,
          addons: { vueTemplate: true },
-         presets: ['vue', 'vue-router'],
-         imports: [{ name: 'default', as: 'indexedDB', from: 'localforage' }]
+         presets: ['vue', 'vue-router']
       })
    ]
 })

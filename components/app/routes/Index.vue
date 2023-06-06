@@ -1,15 +1,29 @@
 <script setup lang="ts">
+import { db } from '@/lib/db'
 import { useStore } from '@/lib/store'
-const x = ref(0)
-
-const c = defineProp(0)
-
-console.log(c.value)
 
 const store = useStore()
 
 watchEffect(() => {
    console.log(store.editor.computed.selectedFontTypes)
+})
+
+onBeforeMount(async () => {
+   const y = await db.getAll()
+   if (!y) db.init()
+   const x = await db.create({
+      name: 'Test',
+      previewText: 'Test Test Test',
+      headline: {
+         family: 'Roboto',
+         weight: '700'
+      },
+      body: {
+         family: 'Roboto',
+         weight: '400'
+      }
+   })
+   console.log(x)
 })
 </script>
 

@@ -29,3 +29,10 @@ export const LANGUAGE_PREVIEW_OPTIONS = [
    { label: 'English', value: 'eng' },
    { label: 'Spanish', value: 'spa' }
 ]
+
+/* DB */
+
+export const DB_NAME = 'wcm_app'
+export const DB_STORE_NAME = 'wcm_fonts'
+
+export const DB_COMBINATION_KEY = 'wcm_combination'
