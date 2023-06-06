@@ -1,5 +1,5 @@
 import { EditingStatus } from '@/lib/constants'
-import type { GoogleAPISortCriteria } from '@/types/api'
+import type { GoogleAPISortCriteria } from '@/types/fetch'
 
 /* Editor */
 

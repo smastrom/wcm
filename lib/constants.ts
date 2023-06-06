@@ -1,4 +1,4 @@
-import type { GoogleAPISortCriteria } from '@/types/api'
+import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type { PrintPreview, DigitalPreview } from '@/types/store'
 
 export enum EditingStatus {
@@ -36,3 +36,7 @@ export const DB_NAME = 'wcm_app'
 export const DB_STORE_NAME = 'wcm_fonts'
 
 export const DB_COMBINATION_KEY = 'wcm_combination'
+
+/* API */
+
+export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'

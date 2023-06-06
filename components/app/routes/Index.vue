@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { db } from '@/lib/db'
 import { useStore } from '@/lib/store'
-
+import { fetchFonts } from '@/lib/fetch'
 const store = useStore()
 
 watchEffect(() => {
@@ -24,6 +24,9 @@ onBeforeMount(async () => {
       }
    })
    console.log(x)
+
+   const fonts = await fetchFonts()
+   console.log(fonts)
 })
 </script>
 
