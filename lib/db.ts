@@ -51,7 +51,8 @@ async function get(id: string): Promise<DBCombination | null> {
          }
          return item ?? null
       } else {
-         throw new Error('[db-get] - Combinations value is not an array.')
+         console.warn('[db-get] - Combinations value is not an array.')
+         return null
       }
    } catch (error) {
       console.error(error)

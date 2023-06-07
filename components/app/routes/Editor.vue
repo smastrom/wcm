@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import ContentLayout from '@/components/shared/ContentLayout.vue'
 import EditorHeader from '@/components/shared/EditorHeader.vue'
+import EditorExplorer from '@/components/shared/EditorExplorer.vue'
 import EditorToolbar from '@/components/shared/EditorToolbar.vue'
+import LivePreview from '@/components/shared/LivePreview.vue'
 
 import { db } from '@/lib/db'
 import { useStore } from '@/lib/store'
@@ -19,5 +22,17 @@ store.editor.actions.setCurrentEntry(entry)
 
 <template>
    <EditorHeader />
-   <EditorToolbar />
+   <ContentLayout>
+      <template #toolbar>
+         <EditorToolbar />
+      </template>
+
+      <template #explorer>
+         <EditorExplorer />
+      </template>
+
+      <template #preview>
+         <LivePreview />
+      </template>
+   </ContentLayout>
 </template>
