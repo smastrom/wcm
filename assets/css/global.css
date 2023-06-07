@@ -1,2 +1,26 @@
-html {
+:root {
+   --accent-color: #416bff;
+   --accent-disabled-color: #b0c2ff;
+   --divider-color: #dedede;
+   --error-color: #e4392e;
+   --success-color: #40af36;
+   --warning-color: #d6a833;
 }
+
+:root {
+   --bg-color: #fff;
+   --bg-elv-color: #f1f1f1;
+}
+
+:root {
+   --fg-headline-color: #111111;
+   --fg-placeholder-color: #7d7d7d;
+   --fg-body-color: #464646;
+   --fg-body-light-color: #808080;
+}
+
+@custom-media --size-xs (max-width: 360px);
+@custom-media --size-sm (max-width: 480px);
+@custom-media --size-md (max-width: 768px);
+@custom-media --size-lg (max-width: 1024px);
+@custom-media --size-max (max-width: 1440px);

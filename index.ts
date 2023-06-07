@@ -10,6 +10,8 @@ import EditorPage from '@/components/app/routes/Editor.vue'
 
 import '@/assets/css/preflight.css'
 import '@/assets/css/global.css'
+import '@/assets/css/open-props.css'
+import '@/assets/css/fonts.css'
 import '@/assets/css/rules.css'
 
 db.config()

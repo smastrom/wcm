@@ -1,0 +1,43 @@
+/* App fonts */
+
+@font-face {
+   font-family: 'IBM Plex Sans';
+   font-style: normal;
+   font-weight: 500;
+   src: url('assets/fonts/ibm-plex-sans-v19-latin-500.woff2') format('woff2');
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'IBM Plex Sans';
+   font-style: normal;
+   font-weight: 600;
+   src: url('assets/fonts/ibm-plex-sans-v19-latin-600.woff2') format('woff2');
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'IBM Plex Sans';
+   font-style: normal;
+   font-weight: 700;
+   src: url('assets/fonts/ibm-plex-sans-v19-latin-700.woff2') format('woff2');
+   font-display: swap;
+}
+
+/* Default fonts when creating a combination */
+
+@font-face {
+   font-family: 'Roboto';
+   font-style: normal;
+   font-weight: 400;
+   src: url('assets/fonts/roboto-v30-latin-regular.woff2') format('woff2');
+   font-display: swap;
+}
+
+@font-face {
+   font-family: 'Roboto';
+   font-style: normal;
+   font-weight: 700;
+   src: url('assets/fonts/roboto-v30-latin-700.woff2') format('woff2');
+   font-display: swap;
+}

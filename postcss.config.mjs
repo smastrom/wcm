@@ -1,12 +1,13 @@
 import autoprefixer from 'autoprefixer'
 import presetEnv from 'postcss-preset-env'
-import jitProps from 'postcss-jit-props'
 import hoverMediaFeature from 'postcss-hover-media-feature'
-
-import OpenProps from 'open-props'
+import postcssGlobalData from '@csstools/postcss-global-data'
 
 export default {
    plugins: [
+      postcssGlobalData({
+         files: ['assets/css/global.css']
+      }),
       presetEnv({
          stage: 3,
          features: {
@@ -15,7 +16,6 @@ export default {
          }
       }),
       autoprefixer(),
-      hoverMediaFeature(),
-      jitProps(OpenProps)
+      hoverMediaFeature()
    ]
 }

@@ -25,6 +25,9 @@ dependencies:
     version: 4.2.2(vue@3.3.4)
 
 devDependencies:
+  '@csstools/postcss-global-data':
+    specifier: ^1.0.3
+    version: 1.0.3(postcss@8.4.24)
   '@types/node':
     specifier: ^20.2.5
     version: 20.2.5
@@ -37,18 +40,12 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.24)
-  open-props:
-    specifier: ^1.5.8
-    version: 1.5.8
   postcss:
     specifier: ^8.4.24
     version: 8.4.24
   postcss-hover-media-feature:
     specifier: ^1.0.2
     version: 1.0.2(postcss@8.4.24)
-  postcss-jit-props:
-    specifier: ^1.0.13
-    version: 1.0.13(postcss@8.4.24)
   postcss-preset-env:
     specifier: ^8.4.2
     version: 8.4.2(postcss@8.4.24)
@@ -210,6 +207,15 @@ packages:
     dependencies:
       postcss: 8.4.24
       postcss-value-parser: 4.2.0
+    dev: true
+
+  /@csstools/postcss-global-data@1.0.3(postcss@8.4.24):
+    resolution: {integrity: sha512-x2fZOl7RJJtKC9ZfG+1bdrQKeRfP1a3Ff4uF2/fykNUKly8E8Q7lw7oegsEnqenSEDC1xjk6qXJ/fcJkTAdcNg==}
+    engines: {node: ^14 || ^16 || >=18}
+    peerDependencies:
+      postcss: ^8.4
+    dependencies:
+      postcss: 8.4.24
     dev: true
 
   /@csstools/postcss-gradients-interpolation-method@3.0.6(postcss@8.4.24):
@@ -1371,14 +1377,6 @@ packages:
       is-glob: 4.0.3
     dev: true
 
-  /globalyzer@0.1.0:
-    resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
-    dev: true
-
-  /globrex@0.1.2:
-    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
-    dev: true
-
   /he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
@@ -1543,10 +1541,6 @@ packages:
   /normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /open-props@1.5.8:
-    resolution: {integrity: sha512-pE9oKg+4rDrKNJpHNSP1ensgMz41YW5pPCHExd4P12595gdObMmiO1OhTvXG0t7inRS54GhyZr5jm+28XzapEg==}
     dev: true
 
   /pako@1.0.11:
@@ -1747,16 +1741,6 @@ packages:
       postcss: ^8.0.0
     dependencies:
       postcss: 8.4.24
-    dev: true
-
-  /postcss-jit-props@1.0.13(postcss@8.4.24):
-    resolution: {integrity: sha512-UqJdixZQyf1//GEs0bUeJ30UuhmsD5OojTIiImElOH2cXbw6QAcWHpXuo+dl9AF/uz+x0AnCzhrB+SXUtYfSRw==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      postcss: ^8.2.8
-    dependencies:
-      postcss: 8.4.24
-      tiny-glob: 0.2.9
     dev: true
 
   /postcss-lab-function@5.2.3(postcss@8.4.24):
@@ -2045,13 +2029,6 @@ packages:
     dependencies:
       utrie: 1.0.2
     dev: false
-
-  /tiny-glob@0.2.9:
-    resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
-    dependencies:
-      globalyzer: 0.1.0
-      globrex: 0.1.2
-    dev: true
 
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
