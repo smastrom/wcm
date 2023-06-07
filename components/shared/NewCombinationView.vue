@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { db } from '@/lib/db'
 import SplashScreen from './SplashScreen.vue'
 
+import { db } from '@/lib/db'
 import { normalizeSpaces } from '@/lib/utils'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
@@ -48,7 +48,7 @@ async function onSubmit() {
    >
       <form @submit.prevent="onSubmit" class="Form">
          <input
-            className="Global_InputField InputField"
+            class="Global_InputField InputField"
             maxlength="30"
             ref="inputRef"
             type="text"

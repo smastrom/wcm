@@ -8,11 +8,14 @@ import { db } from '@/lib/db'
 import NewCombinationView from '@/components/shared/NewCombinationView.vue'
 import CombinationListView from '@/components/shared/CombinationListView.vue'
 
+import type { DBCombination } from '@/types/db'
+
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
 const shouldRenderCreateDialog = ref(true)
+const combinationsRef = ref<DBCombination[] | null>(null)
 
 if (!store.fonts.data.value) {
    try {
@@ -30,16 +33,21 @@ try {
    const combinations = await db.getAll()
 
    if (route.query.new) {
+      // Returning user trying to access /combinations?new
       if (combinations && combinations.length > 0) {
          router.replace({ query: { new: undefined } })
          shouldRenderCreateDialog.value = false
-      }
+         combinationsRef.value = combinations
+      } // Else render /combinations?new
    } else {
+      // New user trying to access /combinations
       if (!combinations || combinations.length === 0) {
          router.replace({ query: { new: 'true' } })
          shouldRenderCreateDialog.value = true
       } else {
+         // Returning user trying to access /combinations
          shouldRenderCreateDialog.value = false
+         combinationsRef.value = combinations
       }
    }
 } catch (error) {
@@ -49,5 +57,5 @@ try {
 
 <template>
    <NewCombinationView v-if="shouldRenderCreateDialog" />
-   <CombinationListView v-else />
+   <CombinationListView :combinations="combinationsRef" v-else />
 </template>
