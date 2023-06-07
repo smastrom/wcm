@@ -1,7 +1,7 @@
 import { StoreEditingStatus } from '@/lib/constants'
-import { DBFontFamilyData } from './db'
 
 import type { GoogleFont, GoogleAPISortCriteria } from '@/types/fetch'
+import type { DBCombination, DBFontFamilyData } from '@/types/db'
 
 /* Fonts */
 
@@ -28,9 +28,10 @@ export type StoreEditorTabs = 'fonts' | 'combination'
 export interface StoreEditor {
    activeId: string | undefined
    activeName: string | undefined
-   activeTab: StoreEditorTabs
+   lastUpdated: string | undefined
    assignedHeadlineFont: DBFontFamilyData | undefined
    assignedBodyFont: DBFontFamilyData | undefined
+   activeTab: StoreEditorTabs
    editingStatus: StoreEditingStatus
    searchValueModel: string
    inputValueModel: string
@@ -44,7 +45,10 @@ export interface StoreEditor {
       setActiveName(name: string): void
       setEditingStatus(status: StoreEditingStatus): void
       setActiveTab(view: StoreEditorTabs): void
-      assignFont(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
+      setAssignedFont(target: 'headline' | 'body', data: DBFontFamilyData): void
+      setLastUpdated(timestamp: number): void
+      setCurrentEntry(data: DBCombination): void
+      saveFontToDB(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
    }
 }
 

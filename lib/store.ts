@@ -1,4 +1,5 @@
 import { db } from './db'
+import { formatDistanceToNow } from 'date-fns'
 import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
@@ -8,7 +9,7 @@ import {
 
 import type { GoogleFont } from '@/types/fetch'
 import type { StoreEditor, StorePreview, StoreFonts, StoreEditorTabs } from '@/types/store'
-import type { DBFontFamilyData } from '@/types/db'
+import type { DBFontFamilyData, DBCombination } from '@/types/db'
 
 export const storeInjectionKey = Symbol('')
 
@@ -31,10 +32,11 @@ export function createStore() {
    const editor: StoreEditor = reactive<StoreEditor>({
       activeId: undefined,
       activeName: undefined,
-      activeTab: 'fonts',
+      lastUpdated: undefined,
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
-      editingStatus: StoreEditingStatus.UNSAVED,
+      activeTab: 'fonts',
+      editingStatus: StoreEditingStatus.SAVED,
       searchValueModel: '',
       inputValueModel: 'De gustibus non est disputandum.',
       fontSizeModel: '1rem',
@@ -66,22 +68,41 @@ export function createStore() {
          setActiveTab(view: StoreEditorTabs) {
             editor.activeTab = view
          },
-         async assignFont(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
-            editor.editingStatus = StoreEditingStatus.SAVING
+         setLastUpdated(timestamp: number) {
+            editor.lastUpdated = `${formatDistanceToNow(timestamp)} ago`
+         },
+         setAssignedFont(target: 'headline' | 'body', data: DBFontFamilyData) {
+            if (target === 'headline') editor.assignedHeadlineFont = data
+            if (target === 'body') editor.assignedBodyFont = data
+         },
+         setCurrentEntry(data: DBCombination) {
+            editor.actions.setActiveId(data.id)
+            editor.actions.setActiveName(data.name)
+            editor.actions.setAssignedFont('headline', data.headline)
+            editor.actions.setAssignedFont('body', data.body)
+            editor.actions.setLastUpdated(data.lastUpdated)
+         },
+         async saveFontToDB(
+            target: 'headline' | 'body',
+            { family, weight }: DBFontFamilyData
+         ) {
+            editor.actions.setEditingStatus(StoreEditingStatus.SAVING)
+            editor.actions.setAssignedFont(target, { family, weight })
 
-            if (target === 'headline') editor.assignedHeadlineFont = { family, weight }
-            if (target === 'body') editor.assignedBodyFont = { family, weight }
+            await new Promise((resolve) => setTimeout(resolve, 500)) // TODO: remove
 
             if (!editor.activeId) return
 
             try {
-               await db.update(editor.activeId, {
+               const entry = await db.update(editor.activeId, {
                   [target]: { family, weight }
                })
-               editor.editingStatus = StoreEditingStatus.SAVED
+
+               editor.actions.setLastUpdated(entry.lastUpdated)
+               editor.actions.setEditingStatus(StoreEditingStatus.SAVED)
             } catch (error) {
                console.error(error)
-               editor.editingStatus = StoreEditingStatus.ERROR
+               editor.actions.setEditingStatus(StoreEditingStatus.ERROR)
             }
          }
       }
