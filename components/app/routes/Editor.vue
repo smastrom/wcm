@@ -1,3 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const route = useRoute()
+</script>
 
-<template><div>Editor</div></template>
+<template>
+   <div>{{ route.params.id }}</div>
+</template>

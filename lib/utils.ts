@@ -5,3 +5,7 @@ export function getRandomIntRange(min: number, max: number): number {
 export function reloadPage() {
    location.reload()
 }
+
+export function normalizeSpaces(string: string) {
+   return string.replace(/\s+/g, ' ')
+}

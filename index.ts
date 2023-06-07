@@ -47,7 +47,10 @@ const router = createRouter({
 router.beforeEach(async (to) => {
    if (to.name === 'editor') {
       const isValidParam = await db.get(to.params.id as string)
-      if (!isValidParam) return router.push({ name: 'combinations' })
+      if (!isValidParam) {
+         console.log('Invalid param!')
+         return router.push({ name: 'combinations' })
+      }
    }
 })
 

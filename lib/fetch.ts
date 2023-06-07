@@ -28,9 +28,7 @@ export async function fetchFonts(
       return (data as GoogleAPIResponse).items
    } catch (error) {
       console.log(error)
-      throw new Error(
-         `[fetch-fonts] - ${typeof error === 'string' ? error : 'Check the console.'}`
-      )
+      throw new Error('[fetch-fonts] - Error fetching fonts.')
    }
 }
 

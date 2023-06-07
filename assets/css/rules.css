@@ -6,15 +6,42 @@ html {
 }
 
 .Global_ActionButton {
-   padding: 0.6em 1em;
+   padding: 0.6em 1.2em;
    border-radius: var(--radius-3);
    font-weight: 700;
    white-space: nowrap;
    background-color: var(--accent-color);
    color: white;
-   transition: all var(--easing);
+   transition: all 150ms var(--easing);
+
+   &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--accent-color);
+   }
 
    &:hover {
+      background-color: var(--accent-darker-color);
+   }
+
+   &[disabled] {
       background-color: var(--accent-disabled-color);
+      cursor: not-allowed;
+   }
+}
+
+.Global_InputField {
+   padding: 0.6em 1.2em;
+   border-radius: var(--radius-3);
+   background-color: var(--bg-elv-color);
+   transition: all 100ms var(--easing);
+
+   &:placeholder {
+      color: var(--fg-placeholder-color);
+   }
+
+   &:focus,
+   &:hover {
+      outline: none;
+      box-shadow: inset 0 0 0 2px var(--accent-color);
    }
 }

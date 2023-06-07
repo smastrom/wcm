@@ -23,19 +23,20 @@ async function init() {
       }
    } catch (error) {
       console.error(error)
+      throw new Error('Failed creating DB key.')
    }
 }
 
 async function getAll(): Promise<DBCombination[] | null> {
    try {
       const combinations = await indexedDB.getItem<DBCombination[]>(DB_COMBINATION_KEY)
-      if (import.meta.env.DEV && !combinations) {
-         console.log('[db-get] - Combinations key do not exist.')
+      if (!combinations) {
+         console.log('[db-getAll] - Combinations key do not exist.')
       }
       return combinations
    } catch (error) {
       console.error(error)
-      return null
+      throw new Error(`[db-getAll] - Error getting all combinations.`)
    }
 }
 
@@ -54,13 +55,13 @@ async function get(id: string): Promise<DBCombination | null> {
       }
    } catch (error) {
       console.error(error)
-      return null
+      throw new Error(`[db-get] - Error getting combination.`)
    }
 }
 
 async function create(
    options: Omit<DBCombination, 'id' | 'lastUpdated'>
-): Promise<DBCombination | null> {
+): Promise<DBCombination> {
    try {
       const combinations = await getAll()
 
@@ -73,14 +74,14 @@ async function create(
       }
    } catch (error) {
       console.error(error)
-      return null
+      throw new Error(`[db-create] - Error getting combination.`)
    }
 }
 
 export async function update(
    id: string,
    options: Partial<Omit<DBCombination, 'id' | 'lastUpdated'>>
-): Promise<DBCombination | null> {
+): Promise<DBCombination> {
    try {
       const combinations = await getAll()
 
@@ -101,7 +102,7 @@ export async function update(
       }
    } catch (error) {
       console.error(error)
-      return null
+      throw new Error(`[db-update] - Error updating combination ${id}}.`)
    }
 }
 
@@ -120,6 +121,6 @@ async function remove(id: string): Promise<string | null> {
       }
    } catch (error) {
       console.error(error)
-      return null
+      throw new Error(`[db-update] - Error removing combination ${id}}.`)
    }
 }

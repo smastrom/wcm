@@ -1,5 +1,6 @@
 :root {
    --accent-color: #416bff;
+   --accent-darker-color: #2f4dd9;
    --accent-disabled-color: #b0c2ff;
    --divider-color: #dedede;
    --error-color: #e4392e;
@@ -20,7 +21,7 @@
 }
 
 :root {
-   --easing: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+   --easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @custom-media --size-xs (max-width: 360px);

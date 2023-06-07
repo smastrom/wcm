@@ -9,6 +9,4 @@ export interface DBCombination {
    name: string
    headline: DBFontFamilyData
    body: DBFontFamilyData
-   family: string
-   weight: string
 }
