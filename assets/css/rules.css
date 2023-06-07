@@ -3,6 +3,7 @@ html {
    font-synthesis: none;
    text-rendering: optimizeLegibility;
    -moz-osx-font-smoothing: grayscale;
+   background-color: var(--bg-elv-color);
 }
 
 .Global_ActionButton {

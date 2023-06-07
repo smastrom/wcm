@@ -21,6 +21,10 @@
 }
 
 :root {
+   --container-width: 1440px;
+}
+
+:root {
    --easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 

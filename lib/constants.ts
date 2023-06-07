@@ -6,7 +6,6 @@ import type {
 } from '@/types/store'
 
 export enum StoreEditingStatus {
-   UNSAVED,
    SAVING,
    SAVED,
    ERROR
