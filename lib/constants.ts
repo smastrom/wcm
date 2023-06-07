@@ -5,7 +5,7 @@ import type {
    StoreEditorFontSizes
 } from '@/types/store'
 
-export enum EditingStatus {
+export enum StoreEditingStatus {
    UNSAVED,
    SAVING,
    SAVED,
@@ -62,3 +62,5 @@ export const DB_COMBINATION_KEY = 'wcm_combination'
 /* API */
 
 export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'
+
+export const API_RANDOM_WORDS_BASEURL = 'https://random-word-api.herokuapp.com/word'

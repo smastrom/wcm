@@ -2,7 +2,7 @@ import { db } from './db'
 import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
-   EditingStatus,
+   StoreEditingStatus,
    LANGUAGE_PREVIEW_OPTIONS
 } from './constants'
 
@@ -34,7 +34,7 @@ export function createStore() {
       activeTab: 'fonts',
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
-      editingStatus: EditingStatus.UNSAVED,
+      editingStatus: StoreEditingStatus.UNSAVED,
       searchValueModel: '',
       inputValueModel: 'De gustibus non est disputandum.',
       fontSizeModel: '1rem',
@@ -60,14 +60,14 @@ export function createStore() {
          setActiveName(name: string) {
             editor.activeName = name
          },
-         setEditingStatus(status: EditingStatus) {
+         setEditingStatus(status: StoreEditingStatus) {
             editor.editingStatus = status
          },
          setActiveTab(view: StoreEditorTabs) {
             editor.activeTab = view
          },
          async assignFont(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
-            editor.editingStatus = EditingStatus.SAVING
+            editor.editingStatus = StoreEditingStatus.SAVING
 
             if (target === 'headline') editor.assignedHeadlineFont = { family, weight }
             if (target === 'body') editor.assignedBodyFont = { family, weight }
@@ -78,10 +78,10 @@ export function createStore() {
                await db.update(editor.activeId, {
                   [target]: { family, weight }
                })
-               editor.editingStatus = EditingStatus.SAVED
+               editor.editingStatus = StoreEditingStatus.SAVED
             } catch (error) {
                console.error(error)
-               editor.editingStatus = EditingStatus.ERROR
+               editor.editingStatus = StoreEditingStatus.ERROR
             }
          }
       }
