@@ -23,4 +23,20 @@ export interface GoogleAPIResponse {
    items: GoogleFont[]
 }
 
+export interface GoogleAPIResponseError {
+   error: {
+      code: number
+      message: string
+      errors: {
+         message: string
+         reason: string
+      }[]
+      status: string
+      details: {
+         '@type': string
+         fieldViolations: { field: string; description: string }[]
+      }[]
+   }
+}
+
 export type RandomWordsAPILanguages = 'en' | 'es' | 'it' | 'de'

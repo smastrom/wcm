@@ -64,3 +64,5 @@ export const DB_COMBINATION_KEY = 'wcm_combination'
 export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'
 
 export const API_RANDOM_WORDS_BASEURL = 'https://random-word-api.herokuapp.com/word'
+
+export const APP_CRITICAL_ERROR = 'Critical error.'

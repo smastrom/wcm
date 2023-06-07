@@ -4,3 +4,17 @@ html {
    text-rendering: optimizeLegibility;
    -moz-osx-font-smoothing: grayscale;
 }
+
+.Global_ActionButton {
+   padding: 0.6em 1em;
+   border-radius: var(--radius-3);
+   font-weight: 700;
+   white-space: nowrap;
+   background-color: var(--accent-color);
+   color: white;
+   transition: all var(--easing);
+
+   &:hover {
+      background-color: var(--accent-disabled-color);
+   }
+}

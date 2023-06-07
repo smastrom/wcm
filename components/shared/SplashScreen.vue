@@ -8,7 +8,7 @@ const subtitle = defineProp('Enjoy creating webfonts combinations.')
 <template>
    <div class="Wrapper">
       <div class="Header">
-         <LogoIcon width="120px" />
+         <LogoIcon width="80px" />
          <h1>Webfont Combination Manager</h1>
       </div>
 
@@ -23,30 +23,34 @@ const subtitle = defineProp('Enjoy creating webfonts combinations.')
 <style scoped>
 .Wrapper {
    --padding: var(--size-4);
+
    padding: var(--padding);
    min-height: 100vh;
    display: flex;
    justify-content: center;
    align-items: center;
    position: relative;
+   flex-direction: column;
+   gap: var(--size-8);
 }
 
 .Header {
    position: absolute;
    top: var(--padding);
    display: grid;
-   gap: var(--size-3);
+   gap: var(--size-2);
    justify-items: center;
    text-align: center;
    line-height: var(--font-lineheight-1);
 
    & h1 {
       color: var(--fg-body-color);
-      font-size: var(--font-size-2);
+      font-size: var(--font-size-1);
    }
 }
 
 .Copy {
+   max-width: var(--size-content-3);
    text-align: center;
    display: grid;
    gap: var(--size-2);

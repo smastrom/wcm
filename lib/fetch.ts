@@ -4,6 +4,7 @@ import { API_GOOGLE_FONTS_BASEURL, API_RANDOM_WORDS_BASEURL } from '@/lib/consta
 import type {
    GoogleAPIResponse,
    GoogleAPISortCriteria,
+   GoogleAPIResponseError,
    RandomWordsAPILanguages
 } from '@/types/fetch'
 
@@ -20,10 +21,16 @@ export async function fetchFonts(
    try {
       const res = await fetch(API_GOOGLE_FONTS_BASEURL + '?' + query.toString())
       const data = await res.json()
+
+      if ('error' in (data as GoogleAPIResponseError)) {
+         throw new Error(data.error.message)
+      }
       return (data as GoogleAPIResponse).items
    } catch (error) {
-      console.error(error)
-      return null
+      console.log(error)
+      throw new Error(
+         `[fetch-fonts] - ${typeof error === 'string' ? error : 'Check the console.'}`
+      )
    }
 }
 
