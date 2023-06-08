@@ -2,9 +2,7 @@
 const mainRef = ref<HTMLElement | null>(null)
 const mainTop = ref<number | undefined>(undefined)
 
-const mainHeight = computed(() =>
-   !mainTop.value ? '100vh' : `calc(100vh - ${mainTop.value}px)`
-)
+const mainHeight = computed(() => (!mainTop.value ? '100vh' : `calc(100vh - ${mainTop.value}px)`))
 
 function setTop() {
    mainTop.value = mainRef.value?.getBoundingClientRect().top ?? 0
@@ -41,5 +39,6 @@ onUpdated(setTop)
 .Content {
    display: grid;
    grid-template-columns: 1.5fr 1fr;
+   overflow: auto;
 }
 </style>

@@ -52,9 +52,14 @@ export function createStore() {
       activeCategoryModel: 'sans',
       activeVariantModel: 'normal',
       activeFontsComputed: computed(() => {
+         console.log('store - activeFontsComputed')
          if (!fonts.value) return []
 
-         const activeVariant = fonts.value[editor.activeCategoryModel][editor.activeVariantModel]
+         if (!editor.activeCategoryModel) console.log('store - No category found')
+         if (!editor.activeVariantModel) console.log('store - No variant found')
+
+         const activeVariant =
+            fonts.value?.[editor.activeCategoryModel]?.[editor.activeVariantModel]
 
          if (!editor.searchValueModel) return activeVariant
 
