@@ -3,7 +3,8 @@ import type {
    StorePreviewTypesPrint,
    StorePreviewTypesDigital,
    StoreEditorFontSizes,
-   AppFontCategories
+   AppFontCategories,
+   AppFontVariants
 } from '@/types/store'
 
 export enum StoreEditingStatus {
@@ -26,6 +27,12 @@ export const EDITOR_CATEGORIES: readonly { label: string; value: AppFontCategori
    { label: 'Serif', value: 'serif' },
    { label: 'Display', value: 'display' },
    { label: 'Handwriting', value: 'handwriting' }
+]
+
+export const EDITOR_VARIANTS: readonly { label: string; value: AppFontVariants }[] = [
+   { label: 'Normal', value: 'normal' },
+   { label: 'Italic', value: 'italic' },
+   { label: 'Condensed', value: 'condensed' }
 ]
 
 export const PRINT_PREVIEW_OPTIONS: readonly {

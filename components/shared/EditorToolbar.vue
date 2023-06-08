@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { SORT_CRITERIA } from '@/lib/constants'
+import {
+   SORT_CRITERIA,
+   EDITOR_CATEGORIES,
+   EDITOR_VARIANTS,
+   FONT_SIZE_OPTIONS
+} from '@/lib/constants'
 
 import RangeSlider from './RangeSlider.vue'
 import RadioGroup from './RadioGroup.vue'
 import Select from './Select.vue'
+
+import type { StoreEditorFontSizes } from '@/types/store'
 
 // 1. Check if the value from the query is valid
 // 2. If it is, set the value to the model in the store
@@ -25,69 +32,128 @@ import Select from './Select.vue'
 
 const store = useStore()
 
-const fontSizeRangeId = crypto.randomUUID()
-const sortSelectId = crypto.randomUUID()
-
 watchEffect(() => {
    console.log(store.editor.sortCriteriaModel)
+   console.log(store.editor.globalFontSize)
+   console.log(store.editor.searchValueModel)
 })
 
 async function onAsyncChange(value: string) {
    await new Promise((resolve) => setTimeout(resolve, 1000))
    console.log('asyncChange', value)
 }
+
+function onRangeChange(value: string) {
+   store.editor.actions.setGlobalFontSize(value as StoreEditorFontSizes)
+}
+
+/* IDs */
+
+const fontSizeRangeId = crypto.randomUUID()
+const sortSelectId = crypto.randomUUID()
+const categoryLabelId = crypto.randomUUID()
+const variantLabelId = crypto.randomUUID()
 </script>
 
 <template>
-   <nav>
-      <div>
-         <label for="editor_search">Search fonts</label>
-         <input
-            type="text"
-            id="editor_search"
-            placeholder="Search fonts..."
-            v-model="store.editor.searchValueModel"
-         />
-      </div>
-      <div>
-         <label :for="fontSizeRangeId">Global Size</label>
-         <RangeSlider :id="fontSizeRangeId" />
-      </div>
+   <div class="Scroller">
+      <nav class="Nav">
+         <!-- Search -->
 
-      <fieldset>
-         <legend>Radio Group</legend>
-         <RadioGroup
-            v-model="store.editor.activeCategoryModel"
-            :options="[
-               {
-                  label: 'Sans',
-                  value: 'sans'
-               },
-               {
-                  label: 'Serif',
-                  value: 'serif'
-               },
-               {
-                  label: 'Display',
-                  value: 'display'
-               },
-               {
-                  label: 'Handwriting',
-                  value: 'handwriting'
-               }
-            ]"
-         />
-      </fieldset>
-      <div>
-         <label :for="sortSelectId">Sort by</label>
-         <Select
-            :isAsync="true"
-            :id="sortSelectId"
-            :options="SORT_CRITERIA"
-            v-model="store.editor.sortCriteriaModel"
-            @asyncChange="onAsyncChange"
-            :isLoading="false"
-         />
-      </div>
-   </nav>
+         <div class="Fieldset">
+            <label class="Fieldset_Label" for="editor_search">Search fonts</label>
+            <input
+               class="Global_InputField SearchField"
+               type="text"
+               id="editor_search"
+               placeholder="Search fonts..."
+               v-model="store.editor.searchValueModel"
+            />
+         </div>
+
+         <!-- Sort -->
+
+         <div class="Fieldset">
+            <label class="Fieldset_Label" :for="sortSelectId">Sort by</label>
+            <Select
+               :isAsync="true"
+               :id="sortSelectId"
+               :options="SORT_CRITERIA"
+               v-model="store.editor.sortCriteriaModel"
+               @asyncChange="onAsyncChange"
+               :isLoading="false"
+            />
+         </div>
+
+         <!-- Font Size -->
+
+         <div class="Fieldset Fielset_GapEffect">
+            <label class="Fieldset_Label" :for="fontSizeRangeId">Global Size</label>
+            <RangeSlider
+               :id="fontSizeRangeId"
+               :steps="FONT_SIZE_OPTIONS"
+               @change="onRangeChange"
+            />
+         </div>
+
+         <!-- Category (<fieldset> can't be flex, using div) -->
+
+         <div
+            class="Fieldset Fielset_GapEffect"
+            role="radiogroup"
+            :aria-labelledby="categoryLabelId"
+         >
+            <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
+            <RadioGroup
+               v-model="store.editor.activeCategoryModel"
+               :options="EDITOR_CATEGORIES"
+            />
+         </div>
+
+         <!-- Variants -->
+
+         <div
+            class="Fieldset Fielset_GapEffect"
+            role="radiogroup"
+            :aria-labelledby="variantLabelId"
+         >
+            <legend :id="variantLabelId" class="Fieldset_Label">Variants</legend>
+            <RadioGroup v-model="store.editor.activeVariantModel" :options="EDITOR_VARIANTS" />
+         </div>
+      </nav>
+   </div>
 </template>
+
+<style scoped>
+.SearchField {
+   padding: 0.4em 1em !important;
+}
+.Nav {
+   overflow-x: auto;
+   display: grid;
+   grid-auto-flow: column;
+   gap: var(--size-4);
+   justify-items: left;
+   padding-bottom: var(--size-5);
+   font-size: var(--font-size-1);
+}
+
+.Fieldset {
+   display: grid;
+   gap: var(--size-2);
+   height: 100%;
+   align-content: start;
+   font-size: 90%;
+}
+
+.Fielset_GapEffect {
+   gap: var(--size-3);
+}
+
+.Fieldset_Label {
+   white-space: nowrap;
+   font-size: var(--font-size-0);
+   font-weight: 700;
+   color: var(--fg-headline-color);
+}
+</style>

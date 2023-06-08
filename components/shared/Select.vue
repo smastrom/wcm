@@ -37,9 +37,10 @@ function onChange(event: Event) {
    appearance: none;
    -webkit-appearance: none;
    cursor: pointer;
+   min-width: 150px;
 
    padding: 0.4em 1em 0.4em 0.8em;
-   border-radius: var(--radius-2);
+   border-radius: var(--radius-3);
    background-color: var(--bg-elv-color);
    transition: all 100ms var(--easing);
 

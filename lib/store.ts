@@ -8,7 +8,13 @@ import {
 } from './constants'
 
 import type { GoogleFont } from '@/types/fetch'
-import type { StoreEditor, StorePreview, StoreFonts, StoreEditorTabs } from '@/types/store'
+import type {
+   StoreEditor,
+   StorePreview,
+   StoreFonts,
+   StoreEditorTabs,
+   StoreEditorFontSizes
+} from '@/types/store'
 import type { DBFontFamilyData, DBCombination } from '@/types/db'
 
 export const storeInjectionKey = Symbol('')
@@ -36,10 +42,10 @@ export function createStore() {
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
       activeTab: 'fonts',
+      globalFontSize: '4rem',
       editingStatus: StoreEditingStatus.SAVED,
       searchValueModel: '',
       inputValueModel: 'De gustibus non est disputandum.',
-      fontSizeModel: '1rem',
       sortCriteriaModel: SORT_CRITERIA[0].value,
       activeCategoryModel: 'sans',
       activeVariantModel: 'normal',
@@ -67,6 +73,9 @@ export function createStore() {
          },
          setActiveTab(view: StoreEditorTabs) {
             editor.activeTab = view
+         },
+         setGlobalFontSize(size: StoreEditorFontSizes) {
+            editor.globalFontSize = size
          },
          setLastUpdated(timestamp: number) {
             editor.lastUpdated = `${formatDistanceToNow(timestamp)} ago`

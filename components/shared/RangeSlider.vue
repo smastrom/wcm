@@ -4,7 +4,7 @@ import { FONT_SIZE_OPTIONS } from '@/lib/constants'
 const props = withDefaults(
    defineProps<{
       id?: string
-      steps: string[]
+      steps: readonly string[]
    }>(),
    { steps: () => FONT_SIZE_OPTIONS as string[] }
 )
@@ -48,6 +48,10 @@ watch(internalValue, (newInternalValue) => {
    flex-wrap: nowrap;
    align-items: center;
    gap: var(--size-2);
+
+   & span {
+      width: var(--size-9);
+   }
 }
 
 .InputRange {

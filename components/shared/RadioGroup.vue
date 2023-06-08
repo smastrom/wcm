@@ -61,6 +61,7 @@ const randomName = crypto.randomUUID()
 }
 
 .Circle {
+   display: flex;
    width: var(--size-3);
    height: var(--size-3);
    border-radius: var(--radius-round);

@@ -33,9 +33,9 @@ export interface StoreEditor {
    assignedBodyFont: DBFontFamilyData | undefined
    activeTab: StoreEditorTabs
    editingStatus: StoreEditingStatus
+   globalFontSize: StoreEditorFontSizes
    searchValueModel: string
    inputValueModel: string
-   fontSizeModel: StoreEditorFontSizes
    sortCriteriaModel: GoogleAPISortCriteria
    activeCategoryModel: AppFontCategories
    activeVariantModel: AppFontVariants
@@ -49,6 +49,7 @@ export interface StoreEditor {
       setLastUpdated(timestamp: number): void
       setCurrentEntry(data: DBCombination): void
       saveFontToDB(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
+      setGlobalFontSize(size: StoreEditorFontSizes): void
    }
 }
 
