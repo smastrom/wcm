@@ -3,21 +3,22 @@ import { FONT_SIZE_OPTIONS } from '@/lib/constants'
 
 const props = withDefaults(
    defineProps<{
+      initialValue: string
       id?: string
       steps: readonly string[]
    }>(),
-   { steps: () => FONT_SIZE_OPTIONS as string[] }
+   { steps: () => FONT_SIZE_OPTIONS as string[], initialIndex: 0 }
 )
 
 const emit = defineEmits<{
    (event: 'change', value: string): void
 }>()
 
-const internalValue = ref(0)
+const initialIndex = props.steps.indexOf(props.initialValue)
 
-const computedPercentage = computed(
-   () => (internalValue.value / (props.steps.length - 1)) * 100
-)
+const internalValue = ref(initialIndex === -1 ? 0 : initialIndex)
+
+const computedPercentage = computed(() => (internalValue.value / (props.steps.length - 1)) * 100)
 
 watch(internalValue, (newInternalValue) => {
    emit('change', props.steps[newInternalValue])

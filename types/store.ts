@@ -50,6 +50,9 @@ export interface StoreEditor {
       setCurrentEntry(data: DBCombination): void
       saveFontToDB(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
       setGlobalFontSize(size: StoreEditorFontSizes): void
+      setActiveCategory(category: AppFontCategories): void
+      setActiveVariant(variant: AppFontVariants): void
+      setSortCriteria(criteria: GoogleAPISortCriteria): void
    }
 }
 

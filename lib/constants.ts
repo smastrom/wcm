@@ -13,6 +13,15 @@ export enum StoreEditingStatus {
    ERROR
 }
 
+/* Query */
+
+export const EDITOR_QUERY_KEYS = {
+   category: 'category',
+   variant: 'variant',
+   sort: 'sort',
+   fontsize: 'fontsize'
+}
+
 /* UI */
 
 export const SORT_CRITERIA: readonly { label: string; value: GoogleAPISortCriteria }[] = [

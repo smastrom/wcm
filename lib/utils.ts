@@ -9,3 +9,9 @@ export function reloadPage() {
 export function normalizeSpaces(string: string) {
    return string.replace(/\s+/g, ' ')
 }
+
+export function validateQueryParam(queryParamValue: unknown, validValues: string[]) {
+   if (typeof queryParamValue !== 'string') return false
+   if (!validValues.includes(queryParamValue)) return false
+   return true
+}

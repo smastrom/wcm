@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
+import { useUpdateQuery } from '@/lib/useUpdateQuery'
+import { validateQueryParam as isValid } from '@/lib/utils'
+import { fetchFonts } from '@/lib/fetch'
 import {
    SORT_CRITERIA,
-   EDITOR_CATEGORIES,
-   EDITOR_VARIANTS,
+   EDITOR_CATEGORIES as CATEGORIES,
+   EDITOR_VARIANTS as VARIANTS,
+   EDITOR_QUERY_KEYS as QUERY_KEYS,
    FONT_SIZE_OPTIONS
 } from '@/lib/constants'
 
@@ -11,36 +15,90 @@ import RangeSlider from './RangeSlider.vue'
 import RadioGroup from './RadioGroup.vue'
 import Select from './Select.vue'
 
-import type { StoreEditorFontSizes } from '@/types/store'
+import type { StoreEditorFontSizes, AppFontCategories, AppFontVariants } from '@/types/store'
+import type { GoogleAPISortCriteria } from '@/types/fetch'
 
-// 1. Check if the value from the query is valid
-// 2. If it is, set the value to the model in the store
-// 3. If it isn't, set the value to the default value and clear the query
-// 4. Fetch the fonts from the API using the model in the store and save them in the store
-
-// 5. Czll router replace in a watcher and update the query
-
-// 6. The value of the select should only be the one that triggers a new API call to google servers
-// 7. Any other input value just filters the fonts in the store
-
-// 8. Once font list is fetched, before rendering 10 families: we iterate through them and check
-// if the downloaded font is in the db, if there is, we create a FontFace rule. If not, we fetch
-// the fonts and save them to the DB as arrayBuffer by creating a key with FamilyName_variant and
-// create a new FontFace rule from it. For simplicity we only allow 300, regualar, 500, 600, 700.
-// (this should be filtered when preparing fonts)
-// Repeat the procedure when the observer callback is triggered and whenever any input changes.
+// At this point the store is already populated with fonts
 
 const store = useStore()
+const route = useRoute()
+const updateQuery = useUpdateQuery()
 
-watchEffect(() => {
-   console.log(store.editor.sortCriteriaModel)
-   console.log(store.editor.globalFontSize)
-   console.log(store.editor.searchValueModel)
-})
+/* Query */
 
-async function onAsyncChange(value: string) {
-   await new Promise((resolve) => setTimeout(resolve, 1000))
-   console.log('asyncChange', value)
+// Mount
+
+if (
+   isValid(
+      route.query[QUERY_KEYS.sort],
+      SORT_CRITERIA.map(({ value }) => value)
+   )
+) {
+   store.editor.actions.setSortCriteria(route.query[QUERY_KEYS.sort] as GoogleAPISortCriteria)
+} else {
+   updateQuery(QUERY_KEYS.sort, SORT_CRITERIA[0].value)
+}
+
+if (
+   isValid(
+      route.query[QUERY_KEYS.category],
+      CATEGORIES.map(({ value }) => value)
+   )
+) {
+   store.editor.actions.setActiveCategory(route.query[QUERY_KEYS.category] as AppFontCategories)
+} else {
+   updateQuery(QUERY_KEYS.sort, CATEGORIES[0].value)
+}
+
+if (
+   isValid(
+      route.query[QUERY_KEYS.variant],
+      VARIANTS.map(({ value }) => value)
+   )
+) {
+   store.editor.actions.setActiveVariant(route.query[QUERY_KEYS.variant] as AppFontVariants)
+} else {
+   updateQuery(QUERY_KEYS.variant, VARIANTS[0].value)
+}
+
+if (isValid(route.query[QUERY_KEYS.fontsize], FONT_SIZE_OPTIONS as string[])) {
+   store.editor.actions.setGlobalFontSize(route.query[QUERY_KEYS.fontsize] as StoreEditorFontSizes)
+} else {
+   updateQuery(QUERY_KEYS.fontsize, FONT_SIZE_OPTIONS[5])
+}
+
+// Update
+
+watch(
+   () => store.editor.activeCategoryModel,
+   (newValue) => updateQuery(QUERY_KEYS.category, newValue)
+)
+
+watch(
+   () => store.editor.activeVariantModel,
+   (newValue) => updateQuery(QUERY_KEYS.variant, newValue)
+)
+
+watch(
+   () => store.editor.sortCriteriaModel,
+   (newValue) => updateQuery(QUERY_KEYS.sort, newValue)
+)
+
+watch(
+   () => store.editor.globalFontSize,
+   (newValue) => updateQuery(QUERY_KEYS.fontsize, newValue)
+)
+
+/* Font Size */
+
+const isSelectLoading = ref(false)
+
+async function onAsyncChange(value: GoogleAPISortCriteria) {
+   isSelectLoading.value = true
+   await new Promise((resolve) => setTimeout(resolve, 2000)).catch(() => {}) // TODO: handle error once browse is done
+   await fetchFonts(value)
+   isSelectLoading.value = false
+   store.editor.actions.setSortCriteria(value)
 }
 
 function onRangeChange(value: string) {
@@ -66,6 +124,7 @@ const variantLabelId = crypto.randomUUID()
                class="Global_InputField SearchField"
                type="text"
                id="editor_search"
+               maxlength="25"
                placeholder="Search fonts..."
                v-model="store.editor.searchValueModel"
             />
@@ -81,7 +140,7 @@ const variantLabelId = crypto.randomUUID()
                :options="SORT_CRITERIA"
                v-model="store.editor.sortCriteriaModel"
                @asyncChange="onAsyncChange"
-               :isLoading="false"
+               :isLoading="isSelectLoading"
             />
          </div>
 
@@ -92,6 +151,7 @@ const variantLabelId = crypto.randomUUID()
             <RangeSlider
                :id="fontSizeRangeId"
                :steps="FONT_SIZE_OPTIONS"
+               :initialValue="store.editor.globalFontSize"
                @change="onRangeChange"
             />
          </div>
@@ -104,10 +164,7 @@ const variantLabelId = crypto.randomUUID()
             :aria-labelledby="categoryLabelId"
          >
             <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
-            <RadioGroup
-               v-model="store.editor.activeCategoryModel"
-               :options="EDITOR_CATEGORIES"
-            />
+            <RadioGroup v-model="store.editor.activeCategoryModel" :options="CATEGORIES" />
          </div>
 
          <!-- Variants -->
@@ -118,7 +175,7 @@ const variantLabelId = crypto.randomUUID()
             :aria-labelledby="variantLabelId"
          >
             <legend :id="variantLabelId" class="Fieldset_Label">Variants</legend>
-            <RadioGroup v-model="store.editor.activeVariantModel" :options="EDITOR_VARIANTS" />
+            <RadioGroup v-model="store.editor.activeVariantModel" :options="VARIANTS" />
          </div>
       </nav>
    </div>

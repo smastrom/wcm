@@ -7,13 +7,15 @@ import {
    LANGUAGE_PREVIEW_OPTIONS
 } from './constants'
 
-import type { GoogleFont } from '@/types/fetch'
+import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
 import type {
    StoreEditor,
    StorePreview,
    StoreFonts,
    StoreEditorTabs,
-   StoreEditorFontSizes
+   StoreEditorFontSizes,
+   AppFontCategories,
+   AppFontVariants
 } from '@/types/store'
 import type { DBFontFamilyData, DBCombination } from '@/types/db'
 
@@ -52,8 +54,7 @@ export function createStore() {
       activeFontsComputed: computed(() => {
          if (!fonts.value) return []
 
-         const activeVariant =
-            fonts.value[editor.activeCategoryModel][editor.activeVariantModel]
+         const activeVariant = fonts.value[editor.activeCategoryModel][editor.activeVariantModel]
 
          if (!editor.searchValueModel) return activeVariant
 
@@ -91,10 +92,16 @@ export function createStore() {
             editor.actions.setAssignedFont('body', data.body)
             editor.actions.setLastUpdated(data.lastUpdated)
          },
-         async saveFontToDB(
-            target: 'headline' | 'body',
-            { family, weight }: DBFontFamilyData
-         ) {
+         setActiveCategory(category: AppFontCategories) {
+            editor.activeCategoryModel = category
+         },
+         setActiveVariant(variant: AppFontVariants) {
+            editor.activeVariantModel = variant
+         },
+         setSortCriteria(criteria: GoogleAPISortCriteria) {
+            editor.sortCriteriaModel = criteria
+         },
+         async saveFontToDB(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
             editor.actions.setEditingStatus(StoreEditingStatus.SAVING)
             editor.actions.setAssignedFont(target, { family, weight })
 

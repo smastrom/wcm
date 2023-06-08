@@ -28,7 +28,13 @@ function onChange(event: Event) {
 
 <template>
    <select :id="id" @change="onChange" class="Select" :disabled="isLoading">
-      <option v-for="option in options" :value="option.value">{{ option.label }}</option>
+      <option
+         v-for="option in options"
+         :value="option.value"
+         :selected="option.value === modelValue"
+      >
+         {{ option.label }}
+      </option>
    </select>
 </template>
 
