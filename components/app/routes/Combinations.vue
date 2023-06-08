@@ -19,7 +19,7 @@ const combinationsRef = ref<DBCombination[] | null>(null)
 
 if (!store.fonts.data.value) {
    try {
-      const googleFonts = await fetchFonts()
+      const googleFonts = await fetchFonts(store.editor.sortCriteriaModel ?? 'popularity')
       if (googleFonts) {
          const appFonts = getFonts(googleFonts)
          store.fonts.actions.setFonts(appFonts)

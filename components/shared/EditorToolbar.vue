@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { useUpdateQuery } from '@/lib/useUpdateQuery'
-import { validateQueryParam as isValid } from '@/lib/utils'
 import { fetchFonts } from '@/lib/fetch'
+import { getFonts } from '@/lib/fonts'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
    EDITOR_VARIANTS as VARIANTS,
-   EDITOR_QUERY_KEYS as QUERY_KEYS,
    FONT_SIZE_OPTIONS
 } from '@/lib/constants'
 
@@ -15,88 +13,22 @@ import RangeSlider from './RangeSlider.vue'
 import RadioGroup from './RadioGroup.vue'
 import Select from './Select.vue'
 
-import type { StoreEditorFontSizes, AppFontCategories, AppFontVariants } from '@/types/store'
+import type { StoreEditorFontSizes } from '@/types/store'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 
-// At this point the store is already populated with fonts
-
 const store = useStore()
-const route = useRoute()
-const updateQuery = useUpdateQuery()
-
-/* Query */
-
-// Mount
-
-if (
-   isValid(
-      route.query[QUERY_KEYS.sort],
-      SORT_CRITERIA.map(({ value }) => value)
-   )
-) {
-   store.editor.actions.setSortCriteria(route.query[QUERY_KEYS.sort] as GoogleAPISortCriteria)
-} else {
-   updateQuery(QUERY_KEYS.sort, SORT_CRITERIA[0].value)
-}
-
-if (
-   isValid(
-      route.query[QUERY_KEYS.category],
-      CATEGORIES.map(({ value }) => value)
-   )
-) {
-   store.editor.actions.setActiveCategory(route.query[QUERY_KEYS.category] as AppFontCategories)
-} else {
-   updateQuery(QUERY_KEYS.sort, CATEGORIES[0].value)
-}
-
-if (
-   isValid(
-      route.query[QUERY_KEYS.variant],
-      VARIANTS.map(({ value }) => value)
-   )
-) {
-   store.editor.actions.setActiveVariant(route.query[QUERY_KEYS.variant] as AppFontVariants)
-} else {
-   updateQuery(QUERY_KEYS.variant, VARIANTS[0].value)
-}
-
-if (isValid(route.query[QUERY_KEYS.fontsize], FONT_SIZE_OPTIONS as string[])) {
-   store.editor.actions.setGlobalFontSize(route.query[QUERY_KEYS.fontsize] as StoreEditorFontSizes)
-} else {
-   updateQuery(QUERY_KEYS.fontsize, FONT_SIZE_OPTIONS[5])
-}
-
-// Update
-
-watch(
-   () => store.editor.activeCategoryModel,
-   (newValue) => updateQuery(QUERY_KEYS.category, newValue)
-)
-
-watch(
-   () => store.editor.activeVariantModel,
-   (newValue) => updateQuery(QUERY_KEYS.variant, newValue)
-)
-
-watch(
-   () => store.editor.sortCriteriaModel,
-   (newValue) => updateQuery(QUERY_KEYS.sort, newValue)
-)
-
-watch(
-   () => store.editor.globalFontSize,
-   (newValue) => updateQuery(QUERY_KEYS.fontsize, newValue)
-)
-
-/* Font Size */
 
 const isSelectLoading = ref(false)
 
-async function onAsyncChange(value: GoogleAPISortCriteria) {
+async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
    isSelectLoading.value = true
-   await new Promise((resolve) => setTimeout(resolve, 2000)).catch(() => {}) // TODO: handle error once browse is done
-   await fetchFonts(value)
+   const fonts = await fetchFonts(value)
+   if (!fonts) return store.editor.actions.setSortCriteria(SORT_CRITERIA[0].value)
+
+   const sortedFonts = getFonts(fonts)
+   store.fonts.actions.setFonts(sortedFonts)
+   triggerRef(store.fonts.data)
+
    isSelectLoading.value = false
    store.editor.actions.setSortCriteria(value)
 }
@@ -125,7 +57,7 @@ const variantLabelId = crypto.randomUUID()
                type="text"
                id="editor_search"
                maxlength="25"
-               placeholder="Search fonts..."
+               :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"
                v-model="store.editor.searchValueModel"
             />
          </div>
@@ -139,7 +71,7 @@ const variantLabelId = crypto.randomUUID()
                :id="sortSelectId"
                :options="SORT_CRITERIA"
                v-model="store.editor.sortCriteriaModel"
-               @asyncChange="onAsyncChange"
+               @asyncChange="onAsyncSelectChange"
                :isLoading="isSelectLoading"
             />
          </div>

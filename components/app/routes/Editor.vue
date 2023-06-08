@@ -5,10 +5,12 @@ import EditorExplorer from '@/components/shared/EditorExplorer.vue'
 import EditorToolbar from '@/components/shared/EditorToolbar.vue'
 import LivePreview from '@/components/shared/LivePreview.vue'
 
-import { fetchFonts } from '@/lib/fetch'
-import { getFonts } from '@/lib/fonts'
-import { db } from '@/lib/db'
+import { useEditorQuery } from '@/lib/useEditorQuery'
+
 import { useStore } from '@/lib/store'
+import { fetchFonts } from '@/lib/fetch'
+import { db } from '@/lib/db'
+import { getFonts } from '@/lib/fonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
 import type { DBCombination } from '@/types/db'
@@ -16,13 +18,9 @@ import type { DBCombination } from '@/types/db'
 const store = useStore()
 const route = useRoute()
 
-// Route guard in index.ts, when user enters the page id exists in db 100% and is a returning user
-const entry = (await db.get(route.params.id as string)) as DBCombination
-
-// If returning user, get the fonts from Google
 if (!store.fonts.data.value) {
    try {
-      const googleFonts = await fetchFonts()
+      const googleFonts = await fetchFonts(store.editor.sortCriteriaModel)
       if (googleFonts) {
          const appFonts = getFonts(googleFonts)
          store.fonts.actions.setFonts(appFonts)
@@ -32,8 +30,10 @@ if (!store.fonts.data.value) {
    }
 }
 
-// Populate store with entry from DB
+const entry = (await db.get(route.params.id as string)) as DBCombination
 store.editor.actions.setCurrentEntry(entry)
+
+useEditorQuery()
 </script>
 
 <template>
