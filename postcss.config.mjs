@@ -2,11 +2,12 @@ import autoprefixer from 'autoprefixer'
 import presetEnv from 'postcss-preset-env'
 import hoverMediaFeature from 'postcss-hover-media-feature'
 import postcssGlobalData from '@csstools/postcss-global-data'
+import apply from 'postcss-apply'
 
 export default {
    plugins: [
       postcssGlobalData({
-         files: ['assets/css/global.css']
+         files: ['assets/css/global.css', 'assets/css/rules.css']
       }),
       presetEnv({
          stage: 3,
@@ -15,6 +16,7 @@ export default {
             'custom-media-queries': true
          }
       }),
+      apply(),
       autoprefixer(),
       hoverMediaFeature()
    ]

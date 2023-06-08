@@ -22,6 +22,7 @@
 
 :root {
    --container-width: 1440px;
+   --ring-outline: inset 0 0 0 2px var(--bg-color), 0 0 0 2px var(--accent-color);
 }
 
 :root {
