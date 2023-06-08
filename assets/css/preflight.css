@@ -122,6 +122,12 @@ pre {
    margin: 0;
 }
 
+fieldset,
+legend {
+   margin: 0;
+   padding: 0;
+}
+
 ol,
 ul,
 menu {

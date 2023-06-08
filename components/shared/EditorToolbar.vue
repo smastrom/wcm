@@ -2,6 +2,7 @@
 import { useStore } from '@/lib/store'
 
 import RangeSlider from './RangeSlider.vue'
+import RadioGroup from './RadioGroup.vue'
 
 // 1. Check if the value from the query is valid
 // 2. If it is, set the value to the model in the store
@@ -38,5 +39,22 @@ const store = useStore()
          <label for="range_slider">Global Size</label>
          <RangeSlider />
       </div>
+
+      <fieldset>
+         <legend>Radio Group</legend>
+         <RadioGroup
+            v-model="store.editor.activeCategoryModel"
+            :options="[
+               {
+                  label: 'Sans',
+                  value: 'sans'
+               },
+               {
+                  label: 'Serif',
+                  value: 'serif'
+               }
+            ]"
+         />
+      </fieldset>
    </nav>
 </template>

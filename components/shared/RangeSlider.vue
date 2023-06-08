@@ -3,7 +3,7 @@ import { FONT_SIZE_OPTIONS } from '@/lib/constants'
 
 const props = withDefaults(
    defineProps<{
-      labelId: string
+      labelId?: string
       steps: string[]
    }>(),
    { steps: () => FONT_SIZE_OPTIONS as string[] }
@@ -30,7 +30,7 @@ watch(internalValue, (newInternalValue) => {
          {{ props.steps[internalValue] }}
       </span>
       <input
-         aria-label="Slide between sizes"
+         :aria-labelledby="labelId"
          class="InputRange"
          type="range"
          min="0"
@@ -48,6 +48,7 @@ watch(internalValue, (newInternalValue) => {
    align-items: center;
    gap: var(--size-2);
 }
+
 .InputRange {
    -webkit-appearance: none;
    flex: 1;
@@ -56,6 +57,7 @@ watch(internalValue, (newInternalValue) => {
    border-radius: var(--radius-max);
    background-image: linear-gradient(var(--accent-color) 0 100%);
    background-repeat: no-repeat;
+   transition: box-shadow 100ms var(--easing);
 
    &::-webkit-slider-thumb {
       @apply --input-range-thumb;
