@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends string">
 defineProps<{
-   options: {
+   options: readonly {
       label: string
       value: T
    }[]
@@ -46,7 +46,7 @@ const randomName = crypto.randomUUID()
    display: flex;
    flex-wrap: nowrap;
    align-items: center;
-   gap: var(--size-4);
+   gap: var(--size-3);
 }
 
 .Label {

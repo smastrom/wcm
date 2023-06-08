@@ -2,7 +2,8 @@ import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
    StorePreviewTypesPrint,
    StorePreviewTypesDigital,
-   StoreEditorFontSizes
+   StoreEditorFontSizes,
+   AppFontCategories
 } from '@/types/store'
 
 export enum StoreEditingStatus {
@@ -15,9 +16,16 @@ export enum StoreEditingStatus {
 
 export const SORT_CRITERIA: readonly { label: string; value: GoogleAPISortCriteria }[] = [
    { label: 'Popularity', value: 'popularity' },
+   { label: 'Trending', value: 'trending' },
    { label: 'Alphabetical', value: 'alpha' },
-   { label: 'Last updated', value: 'date' },
-   { label: 'Trending', value: 'trending' }
+   { label: 'Last updated', value: 'date' }
+]
+
+export const EDITOR_CATEGORIES: readonly { label: string; value: AppFontCategories }[] = [
+   { label: 'Sans', value: 'sans' },
+   { label: 'Serif', value: 'serif' },
+   { label: 'Display', value: 'display' },
+   { label: 'Handwriting', value: 'handwriting' }
 ]
 
 export const PRINT_PREVIEW_OPTIONS: readonly {

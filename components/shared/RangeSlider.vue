@@ -3,7 +3,7 @@ import { FONT_SIZE_OPTIONS } from '@/lib/constants'
 
 const props = withDefaults(
    defineProps<{
-      labelId?: string
+      id?: string
       steps: string[]
    }>(),
    { steps: () => FONT_SIZE_OPTIONS as string[] }
@@ -30,7 +30,8 @@ watch(internalValue, (newInternalValue) => {
          {{ props.steps[internalValue] }}
       </span>
       <input
-         :aria-labelledby="labelId"
+         :id="id"
+         aria-label="Font size"
          class="InputRange"
          type="range"
          min="0"

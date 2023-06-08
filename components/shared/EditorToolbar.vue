@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
+import { SORT_CRITERIA } from '@/lib/constants'
 
 import RangeSlider from './RangeSlider.vue'
 import RadioGroup from './RadioGroup.vue'
+import Select from './Select.vue'
 
 // 1. Check if the value from the query is valid
 // 2. If it is, set the value to the model in the store
@@ -22,6 +24,18 @@ import RadioGroup from './RadioGroup.vue'
 // Repeat the procedure when the observer callback is triggered and whenever any input changes.
 
 const store = useStore()
+
+const fontSizeRangeId = crypto.randomUUID()
+const sortSelectId = crypto.randomUUID()
+
+watchEffect(() => {
+   console.log(store.editor.sortCriteriaModel)
+})
+
+async function onAsyncChange(value: string) {
+   await new Promise((resolve) => setTimeout(resolve, 1000))
+   console.log('asyncChange', value)
+}
 </script>
 
 <template>
@@ -36,8 +50,8 @@ const store = useStore()
          />
       </div>
       <div>
-         <label for="range_slider">Global Size</label>
-         <RangeSlider />
+         <label :for="fontSizeRangeId">Global Size</label>
+         <RangeSlider :id="fontSizeRangeId" />
       </div>
 
       <fieldset>
@@ -52,9 +66,28 @@ const store = useStore()
                {
                   label: 'Serif',
                   value: 'serif'
+               },
+               {
+                  label: 'Display',
+                  value: 'display'
+               },
+               {
+                  label: 'Handwriting',
+                  value: 'handwriting'
                }
             ]"
          />
       </fieldset>
+      <div>
+         <label :for="sortSelectId">Sort by</label>
+         <Select
+            :isAsync="true"
+            :id="sortSelectId"
+            :options="SORT_CRITERIA"
+            v-model="store.editor.sortCriteriaModel"
+            @asyncChange="onAsyncChange"
+            :isLoading="false"
+         />
+      </div>
    </nav>
 </template>
