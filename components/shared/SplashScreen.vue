@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LogoIcon from './LogoIcon.vue'
+import LogoIcon from './icons/LogoIcon.vue'
 
 const title = defineProp('Welcome to WCM!')
 const subtitle = defineProp('Enjoy creating webfonts combinations.')

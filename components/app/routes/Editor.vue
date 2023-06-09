@@ -3,7 +3,7 @@ import ContentLayout from '@/components/shared/ContentLayout.vue'
 import EditorHeader from '@/components/shared/EditorHeader.vue'
 import EditorExplorer from '@/components/shared/EditorExplorer.vue'
 import EditorToolbar from '@/components/shared/EditorToolbar.vue'
-import LivePreview from '@/components/shared/LivePreview.vue'
+import Preview from '@/components/shared/Preview.vue'
 
 import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
@@ -47,7 +47,7 @@ try {
       </template>
 
       <template #preview>
-         <LivePreview />
+         <Preview />
       </template>
    </ContentLayout>
 </template>

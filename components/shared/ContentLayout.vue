@@ -40,6 +40,6 @@ onUpdated(setTop)
    display: grid;
    grid-template-columns: 1.5fr 1fr;
    overflow: auto;
-   gap: var(--size-6);
+   gap: var(--size-8);
 }
 </style>

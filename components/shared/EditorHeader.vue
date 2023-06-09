@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LogoIcon from './LogoIcon.vue'
+import LogoIcon from './icons/LogoIcon.vue'
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 import StatusDot from './StatusDot.vue'
 

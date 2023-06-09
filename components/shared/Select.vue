@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends string">
 const props = defineProps<{
-   isLoading: boolean
    isAsync: boolean
    id: string
    modelValue: T
+   isLoading?: boolean
    options: readonly {
       label: string
       value: T

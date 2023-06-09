@@ -55,6 +55,8 @@ export const DIGITAL_PREVIEW_OPTIONS: readonly {
    { label: 'SaaS Website', value: 'saas' }
 ]
 
+export const PREVIEW_OPTIONS = [...PRINT_PREVIEW_OPTIONS, ...DIGITAL_PREVIEW_OPTIONS]
+
 export const FONT_SIZE_OPTIONS: readonly StoreEditorFontSizes[] = [
    '2rem',
    '3rem',
