@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { fetchFonts } from '@/lib/fetch'
-import { getFonts } from '@/lib/fonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 import { db } from '@/lib/db'
 
@@ -19,11 +17,7 @@ const combinationsRef = ref<DBCombination[] | null>(null)
 
 if (!store.fonts.data.value) {
    try {
-      const googleFonts = await fetchFonts(store.editor.sortCriteriaModel ?? 'popularity')
-      if (googleFonts) {
-         const appFonts = getFonts(googleFonts)
-         store.fonts.actions.setFonts(appFonts)
-      }
+      store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
    } catch (error) {
       throw new Error(`[combinations-route-fonts] - ${APP_CRITICAL_ERROR}`)
    }
@@ -38,7 +32,7 @@ try {
          router.replace({ query: { new: undefined } })
          shouldRenderCreateDialog.value = false
          combinationsRef.value = combinations
-      } // Else render /combinations?new
+      } // Else render default props
    } else {
       // New user trying to access /combinations
       if (!combinations || combinations.length === 0) {

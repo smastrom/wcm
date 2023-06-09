@@ -28,7 +28,7 @@ export async function useEditorQuery() {
    ) {
       store.editor.actions.setSortCriteria(route.query[QUERY_KEYS.sort] as GoogleAPISortCriteria)
    } else {
-      await updateQuery(QUERY_KEYS.sort, SORT_CRITERIA[0].value)
+      await updateQuery(QUERY_KEYS.sort, store.editor.sortCriteriaModel)
    }
 
    if (
@@ -39,7 +39,7 @@ export async function useEditorQuery() {
    ) {
       store.editor.actions.setActiveCategory(route.query[QUERY_KEYS.category] as AppFontCategories)
    } else {
-      await updateQuery(QUERY_KEYS.category, CATEGORIES[0].value)
+      await updateQuery(QUERY_KEYS.category, store.editor.activeCategoryModel)
    }
 
    if (
@@ -50,7 +50,7 @@ export async function useEditorQuery() {
    ) {
       store.editor.actions.setActiveVariant(route.query[QUERY_KEYS.variant] as AppFontVariants)
    } else {
-      await updateQuery(QUERY_KEYS.variant, VARIANTS[0].value)
+      await updateQuery(QUERY_KEYS.variant, store.editor.activeVariantModel)
    }
 
    if (isValid(route.query[QUERY_KEYS.fontsize], FONT_SIZE_OPTIONS as string[])) {
@@ -58,7 +58,7 @@ export async function useEditorQuery() {
          route.query[QUERY_KEYS.fontsize] as StoreEditorFontSizes
       )
    } else {
-      await updateQuery(QUERY_KEYS.fontsize, FONT_SIZE_OPTIONS[5])
+      await updateQuery(QUERY_KEYS.fontsize, store.editor.globalFontSize)
    }
 
    // On page update

@@ -1,7 +1,7 @@
 import type { GoogleFont, GoogleAPIFontCateogry } from '@/types/fetch'
 
 /** Removes language-specific duplicates, e.g. remove 'Noto Sans Thai' but keep 'Noto Sans' */
-function getFontsWithoutDupes(fonts: GoogleFont[], ...familyNames: string[]) {
+function prepareFontsWithoutDupes(fonts: GoogleFont[], ...familyNames: string[]) {
    return fonts.filter(
       ({ family }) =>
          !familyNames.some(
@@ -21,8 +21,8 @@ function getAppFontVariants(fonts: GoogleFont[], categoryName: GoogleAPIFontCate
 }
 
 /** Prepares fonts to save in the Vue app. */
-export function getFonts(fonts: GoogleFont[]) {
-   fonts = getFontsWithoutDupes(fonts, 'Noto', 'Noto Sans', 'Noto Serif', 'IBM Plex Sans')
+export function prepareFonts(fonts: GoogleFont[]) {
+   fonts = prepareFontsWithoutDupes(fonts, 'Noto', 'Noto Sans', 'Noto Serif', 'IBM Plex Sans')
 
    return {
       sans: getAppFontVariants(fonts, 'sans-serif'),

@@ -1,11 +1,16 @@
 import { db } from './db'
 import { formatDistanceToNow } from 'date-fns'
+import { fetchFonts } from './fetch'
+import { prepareFonts } from './fonts'
 import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
    StoreEditingStatus,
    LANGUAGE_PREVIEW_OPTIONS,
-   FONT_SIZE_OPTIONS
+   FONT_SIZE_OPTIONS,
+   APP_CRITICAL_ERROR,
+   EDITOR_CATEGORIES,
+   EDITOR_VARIANTS
 } from './constants'
 
 import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
@@ -36,6 +41,18 @@ export function createStore() {
       fonts.value = value
    }
 
+   async function fetchAndSetFonts(sortCriteria: GoogleAPISortCriteria) {
+      try {
+         const googleFonts = await fetchFonts(sortCriteria)
+         if (googleFonts) {
+            const appFonts = prepareFonts(googleFonts)
+            setFonts(appFonts)
+         }
+      } catch (error) {
+         throw new Error(`[store-set-fonts] - ${APP_CRITICAL_ERROR}`)
+      }
+   }
+
    /* Editor */
 
    const editor: StoreEditor = reactive<StoreEditor>({
@@ -50,14 +67,13 @@ export function createStore() {
       searchValueModel: '',
       inputValueModel: 'De gustibus non est disputandum.',
       sortCriteriaModel: SORT_CRITERIA[0].value,
-      activeCategoryModel: 'sans',
-      activeVariantModel: 'normal',
+      activeCategoryModel: EDITOR_CATEGORIES[0].value,
+      activeVariantModel: EDITOR_VARIANTS[0].value,
       activeFontsComputed: computed(() => {
-         console.log('store - activeFontsComputed')
          if (!fonts.value) return []
 
-         if (!editor.activeCategoryModel) console.log('store - No category found')
-         if (!editor.activeVariantModel) console.log('store - No variant found')
+         // if (!editor.activeCategoryModel) console.log('store - No category found')
+         // if (!editor.activeVariantModel) console.log('store - No variant found')
 
          const activeVariant =
             fonts.value?.[editor.activeCategoryModel]?.[editor.activeVariantModel]
@@ -92,11 +108,11 @@ export function createStore() {
             if (target === 'body') editor.assignedBodyFont = data
          },
          setCurrentEntry(data: DBCombination) {
-            editor.actions.setActiveId(data.id)
-            editor.actions.setActiveName(data.name)
-            editor.actions.setAssignedFont('headline', data.headline)
-            editor.actions.setAssignedFont('body', data.body)
-            editor.actions.setLastUpdated(data.lastUpdated)
+            this.setActiveId(data.id)
+            this.setActiveName(data.name)
+            this.setAssignedFont('headline', data.headline)
+            this.setAssignedFont('body', data.body)
+            this.setLastUpdated(data.lastUpdated)
          },
          setActiveCategory(category: AppFontCategories) {
             editor.activeCategoryModel = category
@@ -108,8 +124,8 @@ export function createStore() {
             editor.sortCriteriaModel = criteria
          },
          async saveFontToDB(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
-            editor.actions.setEditingStatus(StoreEditingStatus.SAVING)
-            editor.actions.setAssignedFont(target, { family, weight })
+            this.setEditingStatus(StoreEditingStatus.SAVING)
+            this.setAssignedFont(target, { family, weight })
 
             await new Promise((resolve) => setTimeout(resolve, 500)) // TODO: remove
 
@@ -120,11 +136,11 @@ export function createStore() {
                   [target]: { family, weight }
                })
 
-               editor.actions.setLastUpdated(entry.lastUpdated)
-               editor.actions.setEditingStatus(StoreEditingStatus.SAVED)
+               this.setLastUpdated(entry.lastUpdated)
+               this.setEditingStatus(StoreEditingStatus.SAVED)
             } catch (error) {
-               console.error(error)
-               editor.actions.setEditingStatus(StoreEditingStatus.ERROR)
+               console.error(error) // TODO: Handle error once UI is ready
+               this.setEditingStatus(StoreEditingStatus.ERROR)
             }
          }
       }
@@ -158,7 +174,7 @@ export function createStore() {
    return {
       fonts: {
          data: fonts,
-         actions: { setFonts }
+         actions: { setFonts, fetchAndSetFonts }
       },
       editor,
       preview

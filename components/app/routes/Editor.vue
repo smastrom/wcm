@@ -7,9 +7,7 @@ import LivePreview from '@/components/shared/LivePreview.vue'
 
 import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
-import { fetchFonts } from '@/lib/fetch'
 import { db } from '@/lib/db'
-import { getFonts } from '@/lib/fonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
 import type { DBCombination } from '@/types/db'
@@ -17,23 +15,24 @@ import type { DBCombination } from '@/types/db'
 const store = useStore()
 const route = useRoute()
 
-if (!store.fonts.data.value) {
-   try {
-      // TODO: Create store action that does this stuff and uses the sort criteria from the query passed as param
-      const googleFonts = await fetchFonts(store.editor.sortCriteriaModel)
-      if (googleFonts) {
-         const appFonts = getFonts(googleFonts)
-         store.fonts.actions.setFonts(appFonts)
-      }
-   } catch (error) {
-      throw new Error(`[edtior-route-fonts] - ${APP_CRITICAL_ERROR}`)
-   }
-}
-
+// 1. At this point the entry is 100% in the DB (route guard in index.ts)
 const entry = (await db.get(route.params.id as string)) as DBCombination
 store.editor.actions.setCurrentEntry(entry)
 
+/**
+ * 2. Always set the query on mount, if invalid, either restore it
+ * from the store (prev/next navigation) or set the default value
+ *
+ * This will also register watcher to update it
+ */
 useEditorQuery()
+
+// 3. Fetch Google fonts and replace them to store using the current sort criteria
+try {
+   store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
+} catch (error) {
+   throw new Error(`[edtior-route-fonts] - ${APP_CRITICAL_ERROR}`)
+}
 </script>
 
 <template>

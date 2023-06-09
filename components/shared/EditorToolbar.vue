@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { fetchFonts } from '@/lib/fetch'
-import { getFonts } from '@/lib/fonts'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
    EDITOR_VARIANTS as VARIANTS,
-   FONT_SIZE_OPTIONS
+   FONT_SIZE_OPTIONS,
+   APP_CRITICAL_ERROR
 } from '@/lib/constants'
 
 import RangeSlider from './RangeSlider.vue'
@@ -21,16 +20,14 @@ const store = useStore()
 const isSelectLoading = ref(false)
 
 async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
-   isSelectLoading.value = true
-   const fonts = await fetchFonts(value)
-   if (!fonts) return store.editor.actions.setSortCriteria(SORT_CRITERIA[0].value)
-
-   const sortedFonts = getFonts(fonts)
-   store.fonts.actions.setFonts(sortedFonts)
-   triggerRef(store.fonts.data)
-
-   isSelectLoading.value = false
-   store.editor.actions.setSortCriteria(value)
+   try {
+      isSelectLoading.value = true
+      store.fonts.actions.fetchAndSetFonts(value)
+      store.editor.actions.setSortCriteria(value)
+      isSelectLoading.value = false
+   } catch (error) {
+      throw new Error(`[editor-toolbar-select] - ${APP_CRITICAL_ERROR}`)
+   }
 }
 
 function onRangeChange(value: string) {
