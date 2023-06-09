@@ -4,7 +4,8 @@ import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
    StoreEditingStatus,
-   LANGUAGE_PREVIEW_OPTIONS
+   LANGUAGE_PREVIEW_OPTIONS,
+   FONT_SIZE_OPTIONS
 } from './constants'
 
 import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
@@ -44,7 +45,7 @@ export function createStore() {
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
       activeTab: 'fonts',
-      globalFontSize: '4rem',
+      globalFontSize: FONT_SIZE_OPTIONS[5],
       editingStatus: StoreEditingStatus.SAVED,
       searchValueModel: '',
       inputValueModel: 'De gustibus non est disputandum.',

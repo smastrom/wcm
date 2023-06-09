@@ -15,3 +15,5 @@ export function validateQueryParam(queryParamValue: unknown, validValues: string
    if (!validValues.includes(queryParamValue)) return false
    return true
 }
+
+export const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1

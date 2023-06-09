@@ -11,6 +11,7 @@ const fontSize = computed(() => store.editor.globalFontSize)
 
 let intersectionObserver: IntersectionObserver
 
+const rootRef = ref<HTMLDivElement | null>(null)
 const sentinelRef = ref<HTMLDivElement | null>(null)
 
 watch(
@@ -20,6 +21,7 @@ watch(
       const fontsToRender = await getExplorerFonts(first15Fonts)
 
       explorerFonts.value = fontsToRender
+      rootRef.value?.scrollTo({ top: 0 })
    },
    { immediate: true }
 )
@@ -37,7 +39,7 @@ onMounted(() => {
             explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10FontsToRender)
          }
       },
-      { rootMargin: '-300px 0px 0px 0px', threshold: 1.0 }
+      { root: rootRef.value, rootMargin: '-200px 0px 600px 0px', threshold: [0.75, 1] }
    )
 
    if (!sentinelRef.value) return
@@ -49,7 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-   <div class="Explorer_Wrapper">
+   <div class="Explorer_Wrapper" ref="rootRef">
       <input v-model="previewText" />
       <div>
          <!-- Preview -->
@@ -60,7 +62,7 @@ onMounted(() => {
                   :key="font.family"
                   :style="{
                      'font-family': font.family,
-                     'font-weight': font.cssWeights?.[0],
+                     'font-weight': font.cssWeights?.[1],
                      'font-size': fontSize
                   }"
                >

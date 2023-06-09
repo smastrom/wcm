@@ -1,11 +1,12 @@
 import { GoogleFont } from '@/types/fetch'
 import indexedDB from 'localforage'
+import { isFirefox } from './utils'
 
 export interface ExplorerFonts extends GoogleFont {
    cssWeights: ('300' | '400' | '500' | '600' | '700')[]
 }
 
-const allowedWeights = ['300', 'regular', '500', '600', '700'] as const
+const allowedWeights = ['300', 'regular', '500', '700'] as const
 
 const injectedFonts = new Set<string>()
 
@@ -26,7 +27,7 @@ export async function getExplorerFonts(fonts: ExplorerFonts[]): Promise<Explorer
 
             const weight = allowedWeight === 'regular' ? '400' : allowedWeight
 
-            // Get the weights for the UI
+            // 1. Get the weights for the UI
             fonts = fonts.map((currFont) => {
                if (font.family === currFont.family) {
                   currFont.cssWeights.push(weight)
@@ -34,17 +35,16 @@ export async function getExplorerFonts(fonts: ExplorerFonts[]): Promise<Explorer
                return currFont
             })
 
-            // Exit if already injected by previous iteration
-            const isInjected = injectedFonts.has(`"${font.family}"`)
-            console.log('Already injected', isInjected, font.family)
+            const familyName = isFirefox ? `"${font.family}"` : font.family
+
+            // 2. Exit if already injected by previous iteration
+            const isInjected = injectedFonts.has(familyName)
             if (isInjected) continue
 
-            // DB Checks
-            let buffer: ArrayBuffer | null = null
+            // 3. Fetch from DB / Google
+            const keyName = `${font.family}_${weight}`.replace(/\s/g, '_')
 
-            const keyName = `${font.family}_${allowedWeight}`.replace(/\s/g, '_')
-
-            buffer = await indexedDB.getItem(keyName)
+            let buffer: ArrayBuffer | null = await indexedDB.getItem(keyName)
 
             if (!buffer) {
                const bufferFromGoogle = await fetch(fontUrl).then((res) => res.arrayBuffer())
@@ -55,8 +55,8 @@ export async function getExplorerFonts(fonts: ExplorerFonts[]): Promise<Explorer
                dbIter++
             }
 
-            // FontFace
-            fontFaces.push(new FontFace(`"${font.family}"`, buffer, { weight, style: 'normal' }))
+            // Prepare FontFace
+            fontFaces.push(new FontFace(familyName, buffer, { weight, style: 'normal' }))
          }
       }
 
