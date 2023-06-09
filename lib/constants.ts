@@ -3,8 +3,7 @@ import type {
    StorePreviewTypesPrint,
    StorePreviewTypesDigital,
    StoreEditorFontSizes,
-   AppFontCategories,
-   AppFontVariants
+   AppFontCategories
 } from '@/types/store'
 
 export enum StoreEditingStatus {
@@ -17,7 +16,6 @@ export enum StoreEditingStatus {
 
 export const EDITOR_QUERY_KEYS = {
    category: 'category',
-   variant: 'variant',
    sort: 'sort',
    fontsize: 'fontsize'
 }
@@ -35,12 +33,7 @@ export const EDITOR_CATEGORIES: readonly { label: string; value: AppFontCategori
    { label: 'Sans', value: 'sans' },
    { label: 'Serif', value: 'serif' },
    { label: 'Display', value: 'display' },
-   { label: 'Handwriting', value: 'handwriting' }
-]
-
-export const EDITOR_VARIANTS: readonly { label: string; value: AppFontVariants }[] = [
-   { label: 'Normal', value: 'normal' },
-   { label: 'Italic', value: 'italic' },
+   { label: 'Handwriting', value: 'handwriting' },
    { label: 'Condensed', value: 'condensed' }
 ]
 

@@ -10,24 +10,21 @@ function prepareFontsWithoutDupes(fonts: GoogleFont[], ...familyNames: string[])
    )
 }
 
-function getAppFontVariants(fonts: GoogleFont[], categoryName: GoogleAPIFontCateogry) {
-   const category = fonts.filter(({ category }) => category === categoryName)
-
-   return {
-      normal: category.filter(({ variants }) => variants.includes('regular')),
-      italic: category.filter(({ variants }) => variants.includes('italic')),
-      condensed: category.filter(({ family }) => family.includes('Condensed'))
-   }
+function getGoogleCategory(fonts: GoogleFont[], categoryName: GoogleAPIFontCateogry) {
+   return fonts.filter(({ category }) => category === categoryName)
 }
 
 /** Prepares fonts to save in the Vue app. */
 export function prepareFonts(fonts: GoogleFont[]) {
    fonts = prepareFontsWithoutDupes(fonts, 'Noto', 'Noto Sans', 'Noto Serif', 'IBM Plex Sans')
 
+   const sans = getGoogleCategory(fonts, 'sans-serif')
+
    return {
-      sans: getAppFontVariants(fonts, 'sans-serif'),
-      display: getAppFontVariants(fonts, 'display'),
-      serif: getAppFontVariants(fonts, 'serif'),
-      handwriting: getAppFontVariants(fonts, 'handwriting')
+      sans,
+      display: getGoogleCategory(fonts, 'display'),
+      serif: getGoogleCategory(fonts, 'serif'),
+      handwriting: getGoogleCategory(fonts, 'handwriting'),
+      condensed: sans.filter(({ family }) => family.includes('Condensed'))
    }
 }

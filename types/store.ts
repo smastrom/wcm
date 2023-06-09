@@ -5,11 +5,9 @@ import type { DBCombination, DBFontFamilyData } from '@/types/db'
 
 /* Fonts */
 
-export type AppFontCategories = 'sans' | 'display' | 'serif' | 'handwriting'
-export type AppFontVariants = 'normal' | 'italic' | 'condensed'
+export type AppFontCategories = 'sans' | 'display' | 'serif' | 'handwriting' | 'condensed'
 
-export type StoreFontVariants = Record<AppFontVariants, GoogleFont[]>
-export type StoreFonts = Record<AppFontCategories, StoreFontVariants>
+export type StoreFonts = Record<AppFontCategories, GoogleFont[]>
 
 /* Editor */
 
@@ -38,7 +36,6 @@ export interface StoreEditor {
    inputValueModel: string
    sortCriteriaModel: GoogleAPISortCriteria
    activeCategoryModel: AppFontCategories
-   activeVariantModel: AppFontVariants
    activeFontsComputed: GoogleFont[]
    actions: {
       setActiveId(id: string): void
@@ -51,7 +48,6 @@ export interface StoreEditor {
       saveFontToDB(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
       setGlobalFontSize(size: StoreEditorFontSizes): void
       setActiveCategory(category: AppFontCategories): void
-      setActiveVariant(variant: AppFontVariants): void
       setSortCriteria(criteria: GoogleAPISortCriteria): void
    }
 }

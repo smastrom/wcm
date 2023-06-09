@@ -9,8 +9,7 @@ import {
    LANGUAGE_PREVIEW_OPTIONS,
    FONT_SIZE_OPTIONS,
    APP_CRITICAL_ERROR,
-   EDITOR_CATEGORIES,
-   EDITOR_VARIANTS
+   EDITOR_CATEGORIES
 } from './constants'
 
 import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
@@ -20,8 +19,7 @@ import type {
    StoreFonts,
    StoreEditorTabs,
    StoreEditorFontSizes,
-   AppFontCategories,
-   AppFontVariants
+   AppFontCategories
 } from '@/types/store'
 import type { DBFontFamilyData, DBCombination } from '@/types/db'
 
@@ -68,19 +66,14 @@ export function createStore() {
       inputValueModel: 'De gustibus non est disputandum.',
       sortCriteriaModel: SORT_CRITERIA[0].value,
       activeCategoryModel: EDITOR_CATEGORIES[0].value,
-      activeVariantModel: EDITOR_VARIANTS[0].value,
       activeFontsComputed: computed(() => {
          if (!fonts.value) return []
 
-         // if (!editor.activeCategoryModel) console.log('store - No category found')
-         // if (!editor.activeVariantModel) console.log('store - No variant found')
+         const activeCategory = fonts.value?.[editor.activeCategoryModel]
 
-         const activeVariant =
-            fonts.value?.[editor.activeCategoryModel]?.[editor.activeVariantModel]
+         if (!editor.searchValueModel) return activeCategory
 
-         if (!editor.searchValueModel) return activeVariant
-
-         return activeVariant.filter(({ family }) =>
+         return activeCategory.filter(({ family }) =>
             family.toLowerCase().includes(editor.searchValueModel.toLowerCase())
          )
       }) as unknown as GoogleFont[],
@@ -116,9 +109,6 @@ export function createStore() {
          },
          setActiveCategory(category: AppFontCategories) {
             editor.activeCategoryModel = category
-         },
-         setActiveVariant(variant: AppFontVariants) {
-            editor.activeVariantModel = variant
          },
          setSortCriteria(criteria: GoogleAPISortCriteria) {
             editor.sortCriteriaModel = criteria

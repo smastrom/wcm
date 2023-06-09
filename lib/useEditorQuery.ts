@@ -5,12 +5,11 @@ import { validateQueryParam as isValid } from '@/lib/utils'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
-   EDITOR_VARIANTS as VARIANTS,
    EDITOR_QUERY_KEYS as QUERY_KEYS,
    FONT_SIZE_OPTIONS
 } from '@/lib/constants'
 
-import type { StoreEditorFontSizes, AppFontCategories, AppFontVariants } from '@/types/store'
+import type { StoreEditorFontSizes, AppFontCategories } from '@/types/store'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 
 export async function useEditorQuery() {
@@ -42,17 +41,6 @@ export async function useEditorQuery() {
       await updateQuery(QUERY_KEYS.category, store.editor.activeCategoryModel)
    }
 
-   if (
-      isValid(
-         route.query[QUERY_KEYS.variant],
-         VARIANTS.map(({ value }) => value)
-      )
-   ) {
-      store.editor.actions.setActiveVariant(route.query[QUERY_KEYS.variant] as AppFontVariants)
-   } else {
-      await updateQuery(QUERY_KEYS.variant, store.editor.activeVariantModel)
-   }
-
    if (isValid(route.query[QUERY_KEYS.fontsize], FONT_SIZE_OPTIONS as string[])) {
       store.editor.actions.setGlobalFontSize(
          route.query[QUERY_KEYS.fontsize] as StoreEditorFontSizes
@@ -66,11 +54,6 @@ export async function useEditorQuery() {
    watch(
       () => store.editor.activeCategoryModel,
       (newValue) => updateQuery(QUERY_KEYS.category, newValue)
-   )
-
-   watch(
-      () => store.editor.activeVariantModel,
-      (newValue) => updateQuery(QUERY_KEYS.variant, newValue)
    )
 
    watch(

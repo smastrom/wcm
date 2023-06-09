@@ -3,7 +3,6 @@ import { useStore } from '@/lib/store'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
-   EDITOR_VARIANTS as VARIANTS,
    FONT_SIZE_OPTIONS,
    APP_CRITICAL_ERROR
 } from '@/lib/constants'
@@ -39,7 +38,6 @@ function onRangeChange(value: string) {
 const fontSizeRangeId = crypto.randomUUID()
 const sortSelectId = crypto.randomUUID()
 const categoryLabelId = crypto.randomUUID()
-const variantLabelId = crypto.randomUUID()
 </script>
 
 <template>
@@ -94,17 +92,6 @@ const variantLabelId = crypto.randomUUID()
          >
             <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
             <RadioGroup v-model="store.editor.activeCategoryModel" :options="CATEGORIES" />
-         </div>
-
-         <!-- Variants -->
-
-         <div
-            class="Fieldset Fielset_GapEffect"
-            role="radiogroup"
-            :aria-labelledby="variantLabelId"
-         >
-            <legend :id="variantLabelId" class="Fieldset_Label">Variants</legend>
-            <RadioGroup v-model="store.editor.activeVariantModel" :options="VARIANTS" />
          </div>
       </nav>
    </div>
