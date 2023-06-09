@@ -6,7 +6,6 @@ import EditorToolbar from '@/components/shared/EditorToolbar.vue'
 import LivePreview from '@/components/shared/LivePreview.vue'
 
 import { useEditorQuery } from '@/lib/useEditorQuery'
-
 import { useStore } from '@/lib/store'
 import { fetchFonts } from '@/lib/fetch'
 import { db } from '@/lib/db'
@@ -20,6 +19,7 @@ const route = useRoute()
 
 if (!store.fonts.data.value) {
    try {
+      // TODO: Create store action that does this stuff and uses the sort criteria from the query passed as param
       const googleFonts = await fetchFonts(store.editor.sortCriteriaModel)
       if (googleFonts) {
          const appFonts = getFonts(googleFonts)

@@ -13,7 +13,7 @@ import {
 import type { StoreEditorFontSizes, AppFontCategories, AppFontVariants } from '@/types/store'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 
-export function useEditorQuery() {
+export async function useEditorQuery() {
    const store = useStore()
    const route = useRoute()
    const updateQuery = useUpdateQuery()
@@ -28,7 +28,7 @@ export function useEditorQuery() {
    ) {
       store.editor.actions.setSortCriteria(route.query[QUERY_KEYS.sort] as GoogleAPISortCriteria)
    } else {
-      updateQuery(QUERY_KEYS.sort, SORT_CRITERIA[0].value)
+      await updateQuery(QUERY_KEYS.sort, SORT_CRITERIA[0].value)
    }
 
    if (
@@ -39,7 +39,7 @@ export function useEditorQuery() {
    ) {
       store.editor.actions.setActiveCategory(route.query[QUERY_KEYS.category] as AppFontCategories)
    } else {
-      updateQuery(QUERY_KEYS.sort, CATEGORIES[0].value)
+      await updateQuery(QUERY_KEYS.category, CATEGORIES[0].value)
    }
 
    if (
@@ -50,7 +50,7 @@ export function useEditorQuery() {
    ) {
       store.editor.actions.setActiveVariant(route.query[QUERY_KEYS.variant] as AppFontVariants)
    } else {
-      updateQuery(QUERY_KEYS.variant, VARIANTS[0].value)
+      await updateQuery(QUERY_KEYS.variant, VARIANTS[0].value)
    }
 
    if (isValid(route.query[QUERY_KEYS.fontsize], FONT_SIZE_OPTIONS as string[])) {
@@ -58,7 +58,7 @@ export function useEditorQuery() {
          route.query[QUERY_KEYS.fontsize] as StoreEditorFontSizes
       )
    } else {
-      updateQuery(QUERY_KEYS.fontsize, FONT_SIZE_OPTIONS[5])
+      await updateQuery(QUERY_KEYS.fontsize, FONT_SIZE_OPTIONS[5])
    }
 
    // On page update
