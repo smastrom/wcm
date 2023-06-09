@@ -4,12 +4,12 @@ import { fetchFonts } from './fetch'
 import { prepareFonts } from './fonts'
 import {
    SORT_CRITERIA,
-   DIGITAL_PREVIEW_OPTIONS,
    StoreEditingStatus,
    APP_CRITICAL_ERROR,
    EDITOR_CATEGORIES,
    DEFAULT_FONTS,
-   DEFAULT_WEIGHTS
+   DEFAULT_WEIGHTS,
+   PREVIEW_OPTIONS
 } from './constants'
 
 import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
@@ -98,12 +98,15 @@ export function createStore() {
             if (target === 'headline') editor.assignedHeadlineFont = data
             if (target === 'body') editor.assignedBodyFont = data
          },
+         /** This runs on mount after fetching combination from DB */
          setCurrentEntry(data: DBCombination) {
             this.setActiveId(data.id)
             this.setActiveName(data.name)
             this.setAssignedFont('headline', data.headline)
             this.setAssignedFont('body', data.body)
             this.setLastUpdated(data.lastUpdated)
+            preview.actions.setHeadlineFont(data.headline)
+            preview.actions.setBodyFont(data.body)
          },
          setActiveCategory(category: AppFontCategories) {
             editor.activeCategoryModel = category
@@ -128,7 +131,6 @@ export function createStore() {
 
                this.setLastUpdated(entry.lastUpdated)
                this.setEditingStatus(StoreEditingStatus.SAVED)
-               console.log(family, weight)
                this.setAssignedFont(target, { family, weight })
             } catch (error) {
                this.setEditingStatus(StoreEditingStatus.ERROR)
@@ -144,7 +146,7 @@ export function createStore() {
    const preview: StorePreview = reactive<StorePreview>({
       headlineFont: { family: DEFAULT_FONTS.headline, weight: DEFAULT_WEIGHTS.headline },
       bodyFont: { family: DEFAULT_FONTS.body, weight: DEFAULT_WEIGHTS.body },
-      typeModel: DIGITAL_PREVIEW_OPTIONS[0].value,
+      typeModel: PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,
       actions: {
@@ -154,11 +156,11 @@ export function createStore() {
          toggleCanvas() {
             preview.isProducingCanvas = !preview.isProducingCanvas
          },
-         setHeadlineFont({ family, weight }) {
-            preview.headlineFont = { family, weight }
+         setHeadlineFont(fontData) {
+            preview.headlineFont = fontData
          },
-         setBodyFont({ family, weight }) {
-            preview.bodyFont = { family, weight }
+         setBodyFont(fontData) {
+            preview.bodyFont = fontData
          }
       }
    })

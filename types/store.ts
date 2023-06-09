@@ -45,15 +45,12 @@ export interface StoreEditor {
 
 /* Preview */
 
-export type StorePreviewTypesDigital = 'blog-post' | 'saas'
-export type StorePreviewTypesPrint = 'business-card' | 'letterhead'
-
-export type StorePreviewTypes = StorePreviewTypesDigital | StorePreviewTypesPrint
+export type StorePreviewTypes = 'blog-post' | 'website' | 'business-card' | 'letterhead'
 
 export interface StorePreview {
    headlineFont: DBFontFamilyData
    bodyFont: DBFontFamilyData
-   typeModel: StorePreviewTypes | undefined
+   typeModel: StorePreviewTypes
    isFullScreen: boolean
    isProducingCanvas: boolean
    actions: {

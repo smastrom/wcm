@@ -1,8 +1,7 @@
 import type { DBVariantTarget } from '@/types/db'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
-   StorePreviewTypesPrint,
-   StorePreviewTypesDigital,
+   StorePreviewTypes,
    StoreEditorFontSizes,
    AppFontCategories,
    AppFontWeights
@@ -39,23 +38,15 @@ export const EDITOR_CATEGORIES: readonly { label: string; value: AppFontCategori
    { label: 'Condensed', value: 'condensed' }
 ]
 
-export const PRINT_PREVIEW_OPTIONS: readonly {
+export const PREVIEW_OPTIONS: {
    label: string
-   value: StorePreviewTypesPrint
+   value: StorePreviewTypes
 }[] = [
    { label: 'Business Card', value: 'business-card' },
-   { label: 'Letterhead', value: 'letterhead' }
-]
-
-export const DIGITAL_PREVIEW_OPTIONS: readonly {
-   label: string
-   value: StorePreviewTypesDigital
-}[] = [
+   { label: 'Letterhead', value: 'letterhead' },
    { label: 'Blog Post', value: 'blog-post' },
-   { label: 'SaaS Website', value: 'saas' }
+   { label: 'SaaS Website', value: 'website' }
 ]
-
-export const PREVIEW_OPTIONS = [...PRINT_PREVIEW_OPTIONS, ...DIGITAL_PREVIEW_OPTIONS]
 
 export const FONT_SIZE_OPTIONS: readonly StoreEditorFontSizes[] = [
    '2rem',
