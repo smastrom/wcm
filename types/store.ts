@@ -1,25 +1,19 @@
 import { StoreEditingStatus } from '@/lib/constants'
 
-import type { GoogleFont, GoogleAPISortCriteria } from '@/types/fetch'
+import type { GoogleFont, GoogleAPISortCriteria, GoogleAPIWeights } from '@/types/fetch'
 import type { DBCombination, DBFontFamilyData } from '@/types/db'
 
 /* Fonts */
 
 export type AppFontCategories = 'sans' | 'display' | 'serif' | 'handwriting' | 'condensed'
 
+export type AppFontWeights = Exclude<GoogleAPIWeights, 'regular'> | '400'
+
 export type StoreFonts = Record<AppFontCategories, GoogleFont[]>
 
 /* Editor */
 
-export type StoreEditorFontSizes =
-   | '0.75rem'
-   | '0.875rem'
-   | '1rem'
-   | '2rem'
-   | '3rem'
-   | '4rem'
-   | '5rem'
-   | '6rem'
+export type StoreEditorFontSizes = '2rem' | '3rem' | '4rem' | '5rem' | '6rem'
 
 export type StoreEditorTabs = 'fonts' | 'combination'
 

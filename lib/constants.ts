@@ -1,3 +1,4 @@
+import type { DBVariantTarget } from '@/types/db'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
    StorePreviewTypesPrint,
@@ -54,8 +55,6 @@ export const DIGITAL_PREVIEW_OPTIONS: readonly {
 ]
 
 export const FONT_SIZE_OPTIONS: readonly StoreEditorFontSizes[] = [
-   '0.75rem',
-   '1rem',
    '2rem',
    '3rem',
    '4rem',
@@ -69,6 +68,16 @@ export const DB_NAME = 'wcm_app'
 export const DB_STORE_NAME = 'wcm_fonts'
 
 export const DB_COMBINATION_KEY = 'wcm_combination'
+
+export const DEFAULT_FONTS: Record<DBVariantTarget, string> = {
+   headline: 'Roboto',
+   body: 'Roboto'
+}
+
+export const DEFAULT_WEIGHTS: Record<DBVariantTarget, string> = {
+   headline: '400',
+   body: '400'
+}
 
 /* API */
 

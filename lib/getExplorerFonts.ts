@@ -1,12 +1,15 @@
-import { GoogleFont } from '@/types/fetch'
 import indexedDB from 'localforage'
+
 import { isFirefox } from './utils'
 
+import type { GoogleAPIWeights, GoogleFont } from '@/types/fetch'
+import type { AppFontWeights } from '@/types/store'
+
 export interface ExplorerFonts extends GoogleFont {
-   cssWeights: ('300' | '400' | '500' | '600' | '700')[]
+   cssWeights: AppFontWeights[]
 }
 
-const allowedWeights = ['300', 'regular', '500', '700'] as const
+const allowedWeights: GoogleAPIWeights[] = ['300', 'regular', '500', '700']
 
 const injectedFonts = new Set<string>()
 
@@ -69,13 +72,16 @@ export async function getExplorerFonts(fonts: ExplorerFonts[]): Promise<Explorer
       )
    } catch (err) {
       console.log(err)
-
-      return []
+      throw new Error('[get-explorer-fonts] - Error fetching fonts.')
    }
 
    if (import.meta.env.DEV) {
-      console.log(`Fetching ${fetchIter} fonts took ` + (performance.now() - now) + 'ms')
-      console.log(`Fetching ${dbIter} fonts from DB took ` + (performance.now() - now) + 'ms')
+      if (fetchIter) {
+         console.log(`Fetching ${fetchIter} fonts took ` + (performance.now() - now) + 'ms')
+      }
+      if (dbIter) {
+         console.log(`Fetching ${dbIter} fonts from DB took ` + (performance.now() - now) + 'ms')
+      }
    }
 
    return fonts

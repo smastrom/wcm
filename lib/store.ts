@@ -8,7 +8,9 @@ import {
    StoreEditingStatus,
    FONT_SIZE_OPTIONS,
    APP_CRITICAL_ERROR,
-   EDITOR_CATEGORIES
+   EDITOR_CATEGORIES,
+   DEFAULT_FONTS,
+   DEFAULT_WEIGHTS
 } from './constants'
 
 import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
@@ -40,7 +42,7 @@ export function createStore() {
 
    async function fetchAndSetFonts(sortCriteria: GoogleAPISortCriteria) {
       try {
-         const googleFonts = await fetchFonts(sortCriteria)
+         const googleFonts = await fetchFonts({ sort: sortCriteria, capability: 'WOFF2' })
          if (googleFonts) {
             const appFonts = prepareFonts(googleFonts)
             setFonts(appFonts)
@@ -114,11 +116,13 @@ export function createStore() {
          },
          async saveFontToDB(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
             this.setEditingStatus(StoreEditingStatus.SAVING)
-            this.setAssignedFont(target, { family, weight })
 
-            await new Promise((resolve) => setTimeout(resolve, 500)) // TODO: remove
+            if (!editor.assignedBodyFont || !editor.assignedHeadlineFont || !editor.activeId) return
 
-            if (!editor.activeId) return
+            const prevValue =
+               target === 'headline'
+                  ? { ...editor.assignedHeadlineFont }
+                  : { ...editor.assignedBodyFont }
 
             try {
                const entry = await db.update(editor.activeId, {
@@ -127,9 +131,11 @@ export function createStore() {
 
                this.setLastUpdated(entry.lastUpdated)
                this.setEditingStatus(StoreEditingStatus.SAVED)
+               this.setAssignedFont(target, { family, weight })
             } catch (error) {
-               console.error(error) // TODO: Handle error once UI is ready
                this.setEditingStatus(StoreEditingStatus.ERROR)
+               this.setAssignedFont(target, prevValue)
+               throw new Error(`[store-save-font-to-db] - Error saving to DB`)
             }
          }
       }
@@ -138,8 +144,8 @@ export function createStore() {
    /* Preview */
 
    const preview: StorePreview = reactive<StorePreview>({
-      headlineFont: { family: 'Roboto', weight: '700' },
-      bodyFont: { family: 'Roboto', weight: '400' },
+      headlineFont: { family: DEFAULT_FONTS.headline, weight: DEFAULT_WEIGHTS.headline },
+      bodyFont: { family: DEFAULT_FONTS.body, weight: DEFAULT_WEIGHTS.body },
       typeModel: DIGITAL_PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,

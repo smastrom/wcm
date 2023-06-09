@@ -3,20 +3,21 @@ import RangeSlider from './RangeSlider.vue'
 import ActionButton from './ActionButton.vue'
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
-import { FONT_SIZE_OPTIONS } from '@/lib/constants'
+import { downloadSingleFonts } from '@/lib/fetch'
+import { FONT_SIZE_OPTIONS, DEFAULT_FONTS, DEFAULT_WEIGHTS } from '@/lib/constants'
 import { ExplorerFonts } from '@/lib/getExplorerFonts'
 import { useStore } from '@/lib/store'
+import { AppFontWeights, StoreEditorFontSizes } from '@/types/store'
 
 const props = defineProps<{
    cssWeights: ExplorerFonts['cssWeights']
    familyName: string
-   previewText: string
    isMobile: boolean
 }>()
 
 const store = useStore()
 
-/* Data */
+/* UI */
 
 const isMobile = toRef(props, 'isMobile')
 const isActionBarActive = ref(isMobile.value)
@@ -32,6 +33,106 @@ watch(
       internalSize.value = newValue
    }
 )
+
+/* Computed */
+
+// Preview
+
+const fontPreviewName = computed(() =>
+   props.cssWeights.length === 1 ? props.familyName : `${props.familyName} ${internalWeight.value}`
+)
+
+const isPreviewHeadingActive = computed(
+   () =>
+      store.preview.headlineFont.family === props.familyName &&
+      store.preview.headlineFont.weight === internalWeight.value
+)
+
+const isPreviewBodyActive = computed(
+   () =>
+      store.preview.bodyFont.family === props.familyName &&
+      store.preview.bodyFont.weight === internalWeight.value
+)
+
+// Assign
+
+const isAssignedHeadlineFont = computed(() => {
+   if (!store.editor.assignedHeadlineFont) return true
+   return (
+      store.editor.assignedHeadlineFont.family === props.familyName &&
+      store.editor.assignedHeadlineFont.weight === internalWeight.value
+   )
+})
+
+const isAssignedBodyFont = computed(() => {
+   if (!store.editor.assignedBodyFont) return true
+   return (
+      store.editor.assignedBodyFont.family === props.familyName &&
+      store.editor.assignedBodyFont.weight === internalWeight.value
+   )
+})
+
+/* Actions */
+
+function onFontWeightChange(value: string) {
+   internalWeight.value = value as AppFontWeights
+}
+
+function onFontSizeChange(value: string) {
+   internalSize.value = value as StoreEditorFontSizes
+}
+
+// Preview
+
+function onPreviewHeadingClick() {
+   store.preview.actions.setHeadlineFont({
+      family: isPreviewHeadingActive.value ? DEFAULT_FONTS.headline : props.familyName,
+      weight: isPreviewHeadingActive.value ? DEFAULT_WEIGHTS.headline : internalWeight.value
+   })
+}
+
+function onPreviewBodyClick() {
+   store.preview.actions.setBodyFont({
+      family: isPreviewBodyActive.value ? DEFAULT_FONTS.headline : props.familyName,
+      weight: isPreviewBodyActive.value ? DEFAULT_WEIGHTS.body : internalWeight.value
+   })
+}
+
+// Assign
+
+async function onAssignHeadingClick() {
+   try {
+      await nextTick()
+      store.editor.actions.saveFontToDB('headline', {
+         family: isAssignedHeadlineFont.value ? DEFAULT_WEIGHTS.headline : props.familyName,
+         weight: isAssignedHeadlineFont.value ? DEFAULT_WEIGHTS.headline : internalWeight.value
+      })
+   } catch (error) {
+      // If there's an error we'll see it in the header and that's it, prev values will be kept
+   }
+}
+
+async function onAssignBodyClick() {
+   try {
+      await nextTick()
+      await store.editor.actions.saveFontToDB('body', {
+         family: isAssignedBodyFont.value ? DEFAULT_FONTS.body : props.familyName,
+         weight: isAssignedBodyFont.value ? DEFAULT_WEIGHTS.body : internalWeight.value
+      })
+   } catch (error) {
+      // Same
+   }
+}
+
+// Download
+
+async function onDownloadClick() {
+   try {
+      await downloadSingleFonts(props.familyName, internalWeight.value)
+   } catch (error) {
+      // Same
+   }
+}
 
 /* Events */
 
@@ -59,17 +160,7 @@ const pointerEvents = computed(() => {
    }
 })
 
-function onFontWeightChange(value: string) {
-   internalWeight.value = value
-}
-
-function onFontSizeChange(value: string) {
-   internalSize.value = value
-}
-
-function onClick() {
-   console.log('Clicked action button')
-}
+/* Styles */
 
 const commonRangeStyles = {
    width: 'var(--size-11)',
@@ -109,23 +200,23 @@ const commonRangeStyles = {
             <div class="ActionBar_Buttons_Wrapper">
                <!-- Update Preview -->
 
-               <div class="ActionBar_Buttons">
+               <div class="ActionBar_Buttons" role="group">
                   <div class="ActionBar_Buttons_Title">Preview</div>
 
                   <ActionButton
-                     :isActive="true"
+                     :isActive="isPreviewHeadingActive"
                      activeColor="var(--accent-color)"
-                     label="Preview headline text"
-                     @click="onClick"
+                     label="Toggle headline text preview"
+                     @click="onPreviewHeadingClick"
                   >
                      H
                   </ActionButton>
 
                   <ActionButton
-                     :isActive="false"
+                     :isActive="isPreviewBodyActive"
                      activeColor="var(--accent-color)"
-                     label="Preview body text"
-                     @click="onClick"
+                     label="Toggle body text preview"
+                     @click="onPreviewBodyClick"
                   >
                      P
                   </ActionButton>
@@ -133,22 +224,22 @@ const commonRangeStyles = {
 
                <!-- Assign Font -->
 
-               <div class="ActionBar_Buttons">
+               <div class="ActionBar_Buttons" role="group">
                   <div class="ActionBar_Buttons_Title">Assign</div>
                   <ActionButton
-                     :isActive="false"
+                     :isActive="isAssignedHeadlineFont"
                      activeColor="var(--success-color)"
-                     label="Assign to headline combination"
-                     @click="onClick"
+                     label="Toggle headline combination"
+                     @click="onAssignHeadingClick"
                   >
                      H
                   </ActionButton>
 
                   <ActionButton
-                     :isActive="false"
-                     label="Assign to body combination"
+                     :isActive="isAssignedBodyFont"
+                     label="Toggle body combination"
                      activeColor="var(--success-color)"
-                     @click="onClick"
+                     @click="onAssignBodyClick"
                   >
                      P
                   </ActionButton>
@@ -159,10 +250,9 @@ const commonRangeStyles = {
                <!-- Download -->
 
                <ActionButton
-                  :isActive="false"
                   label="Download font"
-                  activeColor="var(--warning-color)"
-                  @click="onClick"
+                  activeColor="var(--accent-color)"
+                  @click="onDownloadClick"
                >
                   <ArrowLeftIcon class="ActionBar_Buttons_ArrowIcon" />
                </ActionButton>
@@ -174,7 +264,7 @@ const commonRangeStyles = {
 
       <div class="Entry_Text">
          <h2>
-            {{ familyName + ' ' + internalWeight }}
+            {{ fontPreviewName }}
          </h2>
          <div
             contenteditable="true"
@@ -183,10 +273,10 @@ const commonRangeStyles = {
                'font-family': props.familyName,
                'font-weight': internalWeight,
                'font-size': internalSize,
-               'line-height': 1.25
+               'line-height': 1.15
             }"
          >
-            {{ previewText || familyName }}
+            {{ props.familyName }}
          </div>
       </div>
    </article>

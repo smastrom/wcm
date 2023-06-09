@@ -1,12 +1,14 @@
+export type DBVariantTarget = 'headline' | 'body'
+
 export interface DBFontFamilyData {
    family: string
    weight: string
 }
 
-export interface DBCombination {
+export type DBFontTarget = Record<DBVariantTarget, DBFontFamilyData>
+
+export type DBCombination = {
    id: string
    lastUpdated: number
    name: string
-   headline: DBFontFamilyData
-   body: DBFontFamilyData
-}
+} & DBFontTarget

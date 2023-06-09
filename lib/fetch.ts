@@ -1,19 +1,30 @@
-import { API_GOOGLE_FONTS_BASEURL } from '@/lib/constants'
+import fileSaver from 'file-saver'
 
+import { API_GOOGLE_FONTS_BASEURL, SORT_CRITERIA } from '@/lib/constants'
+
+import type { AppFontWeights } from '@/types/store'
 import type {
    GoogleAPIResponse,
    GoogleAPISortCriteria,
-   GoogleAPIResponseError
+   GoogleAPIResponseError,
+   GoogleAPIWeights
 } from '@/types/fetch'
 
-export async function fetchFonts(
-   sort: GoogleAPISortCriteria = 'popularity'
-): Promise<null | GoogleAPIResponse['items']> {
+export async function fetchFonts({
+   sort = SORT_CRITERIA[0].value,
+   capability,
+   family
+}: {
+   sort?: GoogleAPISortCriteria
+   capability?: string
+   family?: string
+} = {}): Promise<null | GoogleAPIResponse['items']> {
    const query = new URLSearchParams({
       key: import.meta.env.VITE_GOOGLE_FONTS_API_KEY,
       sort,
-      capability: 'WOFF2',
-      subset: 'latin'
+      subset: 'latin',
+      ...(capability ? { capability } : {}), // Google can provide TTF only if undefined
+      ...(family ? { family } : {})
    })
 
    try {
@@ -27,5 +38,21 @@ export async function fetchFonts(
    } catch (error) {
       console.log(error)
       throw new Error('[fetch-fonts] - Error fetching fonts.')
+   }
+}
+
+export async function downloadSingleFonts(family: string, weight: AppFontWeights) {
+   try {
+      const googleWeight: GoogleAPIWeights = weight === '400' ? 'regular' : weight
+
+      const ttfFont = await fetchFonts({ family })
+      if (ttfFont) fileSaver(ttfFont[0].files[googleWeight], `${family}-${googleWeight}.ttf`)
+
+      const woff2Font = await fetchFonts({ family, capability: 'WOFF2' })
+      if (woff2Font)
+         fileSaver(woff2Font[0].files[googleWeight], `${family}-web-${googleWeight}.woff2`)
+   } catch (error) {
+      console.log(error)
+      throw new Error('[download-single-fonts] - Error fetching single fonts.')
    }
 }
