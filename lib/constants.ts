@@ -21,6 +21,8 @@ export const EDITOR_QUERY_KEYS = {
    fontsize: 'fontsize'
 }
 
+export const PREVIEW_TYPE_QUERY_KEY = 'preview'
+
 /* UI */
 
 export const SORT_CRITERIA: readonly { label: string; value: GoogleAPISortCriteria }[] = [

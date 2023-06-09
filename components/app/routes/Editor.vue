@@ -25,7 +25,7 @@ store.editor.actions.setCurrentEntry(entry)
  *
  * This will also register watcher to update it
  */
-useEditorQuery()
+await useEditorQuery()
 
 // 3. Fetch Google fonts and replace them to store using the current sort criteria
 try {

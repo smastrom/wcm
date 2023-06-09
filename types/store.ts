@@ -50,7 +50,7 @@ export type StorePreviewTypes = 'blog-post' | 'website' | 'business-card' | 'let
 export interface StorePreview {
    headlineFont: DBFontFamilyData
    bodyFont: DBFontFamilyData
-   typeModel: StorePreviewTypes
+   exampleModel: StorePreviewTypes
    isFullScreen: boolean
    isProducingCanvas: boolean
    actions: {
@@ -58,5 +58,6 @@ export interface StorePreview {
       toggleCanvas(): void
       setHeadlineFont: (data: DBFontFamilyData) => void
       setBodyFont: (data: DBFontFamilyData) => void
+      setPreviewExample(example: StorePreviewTypes): void
    }
 }

@@ -9,7 +9,7 @@ const store = useStore()
 const digitalPrintId = crypto.randomUUID()
 
 watch(
-   () => store.preview.typeModel,
+   () => store.preview.exampleModel,
    (value) => console.log(value)
 )
 </script>
@@ -22,7 +22,7 @@ watch(
          :isAsync="false"
          :id="digitalPrintId"
          :options="PREVIEW_OPTIONS"
-         v-model="store.preview.typeModel"
+         v-model="store.preview.exampleModel"
       />
    </div>
 </template>

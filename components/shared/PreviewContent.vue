@@ -21,7 +21,7 @@ const components: Record<StorePreviewTypes, VueComponent> = {
 
 <template>
    <div class="Preview_Content_Wrapper">
-      <Component :is="components[store.preview.typeModel]" />
+      <Component :is="components[store.preview.exampleModel]" />
    </div>
 </template>
 

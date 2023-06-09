@@ -98,7 +98,7 @@ export function createStore() {
             if (target === 'headline') editor.assignedHeadlineFont = data
             if (target === 'body') editor.assignedBodyFont = data
          },
-         /** This runs on mount after fetching combination from DB */
+         /** This runs on mount in the editor after fetching combination data from DB */
          setCurrentEntry(data: DBCombination) {
             this.setActiveId(data.id)
             this.setActiveName(data.name)
@@ -146,7 +146,7 @@ export function createStore() {
    const preview: StorePreview = reactive<StorePreview>({
       headlineFont: { family: DEFAULT_FONTS.headline, weight: DEFAULT_WEIGHTS.headline },
       bodyFont: { family: DEFAULT_FONTS.body, weight: DEFAULT_WEIGHTS.body },
-      typeModel: PREVIEW_OPTIONS[0].value,
+      exampleModel: PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,
       actions: {
@@ -161,6 +161,9 @@ export function createStore() {
          },
          setBodyFont(fontData) {
             preview.bodyFont = fontData
+         },
+         setPreviewExample(exampleName) {
+            preview.exampleModel = exampleName
          }
       }
    })
