@@ -34,7 +34,7 @@ export const EDITOR_CATEGORIES: readonly { label: string; value: AppFontCategori
    { label: 'Sans', value: 'sans' },
    { label: 'Serif', value: 'serif' },
    { label: 'Display', value: 'display' },
-   { label: 'Handwriting', value: 'handwriting' },
+   { label: 'Script', value: 'handwriting' },
    { label: 'Condensed', value: 'condensed' }
 ]
 

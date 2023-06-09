@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { FONT_SIZE_OPTIONS } from '@/lib/constants'
-
-const props = withDefaults(
-   defineProps<{
-      initialValue: string
-      fontSize: string
-      id?: string
-      width?: string
-      steps: readonly string[]
-   }>(),
-   { steps: () => FONT_SIZE_OPTIONS as string[], initialIndex: 0 }
-)
+const props = defineProps<{
+   initialValue: string
+   steps: string[]
+   id?: string
+   width?: string
+   fontSize?: string
+}>()
 
 const emit = defineEmits<{
    (event: 'change', value: string): void
@@ -18,19 +13,17 @@ const emit = defineEmits<{
 
 const initialIndex = props.steps.indexOf(props.initialValue)
 
-const internalValue = ref(initialIndex === -1 ? 0 : initialIndex)
+const internalIndex = ref(initialIndex === -1 ? 0 : initialIndex)
 
-const computedPercentage = computed(() => (internalValue.value / (props.steps.length - 1)) * 100)
+const computedPercentage = computed(() => (internalIndex.value / (props.steps.length - 1)) * 100)
 
-watch(internalValue, (newInternalValue) => {
-   emit('change', props.steps[newInternalValue])
-})
+watch(internalIndex, (newIndex) => emit('change', props.steps[newIndex]))
 </script>
 
 <template>
    <div class="Wrapper">
       <span class="Label">
-         {{ props.steps[internalValue] }}
+         {{ props.steps[internalIndex] }}
       </span>
       <input
          :id="id"
@@ -39,7 +32,7 @@ watch(internalValue, (newInternalValue) => {
          type="range"
          min="0"
          :max="steps.length - 1"
-         v-model="internalValue"
+         v-model="internalIndex"
          :style="`background-size: ${computedPercentage}% 100%;`"
       />
    </div>

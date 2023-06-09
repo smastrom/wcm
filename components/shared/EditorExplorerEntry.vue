@@ -250,6 +250,7 @@ const commonRangeStyles = {
                <!-- Download -->
 
                <ActionButton
+                  :isActive="false"
                   label="Download font"
                   activeColor="var(--accent-color)"
                   @click="onDownloadClick"
@@ -293,8 +294,16 @@ const commonRangeStyles = {
    grid-gap: 1rem;
    border-bottom: var(--border);
 
+   &:last-of-type {
+      border-bottom: none;
+   }
+
    @media (--size-lg) {
       padding: var(--size-10) 0 var(--size-8) 0;
+   }
+
+   @media (--size-md) {
+      padding: var(--size-9) 0 var(--size-4) 0;
    }
 }
 

@@ -50,6 +50,7 @@ const randomName = crypto.randomUUID()
 }
 
 .Label {
+   white-space: nowrap;
    display: flex;
    gap: var(--size-2);
    cursor: pointer;

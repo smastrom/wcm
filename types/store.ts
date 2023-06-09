@@ -15,27 +15,24 @@ export type StoreFonts = Record<AppFontCategories, GoogleFont[]>
 
 export type StoreEditorFontSizes = '2rem' | '3rem' | '4rem' | '5rem' | '6rem'
 
-export type StoreEditorTabs = 'fonts' | 'combination'
-
 export interface StoreEditor {
+   isLoadingAllFonts: boolean
    activeId: string | undefined
    activeName: string | undefined
    lastUpdated: string | undefined
    assignedHeadlineFont: DBFontFamilyData | undefined
    assignedBodyFont: DBFontFamilyData | undefined
-   activeTab: StoreEditorTabs
    editingStatus: StoreEditingStatus
    globalFontSize: StoreEditorFontSizes
    searchValueModel: string
-   inputValueModel: string
    sortCriteriaModel: GoogleAPISortCriteria
    activeCategoryModel: AppFontCategories
    activeFontsComputed: GoogleFont[]
    actions: {
+      setIsLoadingAllFonts(status: boolean): void
       setActiveId(id: string): void
       setActiveName(name: string): void
       setEditingStatus(status: StoreEditingStatus): void
-      setActiveTab(view: StoreEditorTabs): void
       setAssignedFont(target: 'headline' | 'body', data: DBFontFamilyData): void
       setLastUpdated(timestamp: number): void
       setCurrentEntry(data: DBCombination): void

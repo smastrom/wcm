@@ -18,7 +18,12 @@ const store = useStore()
 
 const isSelectLoading = ref(false)
 
-// TODO: Add global spinner
+const categoriesWithCount = computed(() =>
+   CATEGORIES.map(({ label, value }) => ({
+      label: `${label} (${store.fonts.data.value?.[value]?.length ?? 0})`,
+      value
+   }))
+)
 
 async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
    try {
@@ -93,7 +98,7 @@ const categoryLabelId = crypto.randomUUID()
             :aria-labelledby="categoryLabelId"
          >
             <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
-            <RadioGroup v-model="store.editor.activeCategoryModel" :options="CATEGORIES" />
+            <RadioGroup v-model="store.editor.activeCategoryModel" :options="categoriesWithCount" />
          </div>
       </nav>
    </div>

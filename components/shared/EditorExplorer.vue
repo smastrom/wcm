@@ -16,8 +16,7 @@ const previewText = ref('')
 
 /* UI */
 
-const isFetchingInitialFonts = ref(true)
-const isFetchingFonts = ref(false)
+const isFetchingAdditionalFonts = ref(false)
 const isFetchError = ref(false)
 
 /* Intersection Observer */
@@ -33,14 +32,14 @@ watch(
    () => store.editor.activeFontsComputed,
    async (newValue) => {
       try {
-         isFetchingInitialFonts.value = true
+         store.editor.actions.setIsLoadingAllFonts(true)
 
          const first15Fonts = newValue.slice(0, 15).map((font) => ({ ...font, cssWeights: [] }))
          const fontsToRender = await getExplorerFonts(first15Fonts)
 
          explorerFonts.value = fontsToRender
 
-         isFetchingInitialFonts.value = false
+         store.editor.actions.setIsLoadingAllFonts(false)
       } catch (error) {
          isFetchError.value = true
       } finally {
@@ -57,7 +56,7 @@ onMounted(() => {
       async ([{ isIntersecting }]) => {
          if (explorerFonts.value.length > 0 && isIntersecting) {
             try {
-               isFetchingFonts.value = true
+               isFetchingAdditionalFonts.value = true
 
                const next10Fonts = store.editor.activeFontsComputed
                   .slice(explorerFonts.value.length, explorerFonts.value.length + 10)
@@ -65,7 +64,7 @@ onMounted(() => {
 
                const next10FontsToRender = await getExplorerFonts(next10Fonts)
 
-               isFetchingFonts.value = false
+               isFetchingAdditionalFonts.value = false
 
                explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10FontsToRender)
             } catch (error) {
@@ -86,26 +85,28 @@ onMounted(() => {
       <div>
          <!-- Preview -->
 
-         <div v-if="explorerFonts.length > 0">
-            <div v-for="font in explorerFonts">
-               <EditorExplorerEntry
-                  :isMobile="isMobile"
-                  :key="font.family"
-                  :cssWeights="font.cssWeights"
-                  :familyName="font.family"
-                  :previewText="previewText"
-               />
-            </div>
+         <div v-if="explorerFonts.length > 0" class="Explorer_List">
+            <EditorExplorerEntry
+               v-for="font in explorerFonts"
+               :isMobile="isMobile"
+               :key="font.family"
+               :cssWeights="font.cssWeights"
+               :familyName="font.family"
+               :previewText="previewText"
+            />
          </div>
 
          <div ref="sentinelRef" />
 
-         <div v-if="isFetchingInitialFonts && !isFetchError" class="InitialSpinner_Wrapper">
+         <div
+            v-if="store.editor.isLoadingAllFonts && !isFetchError && !isFetchingAdditionalFonts"
+            class="InitialSpinner_Wrapper"
+         >
             <SpinnerIcon width="100px" />
          </div>
 
          <HorizontalSpinnerIcon
-            v-if="isFetchingFonts && !isFetchError"
+            v-if="isFetchingAdditionalFonts && !isFetchError"
             width="80px"
             class="HorizontalSpinner_Wrapper"
          />

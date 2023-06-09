@@ -3,6 +3,7 @@ html {
    font-synthesis: none;
    text-rendering: optimizeLegibility;
    -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased;
    background-color: var(--bg-elv-color);
    color: var(--fg-body-color);
 }

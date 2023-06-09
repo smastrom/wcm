@@ -35,9 +35,13 @@ const emit = defineEmits<{
    color: var(--bg-color);
    transition: all 100ms var(--easing);
    font-weight: 700;
+   transition: all 100ms var(--easing);
 
-   &[data-active='true'],
    &:hover {
+      box-shadow: inset 0 0 0 2px var(--bg-color), 0 0 0 2px v-bind(props.activeColor);
+   }
+
+   &[data-active='true'] {
       background-color: v-bind(props.activeColor);
    }
 }

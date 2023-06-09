@@ -3,7 +3,7 @@ import SplashScreen from './SplashScreen.vue'
 
 import { db } from '@/lib/db'
 import { normalizeSpaces } from '@/lib/utils'
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
+import { APP_CRITICAL_ERROR, DEFAULT_FONTS, DEFAULT_WEIGHTS } from '@/lib/constants'
 
 const router = useRouter()
 
@@ -25,12 +25,12 @@ async function onSubmit() {
       const entry = await db.create({
          name: combinationName.value,
          headline: {
-            family: 'Roboto',
-            weight: '700'
+            family: DEFAULT_FONTS.headline,
+            weight: DEFAULT_WEIGHTS.headline
          },
          body: {
-            family: 'Roboto',
-            weight: '400'
+            family: DEFAULT_FONTS.body,
+            weight: DEFAULT_WEIGHTS.body
          }
       })
 

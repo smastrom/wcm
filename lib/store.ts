@@ -6,7 +6,6 @@ import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
    StoreEditingStatus,
-   FONT_SIZE_OPTIONS,
    APP_CRITICAL_ERROR,
    EDITOR_CATEGORIES,
    DEFAULT_FONTS,
@@ -18,7 +17,6 @@ import type {
    StoreEditor,
    StorePreview,
    StoreFonts,
-   StoreEditorTabs,
    StoreEditorFontSizes,
    AppFontCategories
 } from '@/types/store'
@@ -60,11 +58,10 @@ export function createStore() {
       lastUpdated: undefined,
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
-      activeTab: 'fonts',
-      globalFontSize: FONT_SIZE_OPTIONS[5],
+      isLoadingAllFonts: false,
+      globalFontSize: '4rem',
       editingStatus: StoreEditingStatus.SAVED,
       searchValueModel: '',
-      inputValueModel: 'De gustibus non est disputandum.',
       sortCriteriaModel: SORT_CRITERIA[0].value,
       activeCategoryModel: EDITOR_CATEGORIES[0].value,
       activeFontsComputed: computed(() => {
@@ -79,6 +76,9 @@ export function createStore() {
          )
       }) as unknown as GoogleFont[],
       actions: {
+         setIsLoadingAllFonts(status: boolean) {
+            editor.isLoadingAllFonts = status
+         },
          setActiveId(id: string) {
             editor.activeId = id
          },
@@ -87,9 +87,6 @@ export function createStore() {
          },
          setEditingStatus(status: StoreEditingStatus) {
             editor.editingStatus = status
-         },
-         setActiveTab(view: StoreEditorTabs) {
-            editor.activeTab = view
          },
          setGlobalFontSize(size: StoreEditorFontSizes) {
             editor.globalFontSize = size
