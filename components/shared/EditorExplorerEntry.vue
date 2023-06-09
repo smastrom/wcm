@@ -174,14 +174,16 @@ const commonRangeStyles = {
 
       <div class="Entry_Text">
          <h2>
-            {{ familyName }}
+            {{ familyName + ' ' + internalWeight }}
          </h2>
          <div
+            contenteditable="true"
+            class="Entry_Text_ContentEditable"
             :style="{
                'font-family': props.familyName,
                'font-weight': internalWeight,
                'font-size': internalSize,
-               'line-height': 1
+               'line-height': 1.25
             }"
          >
             {{ previewText || familyName }}
@@ -216,6 +218,16 @@ const commonRangeStyles = {
    & h2 {
       color: var(--fg-body-light-color);
       font-weight: 700;
+   }
+}
+
+.Entry_Text_ContentEditable {
+   overflow: hidden;
+   white-space: initial;
+   word-break: break-all;
+
+   &:focus {
+      outline: none;
    }
 }
 

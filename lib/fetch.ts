@@ -1,11 +1,9 @@
-import { getRandomIntRange } from './utils'
-import { API_GOOGLE_FONTS_BASEURL, API_RANDOM_WORDS_BASEURL } from '@/lib/constants'
+import { API_GOOGLE_FONTS_BASEURL } from '@/lib/constants'
 
 import type {
    GoogleAPIResponse,
    GoogleAPISortCriteria,
-   GoogleAPIResponseError,
-   RandomWordsAPILanguages
+   GoogleAPIResponseError
 } from '@/types/fetch'
 
 export async function fetchFonts(
@@ -29,25 +27,5 @@ export async function fetchFonts(
    } catch (error) {
       console.log(error)
       throw new Error('[fetch-fonts] - Error fetching fonts.')
-   }
-}
-
-export async function fetchWords(
-   lang: RandomWordsAPILanguages = 'en',
-   number = 1
-): Promise<null | string[]> {
-   const query = new URLSearchParams({
-      lang,
-      number: `${number}`,
-      length: `${getRandomIntRange(5, 10)}`
-   })
-
-   try {
-      const res = await fetch(API_RANDOM_WORDS_BASEURL + '?' + query.toString())
-      const data = await res.json()
-      return data as string[]
-   } catch (error) {
-      console.error(error)
-      return null
    }
 }

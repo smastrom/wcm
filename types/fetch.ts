@@ -1,11 +1,6 @@
 export type GoogleAPISortCriteria = 'alpha' | 'date' | 'popularity' | 'trending'
 
-export type GoogleAPIFontCateogry =
-   | 'display'
-   | 'handwriting'
-   | 'sans-serif'
-   | 'serif'
-   | 'monospace'
+export type GoogleAPIFontCateogry = 'display' | 'handwriting' | 'sans-serif' | 'serif' | 'monospace'
 
 export interface GoogleFont {
    category: GoogleAPIFontCateogry
@@ -38,5 +33,3 @@ export interface GoogleAPIResponseError {
       }[]
    }
 }
-
-export type RandomWordsAPILanguages = 'en' | 'es' | 'it' | 'de'

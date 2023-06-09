@@ -53,11 +53,6 @@ export const DIGITAL_PREVIEW_OPTIONS: readonly {
    { label: 'SaaS Website', value: 'saas' }
 ]
 
-export const LANGUAGE_PREVIEW_OPTIONS: readonly { label: string; value: string }[] = [
-   { label: 'English', value: 'eng' },
-   { label: 'Spanish', value: 'spa' }
-]
-
 export const FONT_SIZE_OPTIONS: readonly StoreEditorFontSizes[] = [
    '0.75rem',
    '1rem',
@@ -78,7 +73,5 @@ export const DB_COMBINATION_KEY = 'wcm_combination'
 /* API */
 
 export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'
-
-export const API_RANDOM_WORDS_BASEURL = 'https://random-word-api.herokuapp.com/word'
 
 export const APP_CRITICAL_ERROR = 'Critical error.'

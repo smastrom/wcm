@@ -6,7 +6,6 @@ import {
    SORT_CRITERIA,
    DIGITAL_PREVIEW_OPTIONS,
    StoreEditingStatus,
-   LANGUAGE_PREVIEW_OPTIONS,
    FONT_SIZE_OPTIONS,
    APP_CRITICAL_ERROR,
    EDITOR_CATEGORIES
@@ -142,7 +141,6 @@ export function createStore() {
       headlineFont: { family: 'Roboto', weight: '700' },
       bodyFont: { family: 'Roboto', weight: '400' },
       typeModel: DIGITAL_PREVIEW_OPTIONS[0].value,
-      languageModel: LANGUAGE_PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,
       actions: {

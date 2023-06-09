@@ -83,7 +83,6 @@ onMounted(() => {
 
 <template>
    <div class="Explorer_Wrapper" ref="rootRef">
-      <input v-model="previewText" />
       <div>
          <!-- Preview -->
 

@@ -63,7 +63,6 @@ export interface StorePreview {
    headlineFont: DBFontFamilyData
    bodyFont: DBFontFamilyData
    typeModel: StorePreviewTypes | undefined
-   languageModel: string
    isFullScreen: boolean
    isProducingCanvas: boolean
    actions: {
