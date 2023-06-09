@@ -2,25 +2,32 @@
 import { useStore } from '@/lib/store'
 import { getExplorerFonts, type ExplorerFonts } from '@/lib/getExplorerFonts'
 import { reloadPage } from '@/lib/utils'
+import { useViewport } from '@/lib/useViewport'
 
 import HorizontalSpinnerIcon from './icons/HorizontalSpinnerIcon.vue'
 import SpinnerIcon from './SpinnerIcon.vue'
+import EditorExplorerEntry from './EditorExplorerEntry.vue'
 
 const store = useStore()
-
-const previewText = ref('')
+const { isMatch: isMobile } = useViewport('1100px')
 
 const explorerFonts = ref<ExplorerFonts[]>([])
-const fontSize = computed(() => store.editor.globalFontSize)
+const previewText = ref('')
+
+/* UI */
 
 const isFetchingInitialFonts = ref(true)
 const isFetchingFonts = ref(false)
 const isFetchError = ref(false)
 
+/* Intersection Observer */
+
 let intersectionObserver: IntersectionObserver
 
 const rootRef = ref<HTMLDivElement | null>(null)
 const sentinelRef = ref<HTMLDivElement | null>(null)
+
+/* Initial / Refresh Fetch */
 
 watch(
    () => store.editor.activeFontsComputed,
@@ -42,6 +49,8 @@ watch(
    },
    { immediate: true }
 )
+
+/* Intersection Observer Fetch */
 
 onMounted(() => {
    intersectionObserver = new IntersectionObserver(
@@ -70,9 +79,6 @@ onMounted(() => {
    if (!sentinelRef.value) return
    intersectionObserver.observe(sentinelRef.value)
 })
-
-// Render a button to refresh the page if there's an error with fonts
-// Create the spinner for the sentinel and for the initial load
 </script>
 
 <template>
@@ -83,16 +89,13 @@ onMounted(() => {
 
          <div v-if="explorerFonts.length > 0">
             <div v-for="font in explorerFonts">
-               <div
+               <EditorExplorerEntry
+                  :isMobile="isMobile"
                   :key="font.family"
-                  :style="{
-                     'font-family': font.family,
-                     'font-weight': font.cssWeights?.[1],
-                     'font-size': fontSize
-                  }"
-               >
-                  {{ previewText || font?.family }}
-               </div>
+                  :cssWeights="font.cssWeights"
+                  :familyName="font.family"
+                  :previewText="previewText"
+               />
             </div>
          </div>
 

@@ -18,6 +18,8 @@ const store = useStore()
 
 const isSelectLoading = ref(false)
 
+// TODO: Add global spinner
+
 async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
    try {
       isSelectLoading.value = true

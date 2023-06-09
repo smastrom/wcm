@@ -4,7 +4,9 @@ import { FONT_SIZE_OPTIONS } from '@/lib/constants'
 const props = withDefaults(
    defineProps<{
       initialValue: string
+      fontSize: string
       id?: string
+      width?: string
       steps: readonly string[]
    }>(),
    { steps: () => FONT_SIZE_OPTIONS as string[], initialIndex: 0 }
@@ -27,7 +29,7 @@ watch(internalValue, (newInternalValue) => {
 
 <template>
    <div class="Wrapper">
-      <span>
+      <span class="Label">
          {{ props.steps[internalValue] }}
       </span>
       <input
@@ -49,15 +51,16 @@ watch(internalValue, (newInternalValue) => {
    flex-wrap: nowrap;
    align-items: center;
    gap: var(--size-2);
+}
 
-   & span {
-      width: var(--size-9);
-   }
+.Label {
+   font-size: v-bind(props.fontSize);
 }
 
 .InputRange {
    -webkit-appearance: none;
    flex: 1;
+   width: v-bind(props.width);
    height: var(--size-1);
    background: var(--divider-color);
    border-radius: var(--radius-max);
