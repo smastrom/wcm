@@ -42,6 +42,8 @@ const fontPreviewName = computed(() =>
    props.cssWeights.length === 1 ? props.familyName : `${props.familyName} ${internalWeight.value}`
 )
 
+// Check if the current font/weight (from props) is the one displayed in the preview
+
 const isPreviewHeadingActive = computed(
    () =>
       store.preview.headlineFont.family === props.familyName &&
@@ -56,16 +58,20 @@ const isPreviewBodyActive = computed(
 
 // Assign
 
-const isAssignedHeadlineFont = computed(() => {
+// Check if the current font/weight (from props) is the one saved in the database (and always kept in sync with the store)
+
+const isAssignedHeadlineFontActive = computed(() => {
    if (!store.editor.assignedHeadlineFont) return true
+
    return (
       store.editor.assignedHeadlineFont.family === props.familyName &&
       store.editor.assignedHeadlineFont.weight === internalWeight.value
    )
 })
 
-const isAssignedBodyFont = computed(() => {
+const isAssignedBodyFontActive = computed(() => {
    if (!store.editor.assignedBodyFont) return true
+
    return (
       store.editor.assignedBodyFont.family === props.familyName &&
       store.editor.assignedBodyFont.weight === internalWeight.value
@@ -85,16 +91,26 @@ function onFontSizeChange(value: string) {
 // Preview
 
 function onPreviewHeadingClick() {
+   if (!store.editor.assignedHeadlineFont) return
+
    store.preview.actions.setHeadlineFont({
-      family: isPreviewHeadingActive.value ? DEFAULT_FONTS.headline : props.familyName,
-      weight: isPreviewHeadingActive.value ? DEFAULT_WEIGHTS.headline : internalWeight.value
+      family: isPreviewHeadingActive.value
+         ? store.editor.assignedHeadlineFont.family
+         : props.familyName,
+      weight: isPreviewHeadingActive.value
+         ? store.editor.assignedHeadlineFont.weight
+         : internalWeight.value
    })
 }
 
 function onPreviewBodyClick() {
+   if (!store.editor.assignedBodyFont) return
+
    store.preview.actions.setBodyFont({
-      family: isPreviewBodyActive.value ? DEFAULT_FONTS.headline : props.familyName,
-      weight: isPreviewBodyActive.value ? DEFAULT_WEIGHTS.body : internalWeight.value
+      family: isPreviewBodyActive.value ? store.editor.assignedBodyFont.family : props.familyName,
+      weight: isPreviewBodyActive.value
+         ? store.editor.assignedBodyFont.weight
+         : internalWeight.value
    })
 }
 
@@ -104,8 +120,10 @@ async function onAssignHeadingClick() {
    try {
       await nextTick()
       store.editor.actions.saveFontToDB('headline', {
-         family: isAssignedHeadlineFont.value ? DEFAULT_FONTS.headline : props.familyName,
-         weight: isAssignedHeadlineFont.value ? DEFAULT_WEIGHTS.headline : internalWeight.value
+         family: isAssignedHeadlineFontActive.value ? DEFAULT_FONTS.headline : props.familyName,
+         weight: isAssignedHeadlineFontActive.value
+            ? DEFAULT_WEIGHTS.headline
+            : internalWeight.value
       })
    } catch (error) {
       // If there's an error we'll see it in the header and that's it, prev values will be kept
@@ -116,8 +134,8 @@ async function onAssignBodyClick() {
    try {
       await nextTick()
       await store.editor.actions.saveFontToDB('body', {
-         family: isAssignedBodyFont.value ? DEFAULT_FONTS.body : props.familyName,
-         weight: isAssignedBodyFont.value ? DEFAULT_WEIGHTS.body : internalWeight.value
+         family: isAssignedBodyFontActive.value ? DEFAULT_FONTS.body : props.familyName,
+         weight: isAssignedBodyFontActive.value ? DEFAULT_WEIGHTS.body : internalWeight.value
       })
    } catch (error) {
       // Same
@@ -227,7 +245,7 @@ const commonRangeStyles = {
                <div class="ActionBar_Buttons" role="group">
                   <div class="ActionBar_Buttons_Title">Assign</div>
                   <ActionButton
-                     :isActive="isAssignedHeadlineFont"
+                     :isActive="isAssignedHeadlineFontActive"
                      activeColor="var(--success-color)"
                      label="Toggle headline combination"
                      @click="onAssignHeadingClick"
@@ -236,7 +254,7 @@ const commonRangeStyles = {
                   </ActionButton>
 
                   <ActionButton
-                     :isActive="isAssignedBodyFont"
+                     :isActive="isAssignedBodyFontActive"
                      label="Toggle body combination"
                      activeColor="var(--success-color)"
                      @click="onAssignBodyClick"
