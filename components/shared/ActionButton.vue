@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{
-   isActive: boolean
    activeColor: string
    label: string
+   isActive?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -35,7 +35,6 @@ const emit = defineEmits<{
    color: var(--bg-color);
    transition: all 100ms var(--easing);
    font-weight: 700;
-   transition: all 100ms var(--easing);
 
    &:hover {
       box-shadow: inset 0 0 0 2px var(--bg-color), 0 0 0 2px v-bind(props.activeColor);

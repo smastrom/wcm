@@ -128,6 +128,7 @@ export function createStore() {
 
                this.setLastUpdated(entry.lastUpdated)
                this.setEditingStatus(StoreEditingStatus.SAVED)
+               console.log(family, weight)
                this.setAssignedFont(target, { family, weight })
             } catch (error) {
                this.setEditingStatus(StoreEditingStatus.ERROR)

@@ -104,7 +104,7 @@ async function onAssignHeadingClick() {
    try {
       await nextTick()
       store.editor.actions.saveFontToDB('headline', {
-         family: isAssignedHeadlineFont.value ? DEFAULT_WEIGHTS.headline : props.familyName,
+         family: isAssignedHeadlineFont.value ? DEFAULT_FONTS.headline : props.familyName,
          weight: isAssignedHeadlineFont.value ? DEFAULT_WEIGHTS.headline : internalWeight.value
       })
    } catch (error) {

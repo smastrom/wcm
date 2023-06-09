@@ -4,7 +4,8 @@ import type {
    StorePreviewTypesPrint,
    StorePreviewTypesDigital,
    StoreEditorFontSizes,
-   AppFontCategories
+   AppFontCategories,
+   AppFontWeights
 } from '@/types/store'
 
 export enum StoreEditingStatus {
@@ -74,7 +75,7 @@ export const DEFAULT_FONTS: Record<DBVariantTarget, string> = {
    body: 'Roboto'
 }
 
-export const DEFAULT_WEIGHTS: Record<DBVariantTarget, string> = {
+export const DEFAULT_WEIGHTS: Record<DBVariantTarget, AppFontWeights> = {
    headline: '400',
    body: '400'
 }
