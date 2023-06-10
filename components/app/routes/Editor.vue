@@ -7,7 +7,9 @@ import Preview from '@/components/shared/Preview.vue'
 
 import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
+import { getFamily } from '@/lib/fonts'
 import { db } from '@/lib/db'
+import { injectFonts } from '@/lib/injectFonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
 import type { DBCombination } from '@/types/db'
@@ -27,11 +29,27 @@ store.editor.actions.setCurrentEntry(entry)
  */
 await useEditorQuery()
 
-// 3. Fetch Google fonts and replace them to store using the current sort criteria
+// 3. Fetch Google fonts and set them to store using the current sort criteria
 try {
-   store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
+   await store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
 } catch (error) {
-   throw new Error(`[edtior-route-fonts] - ${APP_CRITICAL_ERROR}`)
+   console.log(error)
+   throw new Error(`[editor-route-fonts] - ${APP_CRITICAL_ERROR}`)
+}
+
+// 4. Inject fonts for preview, on initial mount they are equal to assigned fonts
+try {
+   const previewFamilies = []
+
+   const headlineFamily = getFamily(store.fonts.data.value!, store.preview.headlineFont.family)
+   const bodyFamily = getFamily(store.fonts.data.value!, store.preview.bodyFont.family)
+
+   previewFamilies.push(headlineFamily, bodyFamily)
+
+   await injectFonts(previewFamilies)
+} catch (error) {
+   console.log(error)
+   throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 </script>
 

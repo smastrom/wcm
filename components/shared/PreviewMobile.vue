@@ -30,7 +30,7 @@ function toggleMobilePreview() {
          }"
          @click="toggleMenu"
       >
-         {{ isMenuToggled ? 'Close' : 'Open Menu' }}
+         {{ isMenuToggled ? 'Close' : 'Open' }} Menu
       </button>
 
       <!-- Mobile Menu Teleport -->
@@ -106,7 +106,7 @@ function toggleMobilePreview() {
    gap: var(--size-6);
    z-index: 10;
 
-   @media (min-width: 1100px) {
+   @media (min-width: 1101px) {
       display: none;
    }
 }
