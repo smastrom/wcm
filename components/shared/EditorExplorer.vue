@@ -13,7 +13,7 @@ import type { AppFont } from '@/types/store'
 const store = useStore()
 const { isMatch: isMobile } = useViewport('1100px')
 
-const explorerFonts = ref<AppFont[]>([])
+const explorerFonts = ref<AppFont[]>(store.editor.activeFontsComputed.slice(0, 15))
 const previewText = ref('')
 
 /* UI */
@@ -28,7 +28,7 @@ let intersectionObserver: IntersectionObserver
 const rootRef = ref<HTMLDivElement | null>(null)
 const sentinelRef = ref<HTMLDivElement | null>(null)
 
-/* Initial / Refresh Fetch */
+/* Refresh Fetch */
 
 watch(
    () => store.editor.activeFontsComputed,
@@ -47,8 +47,7 @@ watch(
       } finally {
          rootRef.value?.scrollTo({ top: 0 })
       }
-   },
-   { immediate: true }
+   }
 )
 
 /* Intersection Observer Fetch */

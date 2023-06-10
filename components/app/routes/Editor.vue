@@ -34,7 +34,7 @@ try {
    await store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
 } catch (error) {
    console.log(error)
-   throw new Error(`[editor-route-fonts] - ${APP_CRITICAL_ERROR}`)
+   throw new Error(`[editor-route-store-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 
 // 4. Inject fonts for preview, on initial mount they are equal to assigned fonts
@@ -50,6 +50,16 @@ try {
 } catch (error) {
    console.log(error)
    throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)
+}
+
+// 5. Inject the first 15 fonts for the explorer
+try {
+   const first15Fonts = store.editor.activeFontsComputed.slice(0, 15)
+   console.log(first15Fonts)
+   await injectFonts(first15Fonts)
+} catch (error) {
+   console.log(error)
+   throw new Error(`[editor-route-editor-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 </script>
 
