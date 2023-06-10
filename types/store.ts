@@ -44,6 +44,7 @@ export interface StoreEditor {
       setGlobalFontSize(size: StoreEditorFontSizes): void
       setActiveCategory(category: AppFontCategories): void
       setSortCriteria(criteria: GoogleAPISortCriteria): void
+      setSearchValue(value: string): void
    }
 }
 

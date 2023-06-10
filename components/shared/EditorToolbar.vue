@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
+import { debounce } from '@/lib/utils'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
@@ -16,8 +17,6 @@ import type { GoogleAPISortCriteria } from '@/types/fetch'
 
 const store = useStore()
 
-const isSelectLoading = ref(false)
-
 const categoriesWithCount = computed(() =>
    CATEGORIES.map(({ label, value }) => ({
       label: `${label} (${store.fonts.data.value?.[value]?.length ?? 0})`,
@@ -25,12 +24,12 @@ const categoriesWithCount = computed(() =>
    }))
 )
 
+/* Events */
+
 async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
    try {
-      isSelectLoading.value = true
-      store.fonts.actions.fetchAndSetFonts(value)
+      await store.fonts.actions.fetchAndSetFonts(value)
       store.editor.actions.setSortCriteria(value)
-      isSelectLoading.value = false
    } catch (error) {
       throw new Error(`[editor-toolbar-select] - ${APP_CRITICAL_ERROR}`)
    }
@@ -40,6 +39,13 @@ function onRangeChange(value: string) {
    store.editor.actions.setGlobalFontSize(value as StoreEditorFontSizes)
 }
 
+function onSearchInput(event: Event) {
+   const target = event.target as HTMLInputElement
+   store.editor.actions.setSearchValue(target.value)
+}
+
+const debounceOnSearchInput = debounce(onSearchInput, 350)
+
 /* IDs */
 
 const fontSizeRangeId = crypto.randomUUID()
@@ -48,12 +54,7 @@ const categoryLabelId = crypto.randomUUID()
 </script>
 
 <template>
-   <nav
-      class="Nav"
-      :class="{
-         Nav_Busy: store.editor.isLoadingAllFonts
-      }"
-   >
+   <nav class="Nav">
       <!-- Search -->
 
       <div class="Fieldset">
@@ -64,7 +65,8 @@ const categoryLabelId = crypto.randomUUID()
             id="editor_search"
             maxlength="25"
             :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"
-            v-model="store.editor.searchValueModel"
+            @input="debounceOnSearchInput"
+            :disabled="store.editor.isLoadingAllFonts"
          />
       </div>
 
@@ -78,7 +80,7 @@ const categoryLabelId = crypto.randomUUID()
             :options="SORT_CRITERIA"
             v-model="store.editor.sortCriteriaModel"
             @asyncChange="onAsyncSelectChange"
-            :isLoading="isSelectLoading"
+            :isDisabled="store.editor.isLoadingAllFonts"
          />
       </div>
 
@@ -98,7 +100,11 @@ const categoryLabelId = crypto.randomUUID()
 
       <div class="Fieldset Fielset_GapEffect" role="radiogroup" :aria-labelledby="categoryLabelId">
          <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
-         <RadioGroup v-model="store.editor.activeCategoryModel" :options="categoriesWithCount" />
+         <RadioGroup
+            v-model="store.editor.activeCategoryModel"
+            :options="categoriesWithCount"
+            :isDisabled="store.editor.isLoadingAllFonts"
+         />
       </div>
    </nav>
 </template>
@@ -106,6 +112,11 @@ const categoryLabelId = crypto.randomUUID()
 <style scoped>
 .SearchField {
    padding: 0.4em 1em !important;
+   transition: opacity 100ms var(--easing);
+
+   &[disabled] {
+      @apply --disabled-effect;
+   }
 }
 .Nav {
    overflow-x: auto;
@@ -116,12 +127,6 @@ const categoryLabelId = crypto.randomUUID()
    justify-items: left;
    padding-bottom: var(--size-2);
    font-size: var(--font-size-1);
-   transition: opacity 200ms var(--easing);
-}
-
-.Nav_Busy {
-   pointer-events: none;
-   opacity: 0.5;
 }
 
 .Fieldset {

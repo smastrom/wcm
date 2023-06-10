@@ -93,3 +93,10 @@ html {
       user-select: none !important;
    }
 }
+
+:root {
+   --disabled-effect {
+      opacity: 0.75;
+      cursor: wait;
+   }
+}

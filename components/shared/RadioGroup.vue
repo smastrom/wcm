@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends string">
 defineProps<{
+   isDisabled: boolean
    options: readonly {
       label: string
       value: T
@@ -21,6 +22,7 @@ const randomName = crypto.randomUUID()
 <template>
    <div class="Wrapper">
       <label
+         :data-radiogroup-disabled="isDisabled"
          class="Label"
          v-for="option in options"
          :key="option.value"
@@ -28,6 +30,7 @@ const randomName = crypto.randomUUID()
       >
          <span class="Circle" :data-circle="modelValue === option.value" aria-hidden="true" />
          <input
+            :disabled="isDisabled"
             class="Global_VisuallyHidden"
             :id="`${randomName}_${option.value}`"
             :name="randomName"
@@ -50,11 +53,17 @@ const randomName = crypto.randomUUID()
 }
 
 .Label {
+   user-select: none;
    white-space: nowrap;
    display: flex;
    gap: var(--size-2);
    cursor: pointer;
    align-items: center;
+   transition: opacity 100ms var(--easing);
+
+   &[data-radiogroup-disabled='true'] {
+      @apply --disabled-effect;
+   }
 
    &:hover > .Circle {
       background-color: var(--accent-color);

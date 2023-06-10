@@ -3,7 +3,7 @@ const props = defineProps<{
    isAsync: boolean
    id: string
    modelValue: T
-   isLoading?: boolean
+   isDisabled?: boolean
    options: readonly {
       label: string
       value: T
@@ -27,7 +27,7 @@ function onChange(event: Event) {
 </script>
 
 <template>
-   <select :id="id" @change="onChange" class="Select" :disabled="isLoading">
+   <select :id="id" @change="onChange" class="Select" :disabled="isDisabled">
       <option
          v-for="option in options"
          :value="option.value"
@@ -58,8 +58,7 @@ function onChange(event: Event) {
    background-size: auto 16px;
 
    &[disabled] {
-      cursor: wait;
-      opacity: 0.5;
+      @apply --disabled-effect;
    }
 }
 </style>

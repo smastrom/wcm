@@ -116,6 +116,9 @@ export function createStore() {
          setSortCriteria(criteria: GoogleAPISortCriteria) {
             editor.sortCriteriaModel = criteria
          },
+         setSearchValue(value: string) {
+            editor.searchValueModel = value
+         },
          async saveFontToDB(target: DBVariantTarget, { family, weight }: DBFontFamilyData) {
             this.setEditingStatus(StoreEditingStatus.SAVING)
 
