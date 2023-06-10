@@ -2,7 +2,6 @@
 import { useStore } from '@/lib/store'
 
 import BusinessCard from '@/components/shared/PreviewExampleBusinessCard.vue'
-import BlogPost from '@/components/shared/PreviewExampleBlogPost.vue'
 import Letterhead from '@/components/shared/PreviewExampleLetterhead.vue'
 import Website from '@/components/shared/PreviewExampleWebsite.vue'
 import PreviewExampleDownloadButton from './PreviewExampleDownloadButton.vue'
@@ -14,7 +13,6 @@ const store = useStore()
 
 const components: Record<StorePreviewTypes, VueComponent> = {
    'business-card': BusinessCard,
-   'blog-post': BlogPost,
    letterhead: Letterhead,
    website: Website
 }

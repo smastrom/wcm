@@ -3,29 +3,17 @@ import { useStore } from '@/lib/store'
 
 const store = useStore()
 
-const headlineFont = computed(() => ({
-   style: {
-      'font-family': store.preview.headlineFont.family,
-      'font-weight': store.preview.headlineFont.weight
-   }
-}))
-
-const bodyFont = computed(() => ({
-   style: {
-      'font-family': store.preview.bodyFont.family,
-      'font-weight': store.preview.bodyFont.weight
-   }
-}))
+const bodyStyles = computed(() => store.preview.computedStyles.body)
 </script>
 
 <template>
    <div class="Preview_Letterhead_Wrapper" role="img">
       <div class="Preview_Letterhead_Header">
-         <h1 v-bind="headlineFont">Teddy Lewis McDonald</h1>
-         <div v-bind="bodyFont">Attorney at Law - McDonald &amp; Associates</div>
+         <h1 :style="store.preview.computedStyles.headline">Teddy Lewis McDonald</h1>
+         <div :style="bodyStyles">Attorney at Law - McDonald &amp; Associates</div>
       </div>
 
-      <div class="Preview_Letterhead_Body" v-bind="bodyFont">
+      <div class="Preview_Letterhead_Body" :style="bodyStyles">
          Teddy McDonald is a prominent figure in the field of law, renowned for his exceptional
          skills, unwavering dedication, and extensive knowledge. With an impressive career spanning
          over three decades, McDonald has established himself as a highly respected and accomplished
@@ -58,7 +46,6 @@ const bodyFont = computed(() => ({
    width: 450px;
    max-height: 600px;
    border-top: var(--size-2) solid var(--fg-headline-color);
-   user-select: none;
 }
 
 .Preview_Letterhead_Header {

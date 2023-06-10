@@ -46,7 +46,6 @@ export const PREVIEW_OPTIONS: {
 }[] = [
    { label: 'Business Card', value: 'business-card' },
    { label: 'Letterhead', value: 'letterhead' },
-   { label: 'Blog Post', value: 'blog-post' },
    { label: 'SaaS Website', value: 'website' }
 ]
 

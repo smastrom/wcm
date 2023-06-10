@@ -1,7 +1,7 @@
 import { StoreEditingStatus } from '@/lib/constants'
 
 import type { GoogleFont, GoogleAPISortCriteria, GoogleAPIWeights } from '@/types/fetch'
-import type { DBCombination, DBFontFamilyData } from '@/types/db'
+import type { DBCombination, DBFontFamilyData, DBVariantTarget } from '@/types/db'
 
 /* Fonts */
 
@@ -37,10 +37,10 @@ export interface StoreEditor {
       setActiveId(id: string): void
       setActiveName(name: string): void
       setEditingStatus(status: StoreEditingStatus): void
-      setAssignedFont(target: 'headline' | 'body', data: DBFontFamilyData): void
+      setAssignedFont(target: DBVariantTarget, data: DBFontFamilyData): void
       setLastUpdated(timestamp: number): void
       setCurrentEntry(data: DBCombination): void
-      saveFontToDB(target: 'headline' | 'body', data: DBFontFamilyData): Promise<void>
+      saveFontToDB(target: DBVariantTarget, data: DBFontFamilyData): Promise<void>
       setGlobalFontSize(size: StoreEditorFontSizes): void
       setActiveCategory(category: AppFontCategories): void
       setSortCriteria(criteria: GoogleAPISortCriteria): void
@@ -49,7 +49,11 @@ export interface StoreEditor {
 
 /* Preview */
 
-export type StorePreviewTypes = 'blog-post' | 'website' | 'business-card' | 'letterhead'
+export type StorePreviewTypes = 'website' | 'business-card' | 'letterhead'
+
+type PreviewCSSProperties = 'font-family' | 'font-weight'
+
+export type PreviewComputedStyles = Record<DBVariantTarget, Record<PreviewCSSProperties, string>>
 
 export interface StorePreview {
    headlineFont: DBFontFamilyData
@@ -57,6 +61,7 @@ export interface StorePreview {
    exampleModel: StorePreviewTypes
    isFullScreen: boolean
    isProducingCanvas: boolean
+   computedStyles: PreviewComputedStyles
    actions: {
       toggleFullScreen(): void
       toggleCanvas(): void

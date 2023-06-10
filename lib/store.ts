@@ -19,9 +19,10 @@ import type {
    CategorizedAppFonts,
    StoreEditorFontSizes,
    AppFontCategories,
-   AppFont
+   AppFont,
+   PreviewComputedStyles
 } from '@/types/store'
-import type { DBFontFamilyData, DBCombination } from '@/types/db'
+import type { DBFontFamilyData, DBCombination, DBVariantTarget } from '@/types/db'
 
 export const storeInjectionKey = Symbol('')
 
@@ -95,7 +96,7 @@ export function createStore() {
          setLastUpdated(timestamp: number) {
             editor.lastUpdated = `${formatDistanceToNow(timestamp)} ago`
          },
-         setAssignedFont(target: 'headline' | 'body', data: DBFontFamilyData) {
+         setAssignedFont(target: DBVariantTarget, data: DBFontFamilyData) {
             if (target === 'headline') editor.assignedHeadlineFont = data
             if (target === 'body') editor.assignedBodyFont = data
          },
@@ -115,7 +116,7 @@ export function createStore() {
          setSortCriteria(criteria: GoogleAPISortCriteria) {
             editor.sortCriteriaModel = criteria
          },
-         async saveFontToDB(target: 'headline' | 'body', { family, weight }: DBFontFamilyData) {
+         async saveFontToDB(target: DBVariantTarget, { family, weight }: DBFontFamilyData) {
             this.setEditingStatus(StoreEditingStatus.SAVING)
 
             if (!editor.assignedBodyFont || !editor.assignedHeadlineFont || !editor.activeId) return
@@ -150,6 +151,16 @@ export function createStore() {
       exampleModel: PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,
+      computedStyles: computed(() => ({
+         headline: {
+            'font-family': preview.headlineFont.family,
+            'font-weight': preview.headlineFont.weight
+         },
+         body: {
+            'font-family': preview.bodyFont.family,
+            'font-weight': preview.bodyFont.weight
+         }
+      })) as unknown as PreviewComputedStyles,
       actions: {
          toggleFullScreen() {
             preview.isFullScreen = !preview.isFullScreen
