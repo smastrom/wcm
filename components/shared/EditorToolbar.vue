@@ -48,60 +48,59 @@ const categoryLabelId = crypto.randomUUID()
 </script>
 
 <template>
-   <div class="Scroller">
-      <nav class="Nav">
-         <!-- Search -->
+   <nav
+      class="Nav"
+      :class="{
+         Nav_Busy: store.editor.isLoadingAllFonts
+      }"
+   >
+      <!-- Search -->
 
-         <div class="Fieldset">
-            <label class="Fieldset_Label" for="editor_search">Search fonts</label>
-            <input
-               class="Global_InputField SearchField"
-               type="text"
-               id="editor_search"
-               maxlength="25"
-               :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"
-               v-model="store.editor.searchValueModel"
-            />
-         </div>
+      <div class="Fieldset">
+         <label class="Fieldset_Label" for="editor_search">Search fonts</label>
+         <input
+            class="Global_InputField SearchField"
+            type="text"
+            id="editor_search"
+            maxlength="25"
+            :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"
+            v-model="store.editor.searchValueModel"
+         />
+      </div>
 
-         <!-- Sort -->
+      <!-- Sort -->
 
-         <div class="Fieldset">
-            <label class="Fieldset_Label" :for="sortSelectId">Sort by</label>
-            <Select
-               :isAsync="true"
-               :id="sortSelectId"
-               :options="SORT_CRITERIA"
-               v-model="store.editor.sortCriteriaModel"
-               @asyncChange="onAsyncSelectChange"
-               :isLoading="isSelectLoading"
-            />
-         </div>
+      <div class="Fieldset">
+         <label class="Fieldset_Label" :for="sortSelectId">Sort by</label>
+         <Select
+            :isAsync="true"
+            :id="sortSelectId"
+            :options="SORT_CRITERIA"
+            v-model="store.editor.sortCriteriaModel"
+            @asyncChange="onAsyncSelectChange"
+            :isLoading="isSelectLoading"
+         />
+      </div>
 
-         <!-- Font Size -->
+      <!-- Font Size -->
 
-         <div class="Fieldset Fielset_GapEffect">
-            <label class="Fieldset_Label" :for="fontSizeRangeId">Global Size</label>
-            <RangeSlider
-               :id="fontSizeRangeId"
-               :steps="FONT_SIZE_OPTIONS"
-               :initialValue="store.editor.globalFontSize"
-               @change="onRangeChange"
-            />
-         </div>
+      <div class="Fieldset Fielset_GapEffect">
+         <label class="Fieldset_Label" :for="fontSizeRangeId">Global Size</label>
+         <RangeSlider
+            :id="fontSizeRangeId"
+            :steps="FONT_SIZE_OPTIONS"
+            :initialValue="store.editor.globalFontSize"
+            @change="onRangeChange"
+         />
+      </div>
 
-         <!-- Category (<fieldset> can't be flex, using div) -->
+      <!-- Category (<fieldset> can't be flex, using div) -->
 
-         <div
-            class="Fieldset Fielset_GapEffect"
-            role="radiogroup"
-            :aria-labelledby="categoryLabelId"
-         >
-            <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
-            <RadioGroup v-model="store.editor.activeCategoryModel" :options="categoriesWithCount" />
-         </div>
-      </nav>
-   </div>
+      <div class="Fieldset Fielset_GapEffect" role="radiogroup" :aria-labelledby="categoryLabelId">
+         <legend :id="categoryLabelId" class="Fieldset_Label">Category</legend>
+         <RadioGroup v-model="store.editor.activeCategoryModel" :options="categoriesWithCount" />
+      </div>
+   </nav>
 </template>
 
 <style scoped>
@@ -110,12 +109,19 @@ const categoryLabelId = crypto.randomUUID()
 }
 .Nav {
    overflow-x: auto;
+   overflow-y: hidden;
    display: grid;
    grid-auto-flow: column;
    gap: var(--size-4);
    justify-items: left;
    padding-bottom: var(--size-2);
    font-size: var(--font-size-1);
+   transition: opacity 200ms var(--easing);
+}
+
+.Nav_Busy {
+   pointer-events: none;
+   opacity: 0.5;
 }
 
 .Fieldset {

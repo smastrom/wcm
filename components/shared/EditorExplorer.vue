@@ -87,7 +87,10 @@ onMounted(() => {
       <div>
          <!-- Preview -->
 
-         <div v-if="explorerFonts.length > 0" class="Explorer_List">
+         <div
+            v-if="explorerFonts.length > 0 && !store.editor.isLoadingAllFonts"
+            class="Explorer_List"
+         >
             <EditorExplorerEntry
                v-for="font in explorerFonts"
                :isMobile="isMobile"
@@ -100,10 +103,11 @@ onMounted(() => {
 
          <div ref="sentinelRef" />
 
-         <div
-            v-if="store.editor.isLoadingAllFonts && !isFetchError && !isFetchingAdditionalFonts"
-            class="InitialSpinner_Wrapper"
-         >
+         <div v-if="explorerFonts.length === 0 && !store.editor.isLoadingAllFonts">
+            <h2>No results matched your serch. Please try again.</h2>
+         </div>
+
+         <div v-if="store.editor.isLoadingAllFonts && !isFetchError" class="InitialSpinner_Wrapper">
             <SpinnerIcon width="100px" />
          </div>
 
