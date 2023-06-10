@@ -40,10 +40,7 @@ const bodyFont = computed(() => ({
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 .Preview_Card_Wrapper {
-   letter-spacing: 0.1px !important;
-   word-break: break-word !important;
-   font-kerning: normal !important;
-   font-style: normal !important;
+   @apply --preview-content-reset;
 
    background-color: var(--bg-color);
    aspect-ratio: 3.5 / 2;
@@ -57,7 +54,6 @@ const bodyFont = computed(() => ({
    align-items: center;
    text-align: center;
    box-shadow: var(--shadow-3);
-   user-select: none;
 }
 
 .Preview_Card_Top {
