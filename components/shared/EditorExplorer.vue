@@ -113,7 +113,7 @@ onMounted(() => {
          <div ref="sentinelRef" />
 
          <div v-if="explorerFonts.length === 0 && !store.editor.isLoadingAllFonts">
-            <h2>No results matched your serch. Please try again.</h2>
+            <h2 class="Explorer_NoResults">No results matched your serch. Please try again.</h2>
          </div>
 
          <div v-if="store.editor.isLoadingAllFonts && !isFetchError" class="InitialSpinner_Wrapper">
@@ -146,6 +146,10 @@ onMounted(() => {
    top: 0;
    z-index: 5;
    box-shadow: 0 0 0 var(--size-3) var(--bg-color);
+}
+
+.Explorer_NoResults {
+   margin-top: var(--size-6);
 }
 
 .InitialSpinner_Wrapper {
