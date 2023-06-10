@@ -28,18 +28,29 @@ const bodyFont = computed(() => ({
       </div>
 
       <div class="Preview_Card_Address" v-bind="bodyFont">
-         <div>1234 Main Street, Anytown, USA 12345</div>
-         <div>Phone: 123-456-7890 - Email: teddy@mcdonald.com</div>
+         <div>
+            1234 Main Street, Anytown, USA 12345 <br />
+            Phone: 123-456-7890 - Email: teddy@mcdonald.com
+         </div>
       </div>
    </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
 .Preview_Card_Wrapper {
+   letter-spacing: 0.1px !important;
+   word-break: break-word !important;
+   font-kerning: normal !important;
+   font-style: normal !important;
+
    background-color: var(--bg-color);
    aspect-ratio: 3.5 / 2;
    width: 450px;
    min-width: 450px;
+
+   white-space: pre-wrap;
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -61,14 +72,14 @@ const bodyFont = computed(() => ({
    display: flex;
    justify-content: center;
    align-items: center;
-   font-size: var(--size-6);
+   font-size: 18px;
    font-weight: 700;
    margin-bottom: var(--size-3);
    background-color: var(--accent-color);
 }
 
 .Preview_Card_Name {
-   font-size: var(--font-size-4);
+   font-size: 22px;
    line-height: 1.2;
    color: var(--text-color-primary);
    margin-bottom: var(--size-1);

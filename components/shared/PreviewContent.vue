@@ -5,6 +5,7 @@ import BusinessCard from '@/components/shared/PreviewExampleBusinessCard.vue'
 import BlogPost from '@/components/shared/PreviewExampleBlogPost.vue'
 import Letterhead from '@/components/shared/PreviewExampleLetterhead.vue'
 import Website from '@/components/shared/PreviewExampleWebsite.vue'
+import PreviewExampleDownloadButton from './PreviewExampleDownloadButton.vue'
 
 import type { Component as VueComponent } from 'vue'
 import type { StorePreviewTypes } from '@/types/store'
@@ -21,7 +22,11 @@ const components: Record<StorePreviewTypes, VueComponent> = {
 
 <template>
    <div class="Preview_Content_Wrapper">
-      <Component :is="components[store.preview.exampleModel]" />
+      <div id="preview_container">
+         <Component :is="components[store.preview.exampleModel]" />
+      </div>
+
+      <PreviewExampleDownloadButton />
    </div>
 </template>
 
@@ -34,5 +39,11 @@ const components: Record<StorePreviewTypes, VueComponent> = {
    align-items: center;
    background-color: var(--bg-elv-color);
    border-radius: var(--radius-3);
+   position: relative;
+
+   & button {
+      position: absolute;
+      bottom: var(--size-4);
+   }
 }
 </style>
