@@ -61,6 +61,7 @@ watch(
    overflow-y: auto;
    overflow-x: hidden;
    min-width: calc(450px + var(--size-8));
+   height: 100%;
 
    @media (max-width: 1100px) {
       display: none;

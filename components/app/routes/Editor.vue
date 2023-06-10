@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LoadingScreen from '@/components/shared/LoadingScreen.vue'
 import ContentLayout from '@/components/shared/ContentLayout.vue'
 import EditorHeader from '@/components/shared/EditorHeader.vue'
 import EditorExplorer from '@/components/shared/EditorExplorer.vue'
@@ -64,18 +65,26 @@ try {
 </script>
 
 <template>
-   <EditorHeader />
-   <ContentLayout>
-      <template #toolbar>
-         <EditorToolbar />
-      </template>
+   <Suspense>
+      <div>
+         <EditorHeader />
+         <ContentLayout>
+            <template #toolbar>
+               <EditorToolbar />
+            </template>
 
-      <template #explorer>
-         <EditorExplorer />
-      </template>
+            <template #explorer>
+               <EditorExplorer />
+            </template>
 
-      <template #preview>
-         <Preview />
+            <template #preview>
+               <Preview />
+            </template>
+         </ContentLayout>
+      </div>
+
+      <template #fallback>
+         <LoadingScreen />
       </template>
-   </ContentLayout>
+   </Suspense>
 </template>
