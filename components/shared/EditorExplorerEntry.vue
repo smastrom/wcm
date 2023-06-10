@@ -13,6 +13,7 @@ const props = defineProps<{
    appWeights: AppFontWeights[]
    familyName: string
    isMobile: boolean
+   previewText: string
 }>()
 
 const store = useStore()
@@ -295,7 +296,7 @@ const commonRangeStyles = {
                'line-height': 1.15
             }"
          >
-            {{ props.familyName }}
+            {{ previewText || props.familyName }}
          </div>
       </div>
    </article>

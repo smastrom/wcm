@@ -34,7 +34,9 @@ const statusMessage = computed(() =>
          <span class="Left_Divider" />
          <div class="Left_Copy">
             <LogoIcon width="50px" />
-            <h1><span>Editing:</span> {{ store.editor.activeName }}</h1>
+            <h1 class="Left_Title">
+               <span>Editing:</span> <span>{{ store.editor.activeName }}</span>
+            </h1>
          </div>
       </div>
 
@@ -86,12 +88,28 @@ const statusMessage = computed(() =>
    gap: var(--size-2);
    font-size: var(--font-size-0);
    line-height: 1;
-
-   & span {
-      font-weight: 700;
-   }
 }
 
+.Left_Title {
+   display: flex;
+   gap: var(--size-1);
+
+   & span:first-of-type {
+      font-weight: 700;
+   }
+
+   & span:last-of-type {
+      font-weight: 400;
+
+      @media (--size-md) {
+         max-width: 100px;
+         display: block;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+      }
+   }
+}
 .Right {
    user-select: none;
    display: flex;

@@ -82,6 +82,7 @@ function toggleMobilePreview() {
    padding: var(--size-3);
    box-shadow: var(--shadow-3);
    border-radius: var(--size-3);
+   z-index: 10;
 
    @media (max-width: 1100px) {
       justify-content: space-between;

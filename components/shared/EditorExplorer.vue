@@ -84,6 +84,15 @@ onMounted(() => {
 
 <template>
    <div class="Explorer_Wrapper" ref="rootRef">
+      <!-- Preview Text -->
+
+      <input
+         type="text"
+         placeholder="Preview some text..."
+         v-model="previewText"
+         class="Global_InputField Explorer_InputField"
+      />
+
       <div>
          <!-- Preview -->
 
@@ -128,6 +137,15 @@ onMounted(() => {
 <style scoped>
 .Explorer_Wrapper {
    overflow: auto;
+   position: relative;
+}
+
+.Explorer_InputField {
+   width: 100%;
+   position: sticky;
+   top: 0;
+   z-index: 5;
+   box-shadow: 0 0 0 var(--size-3) var(--bg-color);
 }
 
 .InitialSpinner_Wrapper {
