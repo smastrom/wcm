@@ -55,6 +55,10 @@ const statusMessage = computed(() =>
    border-bottom: var(--border-size-2) solid var(--border-color);
    flex-wrap: wrap;
    gap: var(--size-3);
+
+   @media (--size-md) {
+      padding: var(--size-3);
+   }
 }
 
 .Left {

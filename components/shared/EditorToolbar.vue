@@ -114,7 +114,7 @@ const categoryLabelId = crypto.randomUUID()
    grid-auto-flow: column;
    gap: var(--size-4);
    justify-items: left;
-   padding-bottom: var(--size-5);
+   padding-bottom: var(--size-2);
    font-size: var(--font-size-1);
 }
 

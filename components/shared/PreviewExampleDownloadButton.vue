@@ -58,7 +58,7 @@ async function onClick() {
 
 <template>
    <button @click="onClick" class="Global_ActionButton Preview_Download_Button">
-      <ImageIcon />
+      <ImageIcon width="20px" />
       Download
    </button>
 </template>

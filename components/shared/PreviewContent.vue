@@ -30,18 +30,36 @@ const components: Record<StorePreviewTypes, VueComponent> = {
 
 <style scoped>
 .Preview_Content_Wrapper {
-   width: 100%;
    height: 100%;
    display: flex;
    justify-content: center;
+
    align-items: center;
+   padding: var(--size-4);
+
    background-color: var(--bg-elv-color);
    border-radius: var(--radius-3);
    position: relative;
+   overflow: auto;
+   min-height: 500px;
 
    & button {
       position: absolute;
       bottom: var(--size-4);
+   }
+
+   @media (--size-md) {
+      min-height: unset;
+   }
+}
+
+#preview_container {
+   @media (--size-md) {
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
    }
 }
 </style>

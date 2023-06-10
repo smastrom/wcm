@@ -71,6 +71,7 @@ function toggleMobilePreview() {
 
 <style scoped>
 .Preview_Wrapper {
+   overflow: auto;
    display: flex;
    flex-direction: column;
    gap: var(--size-6);
@@ -78,7 +79,7 @@ function toggleMobilePreview() {
    top: var(--size-10);
    right: var(--size-4);
    background-color: var(--bg-color);
-   padding: var(--size-4);
+   padding: var(--size-3);
    box-shadow: var(--shadow-3);
    border-radius: var(--size-3);
 
@@ -88,9 +89,10 @@ function toggleMobilePreview() {
 }
 
 .Preview_Mobile_Title {
-   font-size: var(--font-size-4);
+   font-size: var(--font-size-3);
    font-weight: 700;
    color: var(--fg-headline-color);
+   line-height: var(--font-lineheight-1);
 }
 
 .Preview_Mobile_Wrapper {
@@ -105,6 +107,7 @@ function toggleMobilePreview() {
    flex-direction: column;
    gap: var(--size-6);
    z-index: 10;
+   overflow: auto;
 
    @media (min-width: 1101px) {
       display: none;

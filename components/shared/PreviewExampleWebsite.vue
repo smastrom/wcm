@@ -36,31 +36,46 @@ const bodyStyles = computed(() => store.preview.computedStyles.body)
 
 <style scoped>
 .Preview_Website_Wrapper {
-   padding: var(--size-4);
+   @apply --preview-content-reset;
+
    display: grid;
-   gap: var(--size-8);
+   gap: var(--size-4);
    overflow: hidden;
-   width: 450px;
+   margin: auto;
+   max-width: 500px;
 }
 
 .Preview_Website_Card_Wrapper {
    display: grid;
    gap: var(--size-2);
    border-radius: var(--radius-3);
-   padding: var(--size-5) var(--size-4);
+   padding: var(--size-4);
    box-shadow: var(--shadow-3);
    background-color: var(--bg-color);
+
+   @media (--size-max) {
+      gap: var(--size-1);
+      font-size: var(--size-3);
+   }
 
    & h1 {
       font-size: var(--font-size-3);
       margin-bottom: var(--size-1);
       color: #0f172a;
+
+      @media (--size-max) {
+         font-size: var(--font-size-2);
+      }
    }
 
    & p {
       font-size: var(--font-size-2);
       color: var(--fg-body-slate-color);
       line-height: 1.65;
+
+      @media (--size-max) {
+         font-size: var(--font-size-1);
+      }
    }
 
    &[data-preview-inverted] {

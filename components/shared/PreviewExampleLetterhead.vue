@@ -24,21 +24,14 @@ const bodyStyles = computed(() => store.preview.computedStyles.body)
          As a legal professional, Teddy McDonald has displayed remarkable versatility, excelling in
          various areas of the law. Whether it's criminal defense, civil litigation, corporate law,
          or intellectual property rights, McDonald's expertise is unparalleled.
-
-         <br /><br />
-
-         His ability to adapt and thrive in diverse legal contexts has solidified his reputation as
-         a go-to attorney for complex and challenging cases. Teddy McDonald's legal acumen is
-         matched only by his unwavering commitment to justice. He is known for his tireless advocacy
-         on behalf of his clients, leaving no stone unturned in the pursuit of a favorable outcome.
-         McDonald's analytical prowess and attention to detail have been instrumental in securing
-         numerous victories and settlements, earning him the trust and gratitude of his clients.
       </div>
    </div>
 </template>
 
 <style scoped>
 .Preview_Letterhead_Wrapper {
+   @apply --preview-content-reset;
+
    box-shadow: var(--shadow-3);
    background-color: var(--bg-color);
    padding: var(--size-4) var(--size-8);

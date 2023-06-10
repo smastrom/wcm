@@ -34,9 +34,8 @@ const headlineStyles = computed(() => store.preview.computedStyles.headline)
 
    background-color: var(--bg-color);
    aspect-ratio: 3.5 / 2;
-   width: 450px;
    min-width: 450px;
-
+   margin: auto;
    white-space: pre-wrap;
    display: flex;
    flex-direction: column;
@@ -61,14 +60,14 @@ const headlineStyles = computed(() => store.preview.computedStyles.headline)
    font-size: 18px;
    font-weight: 700;
    margin-bottom: var(--size-3);
-   background-color: var(--accent-color);
+   background-color: var(--fg-headline-color);
 }
 
 .Preview_Card_Name {
    font-size: 22px;
    line-height: 1.2;
-   color: var(--text-color-primary);
    margin-bottom: var(--size-1);
+   color: var(--fg-headline-color);
 }
 
 .Preview_Card_Address {

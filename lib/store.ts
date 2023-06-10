@@ -61,7 +61,7 @@ export function createStore() {
       assignedHeadlineFont: undefined,
       assignedBodyFont: undefined,
       isLoadingAllFonts: false,
-      globalFontSize: '4rem',
+      globalFontSize: window.innerWidth <= 480 + 1 ? '2rem' : '4rem',
       editingStatus: StoreEditingStatus.SAVED,
       searchValueModel: '',
       sortCriteriaModel: SORT_CRITERIA[0].value,

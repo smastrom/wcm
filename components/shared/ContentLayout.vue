@@ -34,6 +34,11 @@ onUpdated(setTop)
    display: flex;
    flex-direction: column;
    gap: var(--size-4);
+
+   @media (--size-md) {
+      padding: var(--size-3);
+      gap: var(--size-3);
+   }
 }
 
 .Content {
@@ -41,6 +46,8 @@ onUpdated(setTop)
    grid-template-columns: 1.5fr 1fr;
    overflow: auto;
    gap: var(--size-8);
+   overflow: hidden;
+   height: 100%;
 
    @media (max-width: 1100px) {
       grid-template-columns: 1fr;

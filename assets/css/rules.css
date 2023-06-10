@@ -6,6 +6,7 @@ html {
    -webkit-font-smoothing: antialiased;
    background-color: var(--bg-elv-color);
    color: var(--fg-body-color);
+   overflow: hidden;
 }
 
 .Global_ActionButton {

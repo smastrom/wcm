@@ -46,18 +46,21 @@ watch(
 </script>
 
 <template>
-   <nav class="Preview_Wrapper" v-if="!isMobile">
+   <div class="Preview_Wrapper" v-if="!isMobile">
       <PreviewHeader v-if="route.name === 'editor'" />
       <PreviewContentSwitcher />
       <PreviewContent />
-   </nav>
+   </div>
 </template>
 
 <style scoped>
 .Preview_Wrapper {
    display: flex;
    flex-direction: column;
-   gap: var(--size-6);
+   gap: var(--size-4);
+   overflow-y: auto;
+   overflow-x: hidden;
+   min-width: calc(450px + var(--size-8));
 
    @media (max-width: 1100px) {
       display: none;

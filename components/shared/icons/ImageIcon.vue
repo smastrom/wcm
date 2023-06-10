@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const width = defineProp('var(--size-4)')
+const width = defineProp('20px')
 const className = defineProp('')
 const fill = defineProp('var(--bg-color)')
 </script>

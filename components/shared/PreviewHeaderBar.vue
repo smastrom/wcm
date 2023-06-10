@@ -48,7 +48,9 @@ function onBodyClick() {
          <div class="Bar_Font">
             <div class="Bar_FontIcon">H</div>
             <div class="Bar_FontFamily">
-               {{ props.headingCombination.family }} {{ props.headingCombination.weight }}
+               <span>
+                  {{ props.headingCombination.family }} {{ props.headingCombination.weight }}
+               </span>
 
                <span class="Bar_Chip" v-if="props.displayHeadingChip"> {{ props.chipText }}</span>
             </div>
@@ -115,6 +117,7 @@ function onBodyClick() {
    display: flex;
    justify-content: space-between;
    gap: var(--size-4);
+   align-items: center;
 }
 
 .Bar_Font {
@@ -139,13 +142,11 @@ function onBodyClick() {
    font-weight: 700;
    font-size: var(--font-size-0);
    line-height: 1;
-
-   @media (--size-xs) {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 120px;
-   }
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   column-gap: var(--size-2);
+   row-gap: var(--size-1);
 }
 
 .Bar_DownloadButton {
@@ -156,10 +157,8 @@ function onBodyClick() {
    font-size: var(--font-size-0);
    background-color: v-bind(props.accentColor);
    color: var(--bg-color);
-   line-height: 1;
-   padding: 0 var(--size-1);
+   padding: var(--size-1);
    font-weight: 600;
-   margin-left: var(--size-2);
    border-radius: var(--radius-2);
 }
 </style>

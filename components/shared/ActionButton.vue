@@ -28,6 +28,7 @@ const emit = defineEmits<{
    height: var(--size-6);
    border-radius: var(--radius-2);
    background-color: var(--divider-color);
+   aspect-ratio: 1;
    display: flex;
    align-items: center;
    line-height: 1;
