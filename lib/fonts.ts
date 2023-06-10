@@ -1,7 +1,7 @@
 import { toAppWeight } from './utils'
 
 import type { GoogleFont, GoogleAPIFontCateogry, GoogleAPIWeights } from '@/types/fetch'
-import type { AppFontWeights, AppFont, AppFonts } from '@/types/store'
+import type { AppFontWeights, AppFont, CategorizedAppFonts } from '@/types/store'
 
 const allowedWeights: GoogleAPIWeights[] = ['300', 'regular', '500', '700']
 
@@ -43,7 +43,7 @@ function prepareWeights(fonts: GoogleFont[]): AppFont[] {
 }
 
 /** Prepares fonts to save in the Vue app. */
-export function prepareFonts(fonts: GoogleFont[]): AppFonts {
+export function prepareFonts(fonts: GoogleFont[]): CategorizedAppFonts {
    fonts = removeDupesFromFonts(fonts, 'Noto', 'Noto Sans', 'Noto Serif', 'IBM Plex Sans')
    fonts = prepareWeights(fonts)
 
@@ -56,4 +56,22 @@ export function prepareFonts(fonts: GoogleFont[]): AppFonts {
       handwriting: getGoogleCategory(fonts as AppFont[], 'handwriting'),
       condensed: sans.filter(({ family }) => family.includes('Condensed'))
    }
+}
+
+export function getFamily(appFonts: CategorizedAppFonts, family: string): AppFont {
+   let fontObj: AppFont | undefined = undefined
+
+   for (const [, fonts] of Object.entries(appFonts)) {
+      for (const font of fonts) {
+         if (font.family === family) {
+            fontObj = font
+            break
+         }
+      }
+      if (fontObj) break
+   }
+
+   if (!fontObj) throw new Error(`[extract-font] - ${family} not found.`)
+
+   return fontObj
 }

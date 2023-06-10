@@ -16,7 +16,7 @@ import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
    StoreEditor,
    StorePreview,
-   AppFonts,
+   CategorizedAppFonts,
    StoreEditorFontSizes,
    AppFontCategories,
    AppFont
@@ -33,9 +33,9 @@ export function createStore() {
    /**
     * Fonts */
 
-   const appFonts = shallowRef<AppFonts | null>(null)
+   const appFonts = shallowRef<CategorizedAppFonts | null>(null)
 
-   function setFonts(value: AppFonts) {
+   function setFonts(value: CategorizedAppFonts) {
       appFonts.value = value
    }
 

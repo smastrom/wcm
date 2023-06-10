@@ -13,7 +13,7 @@ export interface AppFont extends GoogleFont {
    appWeights: AppFontWeights[]
 }
 
-export type AppFonts = Record<AppFontCategories, AppFont[]>
+export type CategorizedAppFonts = Record<AppFontCategories, AppFont[]>
 
 /* Editor */
 
