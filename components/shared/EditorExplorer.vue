@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { getExplorerFonts, type ExplorerFonts } from '@/lib/getExplorerFonts'
+import { injectFonts } from '@/lib/injectFonts'
 import { reloadPage } from '@/lib/utils'
 import { useViewport } from '@/lib/useViewport'
 
@@ -8,10 +8,12 @@ import HorizontalSpinnerIcon from './icons/HorizontalSpinnerIcon.vue'
 import SpinnerIcon from './SpinnerIcon.vue'
 import EditorExplorerEntry from './EditorExplorerEntry.vue'
 
+import type { AppFont } from '@/types/store'
+
 const store = useStore()
 const { isMatch: isMobile } = useViewport('1100px')
 
-const explorerFonts = ref<ExplorerFonts[]>([])
+const explorerFonts = ref<AppFont[]>([])
 const previewText = ref('')
 
 /* UI */
@@ -34,10 +36,10 @@ watch(
       try {
          store.editor.actions.setIsLoadingAllFonts(true)
 
-         const first15Fonts = newValue.slice(0, 15).map((font) => ({ ...font, cssWeights: [] }))
-         const fontsToRender = await getExplorerFonts(first15Fonts)
+         const first15Fonts = newValue.slice(0, 15)
+         await injectFonts(first15Fonts)
 
-         explorerFonts.value = fontsToRender
+         explorerFonts.value = first15Fonts
 
          store.editor.actions.setIsLoadingAllFonts(false)
       } catch (error) {
@@ -58,15 +60,16 @@ onMounted(() => {
             try {
                isFetchingAdditionalFonts.value = true
 
-               const next10Fonts = store.editor.activeFontsComputed
-                  .slice(explorerFonts.value.length, explorerFonts.value.length + 10)
-                  .map((font) => ({ ...font, cssWeights: [] }))
+               const next10Fonts = store.editor.activeFontsComputed.slice(
+                  explorerFonts.value.length,
+                  explorerFonts.value.length + 10
+               )
 
-               const next10FontsToRender = await getExplorerFonts(next10Fonts)
+               await injectFonts(next10Fonts)
 
                isFetchingAdditionalFonts.value = false
 
-               explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10FontsToRender)
+               explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10Fonts)
             } catch (error) {
                isFetchError.value = true
             }
@@ -90,7 +93,7 @@ onMounted(() => {
                v-for="font in explorerFonts"
                :isMobile="isMobile"
                :key="font.family"
-               :cssWeights="font.cssWeights"
+               :appWeights="font.appWeights"
                :familyName="font.family"
                :previewText="previewText"
             />

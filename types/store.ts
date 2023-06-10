@@ -9,7 +9,11 @@ export type AppFontCategories = 'sans' | 'display' | 'serif' | 'handwriting' | '
 
 export type AppFontWeights = Exclude<GoogleAPIWeights, 'regular'> | '400'
 
-export type StoreFonts = Record<AppFontCategories, GoogleFont[]>
+export interface AppFont extends GoogleFont {
+   appWeights: AppFontWeights[]
+}
+
+export type AppFonts = Record<AppFontCategories, AppFont[]>
 
 /* Editor */
 
@@ -27,7 +31,7 @@ export interface StoreEditor {
    searchValueModel: string
    sortCriteriaModel: GoogleAPISortCriteria
    activeCategoryModel: AppFontCategories
-   activeFontsComputed: GoogleFont[]
+   activeFontsComputed: AppFont[]
    actions: {
       setIsLoadingAllFonts(status: boolean): void
       setActiveId(id: string): void

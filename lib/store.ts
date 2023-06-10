@@ -12,13 +12,14 @@ import {
    PREVIEW_OPTIONS
 } from './constants'
 
-import type { GoogleAPISortCriteria, GoogleFont } from '@/types/fetch'
+import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
    StoreEditor,
    StorePreview,
-   StoreFonts,
+   AppFonts,
    StoreEditorFontSizes,
-   AppFontCategories
+   AppFontCategories,
+   AppFont
 } from '@/types/store'
 import type { DBFontFamilyData, DBCombination } from '@/types/db'
 
@@ -32,18 +33,18 @@ export function createStore() {
    /**
     * Fonts */
 
-   const fonts = shallowRef<StoreFonts | null>(null)
+   const appFonts = shallowRef<AppFonts | null>(null)
 
-   function setFonts(value: StoreFonts) {
-      fonts.value = value
+   function setFonts(value: AppFonts) {
+      appFonts.value = value
    }
 
    async function fetchAndSetFonts(sortCriteria: GoogleAPISortCriteria) {
       try {
          const googleFonts = await fetchFonts({ sort: sortCriteria, capability: 'WOFF2' })
          if (googleFonts) {
-            const appFonts = prepareFonts(googleFonts)
-            setFonts(appFonts)
+            const categorizedFonts = prepareFonts(googleFonts)
+            setFonts(categorizedFonts)
          }
       } catch (error) {
          throw new Error(`[store-set-fonts] - ${APP_CRITICAL_ERROR}`)
@@ -65,16 +66,16 @@ export function createStore() {
       sortCriteriaModel: SORT_CRITERIA[0].value,
       activeCategoryModel: EDITOR_CATEGORIES[0].value,
       activeFontsComputed: computed(() => {
-         if (!fonts.value) return []
+         if (!appFonts.value) return []
 
-         const activeCategory = fonts.value?.[editor.activeCategoryModel]
+         const activeCategory = appFonts.value?.[editor.activeCategoryModel]
 
          if (!editor.searchValueModel) return activeCategory
 
          return activeCategory.filter(({ family }) =>
             family.toLowerCase().includes(editor.searchValueModel.toLowerCase())
          )
-      }) as unknown as GoogleFont[],
+      }) as unknown as AppFont[],
       actions: {
          setIsLoadingAllFonts(status: boolean) {
             editor.isLoadingAllFonts = status
@@ -170,7 +171,7 @@ export function createStore() {
 
    return {
       fonts: {
-         data: fonts,
+         data: appFonts,
          actions: { setFonts, fetchAndSetFonts }
       },
       editor,

@@ -5,12 +5,12 @@ import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
 import { downloadSingleFonts } from '@/lib/fetch'
 import { FONT_SIZE_OPTIONS, DEFAULT_FONTS, DEFAULT_WEIGHTS } from '@/lib/constants'
-import { ExplorerFonts } from '@/lib/getExplorerFonts'
+
 import { useStore } from '@/lib/store'
 import { AppFontWeights, StoreEditorFontSizes } from '@/types/store'
 
 const props = defineProps<{
-   cssWeights: ExplorerFonts['cssWeights']
+   appWeights: AppFontWeights[]
    familyName: string
    isMobile: boolean
 }>()
@@ -22,7 +22,7 @@ const store = useStore()
 const isMobile = toRef(props, 'isMobile')
 const isActionBarActive = ref(isMobile.value)
 
-const internalWeight = ref(props.cssWeights[0])
+const internalWeight = ref(props.appWeights[0])
 const internalSize = ref(store.editor.globalFontSize)
 
 /* Watchers */
@@ -39,7 +39,7 @@ watch(
 // Preview
 
 const fontPreviewName = computed(() =>
-   props.cssWeights.length === 1 ? props.familyName : `${props.familyName} ${internalWeight.value}`
+   props.appWeights.length === 1 ? props.familyName : `${props.familyName} ${internalWeight.value}`
 )
 
 // Check if the current font/weight (from props) is the one displayed in the preview
@@ -206,8 +206,8 @@ const commonRangeStyles = {
 
                <RangeSlider
                   v-bind="commonRangeStyles"
-                  v-if="props.cssWeights.length > 1"
-                  :steps="props.cssWeights"
+                  v-if="props.appWeights.length > 1"
+                  :steps="props.appWeights"
                   :initialValue="internalWeight"
                   @change="onFontWeightChange"
                />
