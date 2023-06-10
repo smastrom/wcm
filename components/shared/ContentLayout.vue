@@ -41,5 +41,9 @@ onUpdated(setTop)
    grid-template-columns: 1.5fr 1fr;
    overflow: auto;
    gap: var(--size-8);
+
+   @media (max-width: 1100px) {
+      grid-template-columns: 1fr;
+   }
 }
 </style>

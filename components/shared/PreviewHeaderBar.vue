@@ -70,11 +70,11 @@ function onBodyClick() {
       <div class="Bar_Font_List">
          <div class="Bar_Font">
             <div class="Bar_FontIcon">P</div>
-            <div class="Bar_FontFamily">
-               {{ props.bodyCombination.family }} {{ props.bodyCombination.weight }}
+            <h3 class="Bar_FontFamily">
+               <span>{{ props.bodyCombination.family }} {{ props.bodyCombination.weight }}</span>
 
                <span class="Bar_Chip" v-if="props.displayBodyChip"> {{ props.chipText }}</span>
-            </div>
+            </h3>
          </div>
 
          <ActionButton

@@ -15,7 +15,7 @@ watch(
 </script>
 
 <template>
-   <div class="Switcher_Wrapper">
+   <nav class="Switcher_Wrapper">
       <label class="Fieldset_Label" :for="digitalPrintId">Switch Preview</label>
 
       <Select
@@ -24,7 +24,7 @@ watch(
          :options="PREVIEW_OPTIONS"
          v-model="store.preview.exampleModel"
       />
-   </div>
+   </nav>
 </template>
 
 <style scoped>

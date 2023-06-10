@@ -2,6 +2,7 @@
 import LogoIcon from './icons/LogoIcon.vue'
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 import StatusDot from './StatusDot.vue'
+import PreviewMobile from './PreviewMobile.vue'
 
 import { StoreEditingStatus } from '@/lib/constants'
 import { useRefreshLastUpdated } from '@/lib/useRefreshLastUpdated'
@@ -29,12 +30,15 @@ const statusMessage = computed(() =>
          >
             <ArrowLeftIcon />
          </RouterLink>
+
          <span class="Left_Divider" />
          <div class="Left_Copy">
             <LogoIcon width="50px" />
             <h1><span>Editing:</span> {{ store.editor.activeName }}</h1>
          </div>
       </div>
+
+      <PreviewMobile />
 
       <div class="Right">{{ statusMessage }} <StatusDot /></div>
    </header>
