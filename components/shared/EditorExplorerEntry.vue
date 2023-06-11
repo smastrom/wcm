@@ -64,19 +64,15 @@ const isPreviewBodyActive = computed(
 const isAssignedHeadlineFontActive = computed(() => {
    if (!store.editor.assignedHeadlineFont) return true
 
-   return (
-      store.editor.assignedHeadlineFont.family === props.familyName &&
-      store.editor.assignedHeadlineFont.weight === internalWeight.value
-   )
+   const { family, weight } = store.editor.assignedHeadlineFont
+   return family === props.familyName && weight === internalWeight.value
 })
 
 const isAssignedBodyFontActive = computed(() => {
    if (!store.editor.assignedBodyFont) return true
 
-   return (
-      store.editor.assignedBodyFont.family === props.familyName &&
-      store.editor.assignedBodyFont.weight === internalWeight.value
-   )
+   const { family, weight } = store.editor.assignedBodyFont
+   return family === props.familyName && weight === internalWeight.value
 })
 
 /* Actions */
@@ -120,7 +116,7 @@ function onPreviewBodyClick() {
 async function onAssignHeadingClick() {
    try {
       await nextTick()
-      store.editor.actions.saveFontToDB('headline', {
+      await store.editor.actions.saveFontToDB('headline', {
          family: isAssignedHeadlineFontActive.value ? DEFAULT_FONTS.headline : props.familyName,
          weight: isAssignedHeadlineFontActive.value
             ? DEFAULT_WEIGHTS.headline

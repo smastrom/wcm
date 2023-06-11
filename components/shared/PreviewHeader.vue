@@ -11,37 +11,33 @@ const store = useStore()
 const isDefaultHeadingAssigned = computed(() => {
    if (!store.editor.assignedHeadlineFont) return false
 
-   return (
-      store.editor.assignedHeadlineFont.family === DEFAULT_FONTS.headline &&
-      store.editor.assignedHeadlineFont.weight === DEFAULT_WEIGHTS.headline
-   )
+   const { family, weight } = store.editor.assignedHeadlineFont
+   return family === DEFAULT_FONTS.headline && weight === DEFAULT_WEIGHTS.headline
 })
 
 const isDefaultBodyAssigned = computed(() => {
    if (!store.editor.assignedBodyFont) return false
 
-   return (
-      store.editor.assignedBodyFont.family === DEFAULT_FONTS.body &&
-      store.editor.assignedBodyFont.weight === DEFAULT_WEIGHTS.body
-   )
+   const { family, weight } = store.editor.assignedBodyFont
+   return family === DEFAULT_FONTS.body && weight === DEFAULT_WEIGHTS.body
 })
 
 const isPreviewingAssignedHeading = computed(() => {
    if (!store.editor.assignedHeadlineFont) return false
 
-   return (
-      store.preview.headlineFont.family === store.editor.assignedHeadlineFont.family &&
-      store.preview.headlineFont.weight === store.editor.assignedHeadlineFont.weight
-   )
+   const { family, weight } = store.editor.assignedHeadlineFont
+   const { family: previewFamily, weight: previewWeight } = store.preview.headlineFont
+
+   return family === previewFamily && weight === previewWeight
 })
 
 const isPreviewingAssignedBody = computed(() => {
    if (!store.editor.assignedBodyFont) return false
 
-   return (
-      store.preview.bodyFont.family === store.editor.assignedBodyFont.family &&
-      store.preview.bodyFont.weight === store.editor.assignedBodyFont.weight
-   )
+   const { family, weight } = store.editor.assignedBodyFont
+   const { family: previewFamily, weight: previewWeight } = store.preview.bodyFont
+
+   return family === previewFamily && weight === previewWeight
 })
 </script>
 
