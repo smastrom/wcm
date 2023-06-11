@@ -1,5 +1,9 @@
 # WCM - Webfonts Combination Manager
 
+> :warning: Place a VITE_GOOGLE_FONTS_API_KEY in a .env file in the root of the project.
+
+<br />
+
 ## Recommended IDE Setup
 
 -  [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
