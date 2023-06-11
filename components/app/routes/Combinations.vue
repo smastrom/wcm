@@ -14,6 +14,10 @@ const updateQuery = useUpdateQuery()
 const shouldRenderCreateDialog = ref(true)
 const combinationsRef = ref<DBCombination[] | null>(null)
 
+function setCombinationsRef(combinations: DBCombination[]) {
+   combinationsRef.value = combinations
+}
+
 // Check which view to render
 
 try {
@@ -40,9 +44,15 @@ try {
 } catch (error) {
    throw new Error(`[combinations-route-db] - ${APP_CRITICAL_ERROR}`)
 }
+
+console.log(combinationsRef.value)
 </script>
 
 <template>
    <NewCombinationView v-if="shouldRenderCreateDialog" />
-   <CombinationListView :combinations="combinationsRef" v-else />
+   <CombinationListView
+      :combinations="combinationsRef"
+      :setCombinations="setCombinationsRef"
+      v-else
+   />
 </template>

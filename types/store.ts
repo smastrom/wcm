@@ -58,15 +58,15 @@ type PreviewCSSProperties = 'font-family' | 'font-weight'
 export type PreviewComputedStyles = Record<DBVariantTarget, Record<PreviewCSSProperties, string>>
 
 export interface StorePreview {
+   activeId: string | undefined
    headlineFont: DBFontFamilyData
    bodyFont: DBFontFamilyData
    exampleModel: StorePreviewTypes
-   isFullScreen: boolean
-   isProducingCanvas: boolean
    computedStyles: PreviewComputedStyles
    actions: {
       setHeadlineFont: (data: DBFontFamilyData) => void
       setBodyFont: (data: DBFontFamilyData) => void
       setPreviewExample(example: StorePreviewTypes): void
+      setActiveId(id: string): void
    }
 }

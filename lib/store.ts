@@ -161,11 +161,10 @@ export function createStore() {
    /* Preview */
 
    const preview: StorePreview = reactive<StorePreview>({
+      activeId: undefined,
       headlineFont: DEFAULT_HEADLINE_FONT,
       bodyFont: DEFAULT_BODY_FONT,
       exampleModel: PREVIEW_OPTIONS[0].value,
-      isFullScreen: false,
-      isProducingCanvas: false,
       computedStyles: computed(() => ({
          headline: {
             'font-family': preview.headlineFont.family,
@@ -177,6 +176,9 @@ export function createStore() {
          }
       })) as unknown as PreviewComputedStyles,
       actions: {
+         setActiveId(id: string) {
+            preview.activeId = id
+         },
          setHeadlineFont(fontData) {
             preview.headlineFont = fontData
          },
