@@ -7,9 +7,9 @@ import {
    StoreEditingStatus,
    APP_CRITICAL_ERROR,
    EDITOR_CATEGORIES,
-   DEFAULT_FONTS,
-   DEFAULT_WEIGHTS,
-   PREVIEW_OPTIONS
+   PREVIEW_OPTIONS,
+   DEFAULT_HEADLINE_FONT,
+   DEFAULT_BODY_FONT
 } from './constants'
 
 import type { GoogleAPISortCriteria } from '@/types/fetch'
@@ -81,10 +81,10 @@ export function createStore() {
          setIsLoadingAllFonts(status: boolean) {
             editor.isLoadingAllFonts = status
          },
-         setActiveId(id: string) {
+         setActiveId(id: string | undefined) {
             editor.activeId = id
          },
-         setActiveName(name: string) {
+         setActiveName(name: string | undefined) {
             editor.activeName = name
          },
          setEditingStatus(status: StoreEditingStatus) {
@@ -94,6 +94,7 @@ export function createStore() {
             editor.globalFontSize = size
          },
          setLastUpdated(timestamp: number) {
+            if (!timestamp) return
             editor.lastUpdated = `${formatDistanceToNow(timestamp)} ago`
          },
          setAssignedFont(target: DBVariantTarget, data: DBFontFamilyData) {
@@ -104,11 +105,22 @@ export function createStore() {
          setCurrentEntry(data: DBCombination) {
             this.setActiveId(data.id)
             this.setActiveName(data.name)
+            this.setLastUpdated(data.lastUpdated)
+
             this.setAssignedFont('headline', data.headline)
             this.setAssignedFont('body', data.body)
-            this.setLastUpdated(data.lastUpdated)
             preview.actions.setHeadlineFont(data.headline)
             preview.actions.setBodyFont(data.body)
+         },
+         resetCurrentEntry() {
+            this.setActiveId(undefined as unknown as string)
+            this.setActiveName(undefined as unknown as string)
+            this.setLastUpdated(Date.now())
+
+            this.setAssignedFont('headline', DEFAULT_HEADLINE_FONT)
+            this.setAssignedFont('body', DEFAULT_BODY_FONT)
+            preview.actions.setHeadlineFont(DEFAULT_HEADLINE_FONT)
+            preview.actions.setBodyFont(DEFAULT_BODY_FONT)
          },
          setActiveCategory(category: AppFontCategories) {
             editor.activeCategoryModel = category
@@ -149,8 +161,8 @@ export function createStore() {
    /* Preview */
 
    const preview: StorePreview = reactive<StorePreview>({
-      headlineFont: { family: DEFAULT_FONTS.headline, weight: DEFAULT_WEIGHTS.headline },
-      bodyFont: { family: DEFAULT_FONTS.body, weight: DEFAULT_WEIGHTS.body },
+      headlineFont: DEFAULT_HEADLINE_FONT,
+      bodyFont: DEFAULT_BODY_FONT,
       exampleModel: PREVIEW_OPTIONS[0].value,
       isFullScreen: false,
       isProducingCanvas: false,
@@ -165,12 +177,6 @@ export function createStore() {
          }
       })) as unknown as PreviewComputedStyles,
       actions: {
-         toggleFullScreen() {
-            preview.isFullScreen = !preview.isFullScreen
-         },
-         toggleCanvas() {
-            preview.isProducingCanvas = !preview.isProducingCanvas
-         },
          setHeadlineFont(fontData) {
             preview.headlineFont = fontData
          },

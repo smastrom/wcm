@@ -74,6 +74,16 @@ export const DEFAULT_WEIGHTS: Record<DBVariantTarget, AppFontWeights> = {
    body: '400'
 }
 
+export const DEFAULT_HEADLINE_FONT = {
+   family: DEFAULT_FONTS.headline,
+   weight: DEFAULT_WEIGHTS.headline
+} as const
+
+export const DEFAULT_BODY_FONT = {
+   family: DEFAULT_FONTS.body,
+   weight: DEFAULT_WEIGHTS.body
+} as const
+
 /* API */
 
 export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'

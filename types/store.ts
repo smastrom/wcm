@@ -45,6 +45,7 @@ export interface StoreEditor {
       setActiveCategory(category: AppFontCategories): void
       setSortCriteria(criteria: GoogleAPISortCriteria): void
       setSearchValue(value: string): void
+      resetCurrentEntry(): void
    }
 }
 
@@ -64,8 +65,6 @@ export interface StorePreview {
    isProducingCanvas: boolean
    computedStyles: PreviewComputedStyles
    actions: {
-      toggleFullScreen(): void
-      toggleCanvas(): void
       setHeadlineFont: (data: DBFontFamilyData) => void
       setBodyFont: (data: DBFontFamilyData) => void
       setPreviewExample(example: StorePreviewTypes): void

@@ -1,5 +1,11 @@
 import indexedDB from 'localforage'
-import { DB_NAME, DB_STORE_NAME, DB_COMBINATION_KEY } from './constants'
+import {
+   DB_NAME,
+   DB_STORE_NAME,
+   DB_COMBINATION_KEY,
+   DEFAULT_HEADLINE_FONT,
+   DEFAULT_BODY_FONT
+} from './constants'
 
 import type { DBCombination } from '@/types/db'
 
@@ -60,14 +66,18 @@ async function get(id: string): Promise<DBCombination | null> {
    }
 }
 
-async function create(
-   options: Omit<DBCombination, 'id' | 'lastUpdated'>
-): Promise<DBCombination> {
+async function create(name: DBCombination['name']): Promise<DBCombination> {
    try {
       const combinations = await getAll()
 
       if (Array.isArray(combinations)) {
-         const newItem = { ...options, id: crypto.randomUUID(), lastUpdated: Date.now() }
+         const newItem: DBCombination = {
+            name,
+            headline: DEFAULT_HEADLINE_FONT,
+            body: DEFAULT_BODY_FONT,
+            id: crypto.randomUUID(),
+            lastUpdated: Date.now()
+         }
          await indexedDB.setItem(DB_COMBINATION_KEY, [...combinations, newItem])
          return newItem
       } else {
