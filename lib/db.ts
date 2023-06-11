@@ -13,8 +13,6 @@ import type { DBCombination } from '@/types/db'
 
 export const db = { config, init, get, getAll, create, update, remove, getFontBuffer }
 
-// TODO: Streamline conditions once dev is done
-
 function config() {
    indexedDB.config({
       name: DB_NAME,
@@ -159,10 +157,10 @@ export async function getFontBuffer(key: string, fontUrl: string): Promise<Array
 
       if (import.meta.env.DEV) {
          if (fetchIter) {
-            console.log(`Fetching ${fetchIter} fonts took ` + (performance.now() - now) + 'ms')
+            console.log(`Fetching ${key} from Google took ` + (performance.now() - now) + 'ms')
          }
          if (dbIter) {
-            console.log(`Fetching ${dbIter} fonts from DB took ` + (performance.now() - now) + 'ms')
+            console.log(`Retrieving ${key} from DB took ` + (performance.now() - now) + 'ms')
          }
       }
 

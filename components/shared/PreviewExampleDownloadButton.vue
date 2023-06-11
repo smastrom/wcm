@@ -9,6 +9,8 @@ import ImageIcon from '@/components/shared/icons/ImageIcon.vue'
 
 const store = useStore()
 
+// DOM to image wants the font injected via CSS (and not via FontFace) in order to render it
+
 async function onClick() {
    try {
       const headlineFamily = getFamily(store.fonts.data.value!, store.preview.headlineFont.family)

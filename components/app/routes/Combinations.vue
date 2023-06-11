@@ -27,7 +27,7 @@ const store = useStore()
 const combinations = ref<DBCombination[]>(entries)
 const activeEntry = ref(combinations.value[0])
 
-// 1. Restore active value restore from query
+// 1. Highlight active id from query
 try {
    if (route.query.current) {
       const id = route.query.current
@@ -44,7 +44,8 @@ try {
    )
 }
 
-// 2. If no fonts in the store (new visit), fetch them. Here we don't care about the sort,
+// 2. If no fonts in the store (new visit), fetch them. Here we don't care about the sort.
+// Just need them for the download URLs.
 if (!store.fonts.data.value) await store.fonts.actions.fetchAndSetFonts(SORT_CRITERIA[0].value)
 if (!store.fonts.data.value) {
    throw new Error(`[combination-list-view] - Failed fetching fonts! ${APP_CRITICAL_ERROR}`)

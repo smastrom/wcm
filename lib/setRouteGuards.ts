@@ -5,7 +5,7 @@ import type { Router } from 'vue-router'
 
 export function setRouteGuards(router: Router) {
    router.beforeEach(async (to, from) => {
-      if (to.name === from.name) return
+      if (to.name === from.name) return true
 
       if (to.name === 'editor') {
          const isValidParam = await db.get(to.params.id as string)
@@ -37,7 +37,7 @@ export function setRouteGuards(router: Router) {
    })
 
    router.afterEach(async (to, from) => {
-      if (to.name === from.name) return true // If just updating the query
+      if (to.name === from.name) return true
 
       if (from.name === 'editor') {
          const store = useStore()

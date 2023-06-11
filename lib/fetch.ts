@@ -10,6 +10,12 @@ import type {
    GoogleAPIWeights
 } from '@/types/fetch'
 
+/**
+ *
+ * Fetch fonts from Google Fonts API.
+ * This is called whenever user selects a new sort criteria and top-level in routes
+ * using the criteria from the query/store.
+ */
 export async function fetchFonts({
    sort = SORT_CRITERIA[0].value,
    capability,
@@ -41,6 +47,7 @@ export async function fetchFonts({
    }
 }
 
+/** This is called when the user clicks the download button and download 2 files. */
 export async function downloadSingleFonts(family: string, weight: AppFontWeights) {
    try {
       const googleWeight: GoogleAPIWeights = weight === '400' ? 'regular' : weight
@@ -49,8 +56,9 @@ export async function downloadSingleFonts(family: string, weight: AppFontWeights
       if (ttfFont) fileSaver(ttfFont[0].files[googleWeight], `${family}-${googleWeight}.ttf`)
 
       const woff2Font = await fetchFonts({ family, capability: 'WOFF2' })
-      if (woff2Font)
+      if (woff2Font) {
          fileSaver(woff2Font[0].files[googleWeight], `${family}-web-${googleWeight}.woff2`)
+      }
    } catch (error) {
       console.log(error)
       throw new Error('[download-single-fonts] - Error fetching single fonts.')

@@ -18,6 +18,7 @@ function removeDupesFromFonts<T extends GoogleFont>(fonts: T[], ...familyNames: 
    )
 }
 
+/** Some families are invalid in CSS even if Google returns them */
 function removeBitmapFamilies(fonts: GoogleFont[]): GoogleFont[] {
    return fonts.filter(
       ({ family }) =>
@@ -70,6 +71,7 @@ export function prepareFonts(fonts: GoogleFont[]): CategorizedAppFonts {
    }
 }
 
+/** Gets a specific family from the categorized fonts array */
 export function getFamily(appFonts: CategorizedAppFonts, family: string): AppFont {
    let fontObj: AppFont | undefined = undefined
 
@@ -83,7 +85,7 @@ export function getFamily(appFonts: CategorizedAppFonts, family: string): AppFon
       if (fontObj) break
    }
 
-   if (!fontObj) throw new Error(`[extract-font] - ${family} not found.`)
+   if (!fontObj) throw new Error(`[get-family] - ${family} not found.`)
 
    return fontObj
 }

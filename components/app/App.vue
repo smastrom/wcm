@@ -6,6 +6,8 @@ import { reloadPage } from '@/lib/utils'
 import { useAppErrors } from '@/lib/useAppErrors'
 
 const { isCriticalError } = useAppErrors()
+
+// Each route has async logic that needs to be loaded before the route can be rendered.
 </script>
 
 <template>
@@ -18,11 +20,11 @@ const { isCriticalError } = useAppErrors()
       </SplashScreen>
    </div>
 
-   <RouterView v-slot="{ Component, route }" v-else>
+   <RouterView v-slot="{ Component }" v-else>
       <template v-if="Component">
-         <Suspense timeout="0">
+         <Suspense>
             <template #default>
-               <Component :is="Component" :key="route.name" />
+               <Component :is="Component" />
             </template>
 
             <template #fallback>

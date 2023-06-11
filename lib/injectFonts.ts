@@ -4,8 +4,14 @@ import { isFirefox } from './utils'
 
 import type { AppFont, AppFontWeights } from '@/types/store'
 
+/** When a font buffer is saved to the DB we add the same key here to avoid useless refreshes */
 export const injectedFonts = new Set<string>()
 
+export function getMemoryOrDBInstanceKey(family: string, weight: AppFontWeights) {
+   return `${family}_${weight}`.replace(/\s/g, '_')
+}
+
+/** Used to inject fonts scrolling the editor explorer */
 export async function injectEditorFonts(fonts: AppFont[]): Promise<void> {
    try {
       for (const font of fonts) {
@@ -34,14 +40,12 @@ export async function injectEditorFonts(fonts: AppFont[]): Promise<void> {
    }
 }
 
-export function getMemoryOrDBInstanceKey(family: string, weight: AppFontWeights) {
-   return `${family}_${weight}`.replace(/\s/g, '_')
-}
-
+/** Gecko wants "" while webkit doesn't */
 function getBrowserSpecificFamilyName(family: string) {
    return isFirefox ? `"${family}"` : family
 }
 
+/** Makes fonts available site-wide, equal to @font-face */
 export async function injectFontFace({
    key,
    family,

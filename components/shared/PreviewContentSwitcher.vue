@@ -8,11 +8,6 @@ import { randomID } from '@/lib/utils'
 const store = useStore()
 
 const previewTypeId = randomID()
-
-watch(
-   () => store.preview.exampleModel,
-   (value) => console.log(value)
-)
 </script>
 
 <template>

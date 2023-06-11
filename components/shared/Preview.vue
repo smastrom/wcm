@@ -37,12 +37,6 @@ watch(
    () => store.preview.exampleModel,
    (newValue) => updateQuery(PREVIEW_TYPE_QUERY_KEY, newValue)
 )
-
-// 1. Since on mount the assigned font equals to the preview one, create a blocking fn
-// that downloads all the combination fonts (only the necessary weights) to be used for both preview and combinations.
-// 2. Configure the global preview spinner as well.
-// 3. Add a scroll lock to the navs for mobile
-// 4. Add the no results found component in the editor
 </script>
 
 <template>

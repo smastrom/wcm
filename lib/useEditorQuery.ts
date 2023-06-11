@@ -12,6 +12,7 @@ import {
 import type { StoreEditorFontSizes, AppFontCategories } from '@/types/store'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 
+/** This restore/updates the query in /combinations/:id page */
 export async function useEditorQuery() {
    const store = useStore()
    const route = useRoute()

@@ -25,15 +25,15 @@ store.editor.actions.setCurrentEntry(entry)
  * 2. Always set the query on mount, if invalid, either restore it
  * from the store (prev/next navigation) or set the default value
  *
- * This will also register watchers to update it
+ * This also registers watchers to update it
  */
 await useEditorQuery()
 
-// 3. Fetch Google fonts and set them to store using the current sort criteria
-try {
+// 3. Fetch Google fonts and set them to store using the current sort criteria if first visit
+if (!store.fonts.data.value) {
    await store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
-} catch (error) {
-   console.log(error)
+}
+if (!store.fonts.data.value) {
    throw new Error(`[editor-route-store-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 
@@ -41,8 +41,8 @@ try {
 try {
    const previewFamilies = []
 
-   const headlineFamily = getFamily(store.fonts.data.value!, store.preview.headlineFont.family)
-   const bodyFamily = getFamily(store.fonts.data.value!, store.preview.bodyFont.family)
+   const headlineFamily = getFamily(store.fonts.data.value, store.preview.headlineFont.family)
+   const bodyFamily = getFamily(store.fonts.data.value, store.preview.bodyFont.family)
 
    previewFamilies.push(headlineFamily, bodyFamily)
 
