@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { debounce } from '@/lib/utils'
+import { debounce, randomID } from '@/lib/utils'
 import {
    SORT_CRITERIA,
    EDITOR_CATEGORIES as CATEGORIES,
@@ -48,9 +48,9 @@ const debounceOnSearchInput = debounce(onSearchInput, 350)
 
 /* IDs */
 
-const fontSizeRangeId = crypto.randomUUID()
-const sortSelectId = crypto.randomUUID()
-const categoryLabelId = crypto.randomUUID()
+const fontSizeRangeId = randomID()
+const sortSelectId = randomID()
+const categoryLabelId = randomID()
 </script>
 
 <template>

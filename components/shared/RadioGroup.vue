@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T extends string">
+import { randomID } from '@/lib/utils'
+
 defineProps<{
    isDisabled: boolean
    options: readonly {
@@ -16,7 +18,7 @@ function onInput(event: Event) {
    emit('update:modelValue', (event.target as HTMLInputElement).value as T)
 }
 
-const randomName = crypto.randomUUID()
+const randomName = randomID()
 </script>
 
 <template>

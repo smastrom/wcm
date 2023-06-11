@@ -3,10 +3,11 @@ import { PREVIEW_OPTIONS } from '@/lib/constants'
 import { useStore } from '@/lib/store'
 
 import Select from './Select.vue'
+import { randomID } from '@/lib/utils'
 
 const store = useStore()
 
-const digitalPrintId = crypto.randomUUID()
+const previewTypeId = randomID()
 
 watch(
    () => store.preview.exampleModel,
@@ -16,11 +17,11 @@ watch(
 
 <template>
    <nav class="Switcher_Wrapper">
-      <label class="Fieldset_Label" :for="digitalPrintId">Switch Preview</label>
+      <label class="Fieldset_Label" :for="previewTypeId">Switch Preview</label>
 
       <Select
          :isAsync="false"
-         :id="digitalPrintId"
+         :id="previewTypeId"
          :options="PREVIEW_OPTIONS"
          v-model="store.preview.exampleModel"
       />
