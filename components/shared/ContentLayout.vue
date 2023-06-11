@@ -49,7 +49,7 @@ onUpdated(setTop)
    overflow: hidden;
    height: 100%;
 
-   @media (max-width: 1100px) {
+   @media (--layout-switch) {
       grid-template-columns: 1fr;
    }
 }

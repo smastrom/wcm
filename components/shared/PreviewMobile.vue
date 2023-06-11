@@ -84,7 +84,7 @@ function toggleMobilePreview() {
    border-radius: var(--size-3);
    z-index: 10;
 
-   @media (max-width: 1100px) {
+   @media (--layout-switch) {
       justify-content: space-between;
    }
 }
@@ -100,7 +100,8 @@ function toggleMobilePreview() {
    position: fixed;
    bottom: 0;
    left: 0;
-   height: 100vh;
+   top: 0;
+   right: 0;
    width: 100vw;
    padding: var(--size-4);
    background-color: var(--bg-color);

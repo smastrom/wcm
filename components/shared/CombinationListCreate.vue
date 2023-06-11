@@ -56,10 +56,15 @@ async function onCreateClick() {
 .Create_Wrapper {
    display: flex;
    flex-direction: column;
-   gap: var(--size-2);
-   margin: var(--size-4) 0;
+   gap: var(--size-1);
+   margin: var(--size-2) 0;
    border-top: var(--border-size-1) solid var(--divider-color);
    padding: var(--size-4) 0;
+
+   @media (--layout-switch) {
+      padding: var(--size-2) 0 var(--size-2) 0;
+      margin: var(--size-2) 0 0 0;
+   }
 }
 .Create_Title {
    font-weight: 700;
@@ -69,17 +74,21 @@ async function onCreateClick() {
 }
 
 .Create_Form {
-   display: flex;
-   gap: var(--size-2);
+   display: grid;
+   grid-template-columns: 2fr 1fr;
+   gap: var(--size-3);
    align-items: center;
+   flex-wrap: wrap;
 
-   & input {
-      flex: 1;
+   @media (--size-md) {
+      grid-template-columns: 1fr;
    }
 }
 
 .Global_ActionButton {
    display: flex;
    gap: var(--size-2);
+   flex: 1;
+   justify-content: center;
 }
 </style>

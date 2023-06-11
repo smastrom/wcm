@@ -106,7 +106,7 @@ async function onDelete(id: string) {
 
       <template #explorer>
          <div class="CombinationList_Explorer">
-            <h2 class="Preview_Title">My Combinations</h2>
+            <h2 class="Section_Title">My Combinations</h2>
 
             <CombinationListCreate />
 
@@ -124,9 +124,9 @@ async function onDelete(id: string) {
       <!-- Preview -->
 
       <template #preview>
-         <div class="CombinationList_Explorer">
+         <div class="CombinationList_Explorer CombinationList_Preview">
             <div>
-               <h2 class="Preview_Title">Live Preview</h2>
+               <h2 class="Section_Title Preview_Title">Live Preview</h2>
             </div>
             <Preview />
          </div>
@@ -135,10 +135,20 @@ async function onDelete(id: string) {
 </template>
 
 <style scoped>
-.Preview_Title {
+.Section_Title {
    font-weight: 700;
    color: var(--fg-headline-color);
    font-size: var(--font-size-4);
+
+   @media (--layout-switch) {
+      font-size: var(--font-size-3);
+   }
+}
+
+@media (--layout-switch) {
+   .Preview_Title {
+      display: none;
+   }
 }
 
 .CombinationList_Explorer {
@@ -147,10 +157,22 @@ async function onDelete(id: string) {
    flex-direction: column;
 }
 
+.CombinationList_Preview {
+   min-width: calc(450px + var(--size-8));
+
+   @media (--layout-switch) {
+      display: none;
+   }
+}
+
 .CombinationList_Grid {
    display: grid;
    margin-bottom: var(--size-4);
    overflow: auto;
+
+   @media (--layout-switch) {
+      margin-bottom: var(--size-2);
+   }
 
    & > div:last-of-type {
       border: none;

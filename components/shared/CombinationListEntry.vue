@@ -149,6 +149,10 @@ async function onDownloadClick() {
    padding: var(--size-6) var(--size-2);
    gap: var(--size-4);
    border-bottom: var(--border-size-2) solid var(--divider-color);
+
+   @media (--layout-switch) {
+      padding: var(--size-3) 0;
+   }
 }
 
 .Entry_Header {
@@ -163,6 +167,8 @@ async function onDownloadClick() {
    justify-content: space-between;
    gap: var(--size-2);
    font-size: var(--font-size-0);
+   white-space: nowrap;
+   flex-wrap: wrap;
 }
 
 .Entry_Content {
@@ -176,6 +182,10 @@ async function onDownloadClick() {
 
    &[data-active-entry='true'] {
       border-color: var(--accent-color);
+   }
+
+   @media (--layout-switch) {
+      padding-left: var(--size-2);
    }
 }
 
@@ -193,6 +203,9 @@ async function onDownloadClick() {
    display: flex;
    margin-top: var(--size-3);
    justify-content: space-between;
+   flex-wrap: wrap;
+   column-gap: var(--size-2);
+   row-gap: var(--size-3);
 }
 
 .Entry_Nav_Group {
@@ -201,6 +214,7 @@ async function onDownloadClick() {
 }
 
 .Editor_Button {
+   white-space: nowrap;
    color: var(--accent-color);
    font-weight: 700;
 
@@ -219,6 +233,10 @@ async function onDownloadClick() {
    &:hover:disabled {
       color: var(--fg-body-light-color);
       cursor: not-allowed;
+   }
+
+   @media (--layout-switch) {
+      display: none;
    }
 }
 
