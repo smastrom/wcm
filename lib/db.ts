@@ -1,4 +1,6 @@
 import indexedDB from 'localforage'
+import { randomID } from './utils'
+
 import {
    DB_NAME,
    DB_STORE_NAME,
@@ -9,7 +11,7 @@ import {
 
 import type { DBCombination } from '@/types/db'
 
-export const db = { config, init, get, getAll, create, update, remove }
+export const db = { config, init, get, getAll, create, update, remove, getFontBuffer }
 
 // TODO: Streamline conditions once dev is done
 
@@ -38,8 +40,9 @@ async function getAll(): Promise<DBCombination[] | null> {
       const combinations = await indexedDB.getItem<DBCombination[]>(DB_COMBINATION_KEY)
       if (!combinations) {
          console.log('[db-getAll] - Combinations key do not exist.')
+         return null
       }
-      return combinations
+      return combinations.sort((a, b) => b.lastUpdated - a.lastUpdated)
    } catch (error) {
       console.error(error)
       throw new Error(`[db-getAll] - Error getting all combinations.`)
@@ -75,7 +78,7 @@ async function create(name: DBCombination['name']): Promise<DBCombination> {
             name,
             headline: DEFAULT_HEADLINE_FONT,
             body: DEFAULT_BODY_FONT,
-            id: crypto.randomUUID(),
+            id: randomID(),
             lastUpdated: Date.now()
          }
          await indexedDB.setItem(DB_COMBINATION_KEY, [...combinations, newItem])
@@ -99,6 +102,7 @@ export async function update(
       if (Array.isArray(combinations)) {
          const item = combinations.find((item) => item.id === id)
          if (item) {
+            console.log('[db-update] - Combination updated.')
             const newItem = { ...item, ...options, lastUpdated: Date.now() }
             await indexedDB.setItem(
                DB_COMBINATION_KEY,
@@ -133,5 +137,38 @@ async function remove(id: string): Promise<string | null> {
    } catch (error) {
       console.error(error)
       throw new Error(`[db-update] - Error removing combination ${id}}.`)
+   }
+}
+
+export async function getFontBuffer(key: string, fontUrl: string): Promise<ArrayBuffer> {
+   const now = performance.now()
+
+   let fetchIter = 0
+   let dbIter = 0
+
+   try {
+      let buffer: ArrayBuffer | null = await indexedDB.getItem(key)
+
+      if (!buffer) {
+         const bufferFromGoogle = await fetch(fontUrl).then((res) => res.arrayBuffer())
+         buffer = await indexedDB.setItem(key, bufferFromGoogle)
+         fetchIter++
+      } else {
+         dbIter++
+      }
+
+      if (import.meta.env.DEV) {
+         if (fetchIter) {
+            console.log(`Fetching ${fetchIter} fonts took ` + (performance.now() - now) + 'ms')
+         }
+         if (dbIter) {
+            console.log(`Fetching ${dbIter} fonts from DB took ` + (performance.now() - now) + 'ms')
+         }
+      }
+
+      return buffer
+   } catch (error) {
+      console.error(error)
+      throw new Error(`[db-getBuffer] - Error getting font buffer.`)
    }
 }
