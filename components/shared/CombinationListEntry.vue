@@ -107,7 +107,7 @@ async function onDownloadClick() {
                'font-weight': props.combination.headline.weight
             }"
          >
-            Il pessimismo è la saggezza dei delusi e dei vinti.
+            The Quick Brown Fox Jumps Over the Lazy Dog
          </h1>
          <p
             class="Entry_Content_Paragraph"
@@ -116,9 +116,9 @@ async function onDownloadClick() {
                'font-weight': props.combination.body.weight
             }"
          >
-            This is an amazing paragraph. This is an amazing paragraph. This is an amazing
-            paragraph. This is an amazing paragraph. This is an amazing paragraph. This is an
-            amazing paragraph.
+            Experiment with different typefaces, sizes, and styles to find the perfect combination
+            that suits your design and brings your content to life. Let your creativity flow as you
+            explore the world of typography.
          </p>
       </div>
       <nav class="Entry_Nav">
