@@ -25,7 +25,7 @@ const statusMessage = computed(() =>
       <div class="Left">
          <RouterLink
             aria-label="Back to combinations"
-            :to="{ name: 'combinations' }"
+            :to="{ name: 'combinations', query: { current: store.editor.activeId } }"
             class="Left_Arrow"
          >
             <ArrowLeftIcon />

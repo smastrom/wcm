@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { storeInjectionKey, createStore } from '@/lib/store'
+import { storeInjectionKey, createStore, useStore } from '@/lib/store'
 import { db } from '@/lib/db'
 
 import App from '@/components/app/App.vue'
@@ -44,13 +44,24 @@ const router = createRouter({
    ]
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
+   if (to.name === from.name) return
+
    if (to.name === 'editor') {
       const isValidParam = await db.get(to.params.id as string)
       if (!isValidParam) {
-         console.log('Invalid param!')
-         return router.push({ name: 'combinations' })
+         console.error('[editor-route-guard] - @beforeEach - Invalid param!')
+         await router.push({ name: 'combinations' })
       }
+   }
+})
+
+router.afterEach(async (to, from) => {
+   if (to.name === from.name) return
+
+   if (from.name === 'editor') {
+      const store = useStore()
+      store.editor.actions.resetCurrentEntry()
    }
 })
 
