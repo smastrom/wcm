@@ -12,7 +12,7 @@ try {
    const combinations = await db.getAll()
 
    if (!combinations || combinations.length === 0) {
-      destination.value.query = { new: 'true' }
+      destination.value.name = 'first-combination'
    }
 } catch (error) {
    throw new Error(`[index-route] - ${APP_CRITICAL_ERROR}`)

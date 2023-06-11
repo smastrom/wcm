@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import SplashScreen from './SplashScreen.vue'
+import SplashScreen from '@/components/shared/SplashScreen.vue'
 
 import { db } from '@/lib/db'
 import { normalizeSpaces } from '@/lib/utils'
-import { APP_CRITICAL_ERROR, DEFAULT_FONTS, DEFAULT_WEIGHTS } from '@/lib/constants'
+import { APP_CRITICAL_ERROR } from '@/lib/constants'
+import { useStore } from '@/lib/store'
 
 const router = useRouter()
-
+const store = useStore()
 const combinationName = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
 
 onMounted(() => inputRef.value?.focus())
 
-const isValid = computed(() => combinationName.value.length > 4)
+const isValid = computed(() => combinationName.value.length >= 4)
 
 function onInput(event: Event) {
    combinationName.value = normalizeSpaces((event.target as HTMLInputElement)?.value ?? '')
@@ -22,21 +23,11 @@ async function onSubmit() {
    try {
       await db.init()
 
-      const entry = await db.create({
-         name: combinationName.value,
-         headline: {
-            family: DEFAULT_FONTS.headline,
-            weight: DEFAULT_WEIGHTS.headline
-         },
-         body: {
-            family: DEFAULT_FONTS.body,
-            weight: DEFAULT_WEIGHTS.body
-         }
-      })
-
-      router.push({ name: 'editor', params: { id: entry.id } })
+      const entry = await db.create(combinationName.value)
+      store.editor.actions.setCurrentEntry(entry)
+      await router.push({ name: 'editor', params: { id: entry.id } })
    } catch (error) {
-      throw new Error(`[new-combination-view] - ${APP_CRITICAL_ERROR}`)
+      throw new Error(`[first-combination-route] - ${APP_CRITICAL_ERROR}`)
    }
 }
 </script>
