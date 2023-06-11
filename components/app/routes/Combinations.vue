@@ -106,31 +106,31 @@ async function onDelete(id: string) {
       <!-- Explorer -->
 
       <template #explorer>
-         <div class="CombinationList_Explorer">
+         <section class="CombinationList_Explorer">
             <h2 class="Section_Title">My Combinations</h2>
 
             <CombinationListCreate />
 
-            <div class="CombinationList_Grid">
+            <ul class="CombinationList_Grid">
                <CombinationListEntry
                   v-for="combination in combinations"
                   :key="combination.id"
                   :combination="combination"
                   @delete="onDelete(combination.id)"
                />
-            </div>
-         </div>
+            </ul>
+         </section>
       </template>
 
       <!-- Preview -->
 
       <template #preview>
-         <div class="CombinationList_Explorer CombinationList_Preview">
+         <section class="CombinationList_Explorer CombinationList_Preview">
             <div>
                <h2 class="Section_Title Preview_Title">Live Preview</h2>
             </div>
             <Preview />
-         </div>
+         </section>
       </template>
    </ContentLayout>
 </template>

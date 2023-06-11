@@ -189,7 +189,7 @@ const commonRangeStyles = {
 </script>
 
 <template>
-   <article class="Entry_Wrapper" v-bind="pointerEvents">
+   <li class="Entry_Wrapper" v-bind="pointerEvents">
       <Transition name="ActionBar_Fade">
          <nav class="ActionBar_Wrapper" v-if="(isActionBarActive && !isMobile) || isMobile">
             <!-- Font Controls  -->
@@ -300,7 +300,7 @@ const commonRangeStyles = {
             {{ previewText || props.familyName }}
          </div>
       </div>
-   </article>
+   </li>
 </template>
 
 <style scoped>

@@ -3,7 +3,7 @@ import { useStore } from '@/lib/store'
 import { db } from '@/lib/db'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
-import { normalizeSpaces } from '@/lib/utils'
+import { normalizeSpaces, randomID } from '@/lib/utils'
 
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
@@ -30,29 +30,39 @@ async function onCreateClick() {
       throw new Error(`[combination-list-view] - Creation failed. ${APP_CRITICAL_ERROR}`)
    }
 }
+
+const formId = randomID()
 </script>
 
 <template>
    <div class="Create_Wrapper">
-      <h3 class="Create_Title">Create a new combination</h3>
-      <form @submit.prevent="onCreateClick" class="Create_Form">
-         <input
-            maxlength="30"
-            type="text"
-            @input="onInput"
-            class="Global_InputField"
-            placeholder="Enter a name of your choice"
-         />
-         <button type="submit" class="Global_ActionButton" :disabled="!isValid">
-            Create and edit
+      <form @submit.prevent="onCreateClick" class="Create_Form_Wrapper">
+         <label :for="formId" class="Create_Title">Create a new combination</label>
+         <div class="Create_Form">
+            <input
+               :id="formId"
+               maxlength="30"
+               type="text"
+               @input="onInput"
+               class="Global_InputField"
+               placeholder="Enter a name of your choice"
+            />
+            <button type="submit" class="Global_ActionButton" :disabled="!isValid">
+               Create and edit
 
-            <ArrowLeftIcon fill="white" style="transform: rotate(180deg)" />
-         </button>
+               <ArrowLeftIcon fill="white" style="transform: rotate(180deg)" />
+            </button>
+         </div>
       </form>
    </div>
 </template>
 
 <style scoped>
+.Create_Form_Wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: var(--size-2);
+}
 .Create_Wrapper {
    display: flex;
    flex-direction: column;

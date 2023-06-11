@@ -63,7 +63,7 @@ const categoryLabelId = randomID()
          >
          <input
             class="Global_InputField SearchField"
-            type="text"
+            type="search"
             id="editor_search"
             maxlength="25"
             :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"

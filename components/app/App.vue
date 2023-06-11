@@ -22,7 +22,7 @@ const { isCriticalError } = useAppErrors()
 
    <RouterView v-slot="{ Component }" v-else>
       <template v-if="Component">
-         <Suspense>
+         <Suspense timeout="0">
             <template #default>
                <Component :is="Component" />
             </template>

@@ -83,7 +83,7 @@ async function onDownloadClick() {
 </script>
 
 <template>
-   <div class="Entry_Wrapper">
+   <li class="Entry_Wrapper">
       <div class="Entry_Header">
          <div class="Entry_Header_Details">
             <h2>
@@ -140,7 +140,7 @@ async function onDownloadClick() {
             </button>
          </div>
       </nav>
-   </div>
+   </li>
 </template>
 
 <style scoped>

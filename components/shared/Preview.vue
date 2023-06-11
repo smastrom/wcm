@@ -40,11 +40,11 @@ watch(
 </script>
 
 <template>
-   <div class="Preview_Wrapper" v-if="!isMobile">
+   <section class="Preview_Wrapper" v-if="!isMobile">
       <PreviewHeader v-if="route.name === 'editor'" />
       <PreviewContentSwitcher />
       <PreviewContent />
-   </div>
+   </section>
 </template>
 
 <style scoped>

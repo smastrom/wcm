@@ -42,7 +42,7 @@ const isPreviewingAssignedBody = computed(() => {
 </script>
 
 <template>
-   <div class="Preview_Header">
+   <nav class="Preview_Header">
       <PreviewHeaderBar
          v-if="!hideAssigned"
          label="Assigned"
@@ -65,7 +65,7 @@ const isPreviewingAssignedBody = computed(() => {
          chipText="Assigned"
          accentColor="var(--accent-color)"
       />
-   </div>
+   </nav>
 </template>
 
 <style scoped>

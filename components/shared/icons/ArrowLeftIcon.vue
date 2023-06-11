@@ -6,6 +6,7 @@ const fill = defineProp('var(--fg-body-light-color)')
 
 <template>
    <svg
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       :width="width"
       :height="width"

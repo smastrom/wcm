@@ -80,10 +80,16 @@ onMounted(() => {
    if (!sentinelRef.value) return
    intersectionObserver.observe(sentinelRef.value)
 })
+
+const ariaProps = {
+   ariaAtomic: 'true',
+   ariaLive: 'polite',
+   role: 'status'
+}
 </script>
 
 <template>
-   <div class="Explorer_Wrapper" ref="rootRef">
+   <section class="Explorer_Wrapper" ref="rootRef">
       <!-- Preview Text -->
 
       <input
@@ -96,7 +102,7 @@ onMounted(() => {
       <div>
          <!-- Preview -->
 
-         <div
+         <ul
             v-if="explorerFonts.length > 0 && !store.editor.isLoadingAllFonts"
             class="Explorer_List"
          >
@@ -108,16 +114,21 @@ onMounted(() => {
                :familyName="font.family"
                :previewText="previewText"
             />
-         </div>
+         </ul>
 
          <div ref="sentinelRef" />
 
          <div v-if="explorerFonts.length === 0 && !store.editor.isLoadingAllFonts">
-            <h2 class="Explorer_NoResults">No results matched your serch. Please try again.</h2>
+            <h2 class="Explorer_NoResults" v-bind="ariaProps">
+               No results matched your search. Please try again.
+            </h2>
          </div>
+
+         <!-- No results -->
 
          <div v-if="store.editor.isLoadingAllFonts && !isFetchError" class="InitialSpinner_Wrapper">
             <SpinnerIcon width="100px" />
+            <div class="Global_VisuallyHidden" v-bind="ariaProps">Loading additional fonts...</div>
          </div>
 
          <HorizontalSpinnerIcon
@@ -131,7 +142,7 @@ onMounted(() => {
             <button @click="reloadPage" class="Global_ActionButton">Reload Page</button>
          </div>
       </div>
-   </div>
+   </section>
 </template>
 
 <style scoped>

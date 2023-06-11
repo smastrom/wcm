@@ -55,15 +55,15 @@ function toggleMobilePreview() {
 
       <Teleport to="body">
          <Transition name="Preview_Mobile_Wobble">
-            <div class="Preview_Mobile_Wrapper" v-if="isMobilePreviewToggled">
-               <div class="Preview_Mobile_Header">
+            <section class="Preview_Mobile_Wrapper" v-if="isMobilePreviewToggled">
+               <nav class="Preview_Mobile_Header">
                   <h2 class="Preview_Mobile_Title">Combination Preview</h2>
                   <button class="Preview_Mobile_Close" @click="toggleMobilePreview">Close</button>
-               </div>
+               </nav>
                <PreviewHeader :hideAssigned="true" />
                <PreviewContentSwitcher />
                <PreviewContent />
-            </div>
+            </section>
          </Transition>
       </Teleport>
    </div>

@@ -14,10 +14,24 @@ const fillColor = computed(() => {
          return 'var(--success-color)'
    }
 })
+
+const ariaLiveMessage = computed(() => {
+   switch (store.editor.editingStatus) {
+      case StoreEditingStatus.SAVING:
+         return 'Saving combination...'
+      case StoreEditingStatus.ERROR:
+         return 'There was an error saving your combination'
+      default:
+         return 'Combination saved'
+   }
+})
 </script>
 
 <template>
    <div class="Dot" />
+   <div class="Global_VisuallyHidden" role="status" aria-atomic="true" aria-live="polite">
+      {{ ariaLiveMessage }}
+   </div>
 </template>
 
 <style scoped>

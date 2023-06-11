@@ -117,11 +117,15 @@ const statusMessage = computed(() =>
    display: flex;
    flex-wrap: nowrap;
    align-items: center;
-
+   justify-content: flex-end;
    gap: var(--size-2);
    font-size: var(--font-size-0);
    height: var(--size-4);
    min-width: var(--size-12);
+
+   @media (--size-md) {
+      justify-content: flex-start;
+   }
 }
 
 .Status_Fade-enter-active,
