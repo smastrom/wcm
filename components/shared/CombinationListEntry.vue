@@ -11,11 +11,12 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-   (event: 'delete', value: string): void
+   (event: 'delete', value: string): Promise<void>
 }>()
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 
 // Computed
 
@@ -33,11 +34,22 @@ const isActive = computed(() => store.preview.activeId === props.combination.id)
 
 // Events
 
-function onDelete() {
-   emit('delete', props.combination.id)
+const isDeleteDisabled = ref(false)
+const isDownloadDisabled = ref(false)
+
+async function onDelete() {
+   try {
+      isDeleteDisabled.value = true
+      await emit('delete', props.combination.id)
+   } catch (error) {
+      console.error(error)
+   } finally {
+      isDeleteDisabled.value = false
+   }
 }
 
-function onPreviewClick() {
+async function onPreviewClick() {
+   await router.replace({ query: { ...route.query, current: props.combination.id } })
    store.preview.actions.setActiveId(props.combination.id)
    store.preview.actions.setHeadlineFont(props.combination.headline)
    store.preview.actions.setBodyFont(props.combination.body)
@@ -50,12 +62,13 @@ async function onEditClick() {
       console.error('[combination-list-view] - Trying to navigate to a non existent entry .')
    } else {
       store.editor.actions.setCurrentEntry(entry)
-      return router.push({ name: 'editor', params: { id: props.combination.id } })
+      await router.push({ name: 'editor', params: { id: props.combination.id } })
    }
 }
 
 async function onDownloadClick() {
    try {
+      isDownloadDisabled.value = true
       await downloadSingleFonts(
          props.combination.headline.family,
          props.combination.headline.weight
@@ -63,6 +76,8 @@ async function onDownloadClick() {
       await downloadSingleFonts(props.combination.body.family, props.combination.body.weight)
    } catch (error) {
       console.error(error)
+   } finally {
+      isDownloadDisabled.value = false
    }
 }
 </script>
@@ -108,17 +123,21 @@ async function onDownloadClick() {
       </div>
       <nav class="Entry_Nav">
          <div class="Entry_Nav_Group">
-            <button @click="onEditClick" class="Entry_Nav_Button Editor_Button" data-editor-button>
+            <button @click="onEditClick" class="Editor_Button" data-editor-button>
                Open in the editor
             </button>
-            <button @click="onPreviewClick" class="Entry_Nav_Button" :disabled="isActive">
+            <button @click="onPreviewClick" class="Preview_Button" :disabled="isActive">
                {{ isActive ? 'Previewing' : 'Preview' }}
             </button>
          </div>
 
          <div class="Entry_Nav_Group">
-            <button @click="onDownloadClick" class="Entry_Nav_Button">Download</button>
-            <button @click="onDelete" class="Entry_Nav_Button Delete_Button">Delete</button>
+            <button @click="onDownloadClick" :disabled="isDeleteDisabled" class="Download_Button">
+               Download
+            </button>
+            <button @click="onDelete" :disabled="isDeleteDisabled" class="Delete_Button">
+               Delete
+            </button>
          </div>
       </nav>
    </div>
@@ -181,33 +200,43 @@ async function onDownloadClick() {
    gap: var(--size-4);
 }
 
-.Entry_Nav_Button {
-   font-weight: 700;
-
-   &:disabled {
-      color: var(--fg-body-light-color);
-      cursor: not-allowed;
-   }
-
-   &:hover:not(:disabled) {
-      color: var(--accent-color);
-   }
-}
-
 .Editor_Button {
    color: var(--accent-color);
+   font-weight: 700;
 
    &:hover {
       text-decoration: underline;
    }
+}
+
+.Preview_Button {
+   &:hover:not(:disabled) {
+      text-decoration: underline;
+      color: var(--accent-color);
+   }
+
+   &:disabled,
+   &:hover:disabled {
+      color: var(--fg-body-light-color);
+      cursor: not-allowed;
+   }
+}
+
+.Download_Button:hover {
+   text-decoration: underline;
 }
 
 .Delete_Button {
    color: var(--error-color);
+   font-weight: 700;
 
    &:hover {
       text-decoration: underline;
-      color: var(--error-color);
+   }
+
+   &[disabled] {
+      text-decoration: none;
+      cursor: not-allowed;
    }
 }
 </style>
