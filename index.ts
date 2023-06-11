@@ -1,11 +1,13 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { storeInjectionKey, createStore, useStore } from '@/lib/store'
+import { storeInjectionKey, createStore } from '@/lib/store'
+import { setRouteGuards } from './lib/setRouteGuards'
 import { db } from '@/lib/db'
 
 import App from '@/components/app/App.vue'
 import IndexPage from '@/components/app/routes/Index.vue'
 import CombinationsPage from '@/components/app/routes/Combinations.vue'
+import FirstCombinationPage from '@/components/app/routes/FirstCombination.vue'
 import EditorPage from '@/components/app/routes/Editor.vue'
 
 import '@/assets/css/preflight.css'
@@ -18,7 +20,7 @@ db.config()
 
 const app = createApp(App)
 
-const router = createRouter({
+export const router = createRouter({
    history: createWebHistory(),
    routes: [
       {
@@ -30,6 +32,11 @@ const router = createRouter({
          path: '/combinations',
          component: CombinationsPage,
          name: 'combinations'
+      },
+      {
+         path: '/combination/new',
+         component: FirstCombinationPage,
+         name: 'first-combination'
       },
       {
          path: '/combinations/:id',
@@ -44,26 +51,7 @@ const router = createRouter({
    ]
 })
 
-router.beforeEach(async (to, from) => {
-   if (to.name === from.name) return
-
-   if (to.name === 'editor') {
-      const isValidParam = await db.get(to.params.id as string)
-      if (!isValidParam) {
-         console.error('[editor-route-guard] - @beforeEach - Invalid param!')
-         await router.push({ name: 'combinations' })
-      }
-   }
-})
-
-router.afterEach(async (to, from) => {
-   if (to.name === from.name) return
-
-   if (from.name === 'editor') {
-      const store = useStore()
-      store.editor.actions.resetCurrentEntry()
-   }
-})
+setRouteGuards(router)
 
 app.use(router)
 app.provide(storeInjectionKey, createStore())
