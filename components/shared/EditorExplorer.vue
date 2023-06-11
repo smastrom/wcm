@@ -164,6 +164,10 @@ onMounted(() => {
 
 .HorizontalSpinner_Wrapper {
    margin-bottom: var(--size-6);
+
+   @media (--size-lg) {
+      margin-bottom: var(--size-2);
+   }
 }
 
 .FetchError_Wrapper {

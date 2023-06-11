@@ -2,7 +2,11 @@
 const mainRef = ref<HTMLElement | null>(null)
 const mainTop = ref<number | undefined>(undefined)
 
-const mainHeight = computed(() => (!mainTop.value ? '100vh' : `calc(100vh - ${mainTop.value}px)`))
+const viewportHeight = CSS.supports('width: 1svh') ? '100svh' : '100vh'
+
+const mainHeight = computed(() =>
+   !mainTop.value ? viewportHeight : `calc(${viewportHeight} - ${mainTop.value}px)`
+)
 
 function setTop() {
    mainTop.value = mainRef.value?.getBoundingClientRect().top ?? 0
