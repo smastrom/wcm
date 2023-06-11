@@ -26,7 +26,7 @@ store.editor.actions.setCurrentEntry(entry)
  * 2. Always set the query on mount, if invalid, either restore it
  * from the store (prev/next navigation) or set the default value
  *
- * This will also register watcher to update it
+ * This will also register watchers to update it
  */
 await useEditorQuery()
 
@@ -56,7 +56,6 @@ try {
 // 5. Inject the first 15 fonts for the explorer
 try {
    const first15Fonts = store.editor.activeFontsComputed.slice(0, 15)
-   console.log(first15Fonts)
    await injectFonts(first15Fonts)
 } catch (error) {
    console.log(error)
@@ -65,26 +64,18 @@ try {
 </script>
 
 <template>
-   <Suspense>
-      <div>
-         <EditorHeader />
-         <ContentLayout>
-            <template #toolbar>
-               <EditorToolbar />
-            </template>
-
-            <template #explorer>
-               <EditorExplorer />
-            </template>
-
-            <template #preview>
-               <Preview />
-            </template>
-         </ContentLayout>
-      </div>
-
-      <template #fallback>
-         <LoadingScreen />
+   <EditorHeader />
+   <ContentLayout>
+      <template #toolbar>
+         <EditorToolbar />
       </template>
-   </Suspense>
+
+      <template #explorer>
+         <EditorExplorer />
+      </template>
+
+      <template #preview>
+         <Preview />
+      </template>
+   </ContentLayout>
 </template>
