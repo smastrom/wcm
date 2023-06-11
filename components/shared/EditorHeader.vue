@@ -42,7 +42,9 @@ const statusMessage = computed(() =>
 
       <PreviewMobile />
 
-      <div class="Right">{{ statusMessage }} <StatusDot /></div>
+      <Transition mode="out-in" name="Status_Fade">
+         <div class="Right" :key="Math.random()">{{ statusMessage }} <StatusDot /></div>
+      </Transition>
    </header>
 </template>
 
@@ -115,9 +117,20 @@ const statusMessage = computed(() =>
    display: flex;
    flex-wrap: nowrap;
    align-items: center;
+
    gap: var(--size-2);
    font-size: var(--font-size-0);
    height: var(--size-4);
    min-width: var(--size-12);
+}
+
+.Status_Fade-enter-active,
+.Status_Fade-leave-active {
+   transition: opacity 200ms var(--easing);
+}
+
+.Status_Fade-enter-from,
+.Status_Fade-leave-to {
+   opacity: 0;
 }
 </style>

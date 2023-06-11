@@ -24,6 +24,7 @@ const subtitle = defineProp('Enjoy creating webfonts combinations.')
 .Wrapper {
    --padding: var(--size-4);
 
+   background-color: var(--bg-color);
    padding: var(--padding);
    min-height: 100vh;
    display: flex;

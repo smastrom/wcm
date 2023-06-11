@@ -30,7 +30,7 @@ function toggleMobilePreview() {
          }"
          @click="toggleMenu"
       >
-         {{ isMenuToggled ? 'Close' : 'Open' }} Menu
+         {{ isMenuToggled ? 'Close Menu' : 'View Details' }}
       </button>
 
       <!-- Mobile Menu Teleport -->

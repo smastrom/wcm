@@ -58,7 +58,9 @@ const categoryLabelId = randomID()
       <!-- Search -->
 
       <div class="Fieldset">
-         <label class="Fieldset_Label" for="editor_search">Search fonts</label>
+         <label class="Fieldset_Label" for="editor_search"
+            >Search {{ store.editor.activeCategoryModel }} fonts</label
+         >
          <input
             class="Global_InputField SearchField"
             type="text"

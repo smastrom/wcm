@@ -37,7 +37,7 @@ const emit = defineEmits<{
    transition: all 100ms var(--easing);
    font-weight: 700;
 
-   &:hover {
+   &:hover:not(disabled) {
       box-shadow: inset 0 0 0 2px var(--bg-color), 0 0 0 2px v-bind(props.activeColor);
    }
 
