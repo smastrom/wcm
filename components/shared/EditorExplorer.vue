@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { injectFonts } from '@/lib/injectFonts'
+import { injectEditorFonts } from '@/lib/injectFonts'
 import { reloadPage } from '@/lib/utils'
 import { useViewport } from '@/lib/useViewport'
 
@@ -37,7 +37,7 @@ watch(
          store.editor.actions.setIsLoadingAllFonts(true)
 
          const first15Fonts = newValue.slice(0, 15)
-         await injectFonts(first15Fonts)
+         await injectEditorFonts(first15Fonts)
 
          explorerFonts.value = first15Fonts
 
@@ -64,7 +64,7 @@ onMounted(() => {
                   explorerFonts.value.length + 10
                )
 
-               await injectFonts(next10Fonts)
+               await injectEditorFonts(next10Fonts)
 
                isFetchingAdditionalFonts.value = false
 

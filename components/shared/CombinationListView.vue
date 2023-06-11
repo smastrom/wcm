@@ -3,17 +3,16 @@ import ContentLayout from './ContentLayout.vue'
 import CombinationListHeader from './CombinationListHeader.vue'
 import Preview from './Preview.vue'
 
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
 import { useUpdateQuery } from '@/lib/useUpdateQuery'
 import { useStore } from '@/lib/store'
-
 import { db } from '@/lib/db'
+import { getMemoryOrDBInstanceKey, injectedFonts, injectFontFace } from '@/lib/injectFonts'
+import { getFamily } from '@/lib/fonts'
+import { APP_CRITICAL_ERROR, SORT_CRITERIA } from '@/lib/constants'
 
 import type { DBCombination } from '@/types/db'
 
-const props = defineProps<{
-   combinations: DBCombination[]
-}>()
+const props = defineProps<{ combinations: DBCombination[] }>()
 
 const store = useStore()
 const route = useRoute()
@@ -29,6 +28,8 @@ const updateQuery = useUpdateQuery()
 const combinationsRef = toRef(props, 'combinations') // Already sorted by last updated
 
 const activeEntry = ref(combinationsRef.value[0])
+
+// 1. Handle restore from query
 
 try {
    if (route.query.current) {
@@ -48,10 +49,36 @@ try {
    )
 }
 
+// 2. If no fonts in the store (new visit), fetch them. Here we don't care about the sort
+if (!store.fonts.data.value) await store.fonts.actions.fetchAndSetFonts(SORT_CRITERIA[0].value)
+if (!store.fonts.data.value) {
+   throw new Error(`[combination-list-view] - Failed fetching fonts! ${APP_CRITICAL_ERROR}`)
+}
+
+for (const { headline, body } of combinationsRef.value) {
+   for (const { family, weight } of [headline, body]) {
+      const key = getMemoryOrDBInstanceKey(family, weight)
+
+      // 1. Exit if in memory
+      if (injectedFonts.has(key)) continue
+
+      // 3. Fetch from DB / Google
+      const fontUrl = getFamily(store.fonts.data.value, family).files[weight]
+      const buffer = await db.getFontBuffer(key, fontUrl)
+
+      // 4. Inject FontFace
+      await injectFontFace({
+         key,
+         family,
+         weight,
+         buffer
+      })
+   }
+}
+
+// 5. Set current preview fonts
 store.preview.actions.setBodyFont(activeEntry.value.body)
 store.preview.actions.setHeadlineFont(activeEntry.value.headline)
-
-// TODO: Fetch and inject font combinations
 </script>
 
 <template>

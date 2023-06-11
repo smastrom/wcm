@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import LoadingScreen from '@/components/shared/LoadingScreen.vue'
 import ContentLayout from '@/components/shared/ContentLayout.vue'
 import EditorHeader from '@/components/shared/EditorHeader.vue'
 import EditorExplorer from '@/components/shared/EditorExplorer.vue'
@@ -10,7 +9,7 @@ import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
 import { getFamily } from '@/lib/fonts'
 import { db } from '@/lib/db'
-import { injectFonts } from '@/lib/injectFonts'
+import { injectEditorFonts } from '@/lib/injectFonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
 import type { DBCombination } from '@/types/db'
@@ -47,7 +46,7 @@ try {
 
    previewFamilies.push(headlineFamily, bodyFamily)
 
-   await injectFonts(previewFamilies)
+   await injectEditorFonts(previewFamilies)
 } catch (error) {
    console.log(error)
    throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)
@@ -56,7 +55,7 @@ try {
 // 5. Inject the first 15 fonts for the explorer
 try {
    const first15Fonts = store.editor.activeFontsComputed.slice(0, 15)
-   await injectFonts(first15Fonts)
+   await injectEditorFonts(first15Fonts)
 } catch (error) {
    console.log(error)
    throw new Error(`[editor-route-editor-fonts] - ${APP_CRITICAL_ERROR}`)
