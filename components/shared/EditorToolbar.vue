@@ -40,11 +40,10 @@ function onRangeChange(value: string) {
 }
 
 function onSearchInput(event: Event) {
-   const target = event.target as HTMLInputElement
-   store.editor.actions.setSearchValue(target.value)
+   store.editor.actions.setSearchValue((event.target as HTMLInputElement).value)
 }
 
-const debounceOnSearchInput = debounce(onSearchInput, 350)
+const debounceOnSearchInput = debounce(onSearchInput, 500)
 
 /* IDs */
 

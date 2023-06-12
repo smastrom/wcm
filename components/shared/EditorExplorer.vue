@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
 import { injectEditorFonts } from '@/lib/injectFonts'
-import { reloadPage } from '@/lib/utils'
+import { randomID, reloadPage } from '@/lib/utils'
 import { useViewport } from '@/lib/useViewport'
 
 import HorizontalSpinnerIcon from './icons/HorizontalSpinnerIcon.vue'
@@ -81,18 +81,23 @@ onMounted(() => {
    intersectionObserver.observe(sentinelRef.value)
 })
 
+onBeforeUnmount(() => intersectionObserver?.disconnect())
+
 const ariaProps = {
    ariaAtomic: 'true',
    ariaLive: 'polite',
    role: 'status'
 }
+
+const previewTextId = randomID()
 </script>
 
 <template>
    <section class="Explorer_Wrapper" ref="rootRef">
       <!-- Preview Text -->
-
+      <label :for="previewTextId" class="Global_VisuallyHidden">Email</label>
       <input
+         :id="previewTextId"
          type="text"
          placeholder="Preview some text..."
          v-model="previewText"

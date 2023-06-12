@@ -10,13 +10,17 @@ export function reloadPage() {
 }
 
 export function normalizeSpaces(string: string) {
-   return string.replace(/\s+/g, ' ')
+   return string.replace(/\s+/g, ' ').trim()
 }
 
 export function validateQueryParam(queryParamValue: unknown, validValues: string[]) {
    if (typeof queryParamValue !== 'string') return false
    if (!validValues.includes(queryParamValue)) return false
    return true
+}
+
+export function validateName(name: unknown) {
+   return typeof name === 'string' && name.length >= 4 && name.length <= 30
 }
 
 export const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1

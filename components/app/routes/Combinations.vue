@@ -34,8 +34,8 @@ try {
       const entry = await db.get(id as string)
 
       if (entry) {
-         const currId = combinations.value.find(({ id: dbId }) => dbId === id)
-         if (currId) activeEntry.value = currId
+         const currEntry = combinations.value.find(({ id: dbId }) => dbId === id)
+         if (currEntry) activeEntry.value = currEntry
       }
    }
 } catch (error) {

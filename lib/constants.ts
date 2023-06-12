@@ -70,7 +70,7 @@ export const DEFAULT_FONTS: Record<DBVariantTarget, string> = {
 }
 
 export const DEFAULT_WEIGHTS: Record<DBVariantTarget, AppFontWeights> = {
-   headline: '400',
+   headline: '700',
    body: '400'
 }
 

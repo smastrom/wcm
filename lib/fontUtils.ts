@@ -3,13 +3,31 @@ import { toAppWeight } from './utils'
 import type { GoogleFont, GoogleAPIFontCateogry, GoogleAPIWeights } from '@/types/fetch'
 import type { AppFontWeights, AppFont, CategorizedAppFonts } from '@/types/store'
 
-const unallowedFamilies = ['Press Start 2P', 'Rubik 80s Fade']
-const unallowedPrefixes = ['Baloo', 'Libre Barcode']
+const duplicateFamilies = [
+   'Noto',
+   'Noto Sans',
+   'Noto Serif',
+   'IBM Plex Sans',
+   'Hind',
+   'Anek',
+   'Tiro',
+   'Kaisei',
+   'Mukta'
+]
+
+const unallowedFamilies = [
+   'Press Start 2P',
+   'Rubik 80s Fade',
+   'Brygada 1918',
+   'Goudy Bookletter 1911'
+]
+
+const unallowedPrefixes = ['Baloo', 'Libre Barcode', 'Slabo', 'M PLUS']
 
 const allowedWeights: GoogleAPIWeights[] = ['300', 'regular', '500', '700']
 
 /** Removes language-specific duplicates, e.g. remove 'Noto Sans Thai' but keep 'Noto Sans' */
-function removeDupesFromFonts<T extends GoogleFont>(fonts: T[], ...familyNames: string[]): T[] {
+function removeDupesFromFonts<T extends GoogleFont>(fonts: T[], familyNames: string[]): T[] {
    return fonts.filter(
       ({ family }) =>
          !familyNames.some(
@@ -57,7 +75,7 @@ function prepareWeights(fonts: GoogleFont[]): AppFont[] {
 /** Prepares fonts to save in the Vue app. */
 export function prepareFonts(fonts: GoogleFont[]): CategorizedAppFonts {
    fonts = removeBitmapFamilies(fonts)
-   fonts = removeDupesFromFonts(fonts, 'Noto', 'Noto Sans', 'Noto Serif', 'IBM Plex Sans')
+   fonts = removeDupesFromFonts(fonts, duplicateFamilies)
    fonts = prepareWeights(fonts)
 
    const sans = getGoogleCategory(fonts as AppFont[], 'sans-serif')

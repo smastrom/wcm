@@ -2,7 +2,7 @@
 import SplashScreen from '@/components/shared/SplashScreen.vue'
 
 import { db } from '@/lib/db'
-import { normalizeSpaces } from '@/lib/utils'
+import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 import { useStore } from '@/lib/store'
 
@@ -13,13 +13,15 @@ const inputRef = ref<HTMLInputElement | null>(null)
 
 onMounted(() => inputRef.value?.focus())
 
-const isValid = computed(() => combinationName.value.length >= 4)
+const isValid = computed(() => validateName(combinationName.value))
 
 function onInput(event: Event) {
-   combinationName.value = normalizeSpaces((event.target as HTMLInputElement)?.value ?? '')
+   combinationName.value = normalizeSpaces((event.target as HTMLInputElement).value)
 }
 
 async function onSubmit() {
+   if (!validateName(combinationName.value)) return
+
    try {
       await db.init()
 
@@ -30,6 +32,8 @@ async function onSubmit() {
       throw new Error(`[first-combination-route] - ${APP_CRITICAL_ERROR}`)
    }
 }
+
+const nameTextId = randomID()
 </script>
 
 <template>
@@ -38,7 +42,9 @@ async function onSubmit() {
       subtitle="Enter a name of you choice, you can change it later."
    >
       <form @submit.prevent="onSubmit" class="Form">
+         <label :for="nameTextId" class="Global_VisuallyHidden">Email</label>
          <input
+            :id="nameTextId"
             class="Global_InputField InputField"
             maxlength="30"
             ref="inputRef"

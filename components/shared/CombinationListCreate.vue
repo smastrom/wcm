@@ -3,7 +3,7 @@ import { useStore } from '@/lib/store'
 import { db } from '@/lib/db'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
-import { normalizeSpaces, randomID } from '@/lib/utils'
+import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
 
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
@@ -12,14 +12,14 @@ const router = useRouter()
 
 const newCombinationName = ref('')
 
-const isValid = computed(() => newCombinationName.value.length >= 4)
+const isValid = computed(() => validateName(newCombinationName.value))
 
 function onInput(event: Event) {
-   newCombinationName.value = normalizeSpaces((event.target as HTMLInputElement)?.value ?? '')
+   newCombinationName.value = normalizeSpaces((event.target as HTMLInputElement).value)
 }
 
 async function onCreateClick() {
-   if (newCombinationName.value.length < 4) return
+   if (!validateName(newCombinationName.value)) return
 
    try {
       const newEntry = await db.create(newCombinationName.value)
@@ -31,21 +31,22 @@ async function onCreateClick() {
    }
 }
 
-const formId = randomID()
+const createNameId = randomID()
 </script>
 
 <template>
    <div class="Create_Wrapper">
       <form @submit.prevent="onCreateClick" class="Create_Form_Wrapper">
-         <label :for="formId" class="Create_Title">Create a new combination</label>
+         <label :for="createNameId" class="Create_Title">Create a new combination</label>
          <div class="Create_Form">
             <input
-               :id="formId"
+               :id="createNameId"
                maxlength="30"
                type="text"
                @input="onInput"
                class="Global_InputField"
                placeholder="Enter a name of your choice"
+               :value="newCombinationName"
             />
             <button type="submit" class="Global_ActionButton" :disabled="!isValid">
                Create and edit

@@ -39,14 +39,10 @@ if (!store.fonts.data.value) {
 
 // 4. Inject fonts for preview, on initial mount they are equal to assigned fonts
 try {
-   const previewFamilies = []
-
    const headlineFamily = getFamily(store.fonts.data.value, store.preview.headlineFont.family)
    const bodyFamily = getFamily(store.fonts.data.value, store.preview.bodyFont.family)
 
-   previewFamilies.push(headlineFamily, bodyFamily)
-
-   await injectEditorFonts(previewFamilies)
+   await injectEditorFonts([headlineFamily, bodyFamily])
 } catch (error) {
    console.log(error)
    throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)

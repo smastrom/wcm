@@ -27,8 +27,6 @@ const headlineStyles = computed(() => store.preview.computedStyles.headline)
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Lato');
-
 .Preview_Card_Wrapper {
    @apply --preview-content-reset;
 

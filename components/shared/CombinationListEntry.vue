@@ -62,6 +62,7 @@ async function onEditClick() {
       console.error('[combination-list-view] - Trying to navigate to a non existent entry .')
    } else {
       store.editor.actions.setCurrentEntry(entry)
+      await nextTick()
       await router.push({ name: 'editor', params: { id: props.combination.id } })
    }
 }
@@ -192,6 +193,7 @@ async function onDownloadClick() {
 .Entry_Content_Headline {
    font-size: var(--font-size-4);
    color: var(--fg-headline-color);
+   line-height: 1.25;
 }
 
 .Entry_Content_Paragraph {

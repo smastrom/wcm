@@ -69,7 +69,7 @@ export function createStore() {
       activeFontsComputed: computed(() => {
          if (!appFonts.value) return []
 
-         const activeCategory = appFonts.value?.[editor.activeCategoryModel]
+         const activeCategory = appFonts.value[editor.activeCategoryModel]
 
          if (!editor.searchValueModel) return activeCategory
 

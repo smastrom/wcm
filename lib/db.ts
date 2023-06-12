@@ -1,5 +1,5 @@
 import indexedDB from 'localforage'
-import { randomID } from './utils'
+import { randomID, validateName } from './utils'
 
 import {
    DB_NAME,
@@ -69,6 +69,7 @@ async function get(id: string): Promise<DBCombination | null> {
 
 async function create(name: DBCombination['name']): Promise<DBCombination> {
    try {
+      if (!validateName(name)) name = 'New Combination'
       const combinations = await getAll()
 
       if (Array.isArray(combinations)) {
