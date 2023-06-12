@@ -1,7 +1,7 @@
 import { db } from './db'
 import { formatDistanceToNow } from 'date-fns'
 import { fetchFonts } from './fetch'
-import { prepareFonts } from './fonts'
+import { prepareFonts } from './fontUtils'
 import {
    SORT_CRITERIA,
    StoreEditingStatus,

@@ -7,7 +7,7 @@ import Preview from '@/components/shared/Preview.vue'
 
 import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
-import { getFamily } from '@/lib/fonts'
+import { getFamily } from '@/lib/fontUtils'
 import { db } from '@/lib/db'
 import { injectEditorFonts } from '@/lib/injectFonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'

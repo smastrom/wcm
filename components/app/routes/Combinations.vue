@@ -9,7 +9,7 @@ import CombinationListEntry from '@/components/shared/CombinationListEntry.vue'
 
 import { APP_CRITICAL_ERROR, SORT_CRITERIA } from '@/lib/constants'
 import { getMemoryOrDBInstanceKey, injectFontFace, injectedFonts } from '@/lib/injectFonts'
-import { getFamily } from '@/lib/fonts'
+import { getFamily } from '@/lib/fontUtils'
 import { useStore } from '@/lib/store'
 
 import type { DBCombination } from '@/types/db'

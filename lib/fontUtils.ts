@@ -73,19 +73,11 @@ export function prepareFonts(fonts: GoogleFont[]): CategorizedAppFonts {
 
 /** Gets a specific family from the categorized fonts array */
 export function getFamily(appFonts: CategorizedAppFonts, family: string): AppFont {
-   let fontObj: AppFont | undefined = undefined
+   const appFamily = Object.values(appFonts)
+      .flat()
+      .find(({ family: f }) => f === family)
 
-   for (const [, fonts] of Object.entries(appFonts)) {
-      for (const font of fonts) {
-         if (font.family === family) {
-            fontObj = font
-            break
-         }
-      }
-      if (fontObj) break
-   }
+   if (!appFamily) throw new Error(`[get-family] - ${family} not found.`)
 
-   if (!fontObj) throw new Error(`[get-family] - ${family} not found.`)
-
-   return fontObj
+   return appFamily
 }

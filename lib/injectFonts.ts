@@ -11,7 +11,7 @@ export function getMemoryOrDBInstanceKey(family: string, weight: AppFontWeights)
    return `${family}_${weight}`.replace(/\s/g, '_')
 }
 
-/** Used to inject fonts scrolling the editor explorer */
+/** Used to inject fonts when scrolling the editor explorer */
 export async function injectEditorFonts(fonts: AppFont[]): Promise<void> {
    try {
       for (const font of fonts) {

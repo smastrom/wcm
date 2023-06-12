@@ -47,7 +47,7 @@ export async function fetchFonts({
    }
 }
 
-/** This is called when the user clicks the download button and download 2 files. */
+/** This is called when the user clicks the download button for each target. */
 export async function downloadSingleFonts(family: string, weight: AppFontWeights) {
    try {
       const googleWeight: GoogleAPIWeights = weight === '400' ? 'regular' : weight

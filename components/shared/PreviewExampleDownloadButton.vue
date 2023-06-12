@@ -3,7 +3,7 @@ import domToImage from 'dom-to-image'
 import { saveAs } from 'file-saver'
 
 import { useStore } from '@/lib/store'
-import { getFamily } from '@/lib/fonts'
+import { getFamily } from '@/lib/fontUtils'
 
 import ImageIcon from '@/components/shared/icons/ImageIcon.vue'
 
@@ -13,24 +13,29 @@ const store = useStore()
 
 async function onClick() {
    try {
-      const headlineFamily = getFamily(store.fonts.data.value!, store.preview.headlineFont.family)
-      const bodyFamily = getFamily(store.fonts.data.value!, store.preview.bodyFont.family)
+      if (!store.fonts.data.value) return
 
-      const headlineUrl = headlineFamily.files[store.preview.headlineFont.weight]
-      const bodyUrl = bodyFamily.files[store.preview.bodyFont.weight]
+      const { family: prevHeadlineFamily, weight: prevHeadlineWeight } = store.preview.headlineFont
+      const { family: prevBodyFamily, weight: prevBodyWeight } = store.preview.bodyFont
+
+      const { files: headlineFiles } = getFamily(store.fonts.data.value, prevHeadlineFamily)
+      const { files: bodyFiles } = getFamily(store.fonts.data.value, prevBodyFamily)
+
+      const headlineUrl = headlineFiles[prevHeadlineWeight]
+      const bodyUrl = bodyFiles[prevBodyWeight]
 
       const style = document.createElement('style')
 
       style.innerHTML = `
          @font-face {
-            font-family: ${headlineFamily.family}; font-style: normal;
-            font-weight: ${store.preview.headlineFont.weight};
+            font-family: ${prevHeadlineFamily}; font-style: normal;
+            font-weight: ${prevHeadlineWeight};
             src: url('${headlineUrl}') format('woff2');
          }
 
          @font-face {
-            font-family: ${bodyFamily.family}; font-style: normal;
-            font-weight: ${store.preview.bodyFont.weight};
+            font-family: ${prevBodyFamily}; font-style: normal;
+            font-weight: ${prevBodyWeight};
             src: url('${bodyUrl}') format('woff2');
          }
    `
@@ -48,7 +53,7 @@ async function onClick() {
 
       saveAs(
          imageBlob,
-         `${store.preview.exampleModel}-preview-${store.preview.headlineFont.family}+${store.preview.bodyFont.family}.png`
+         `${store.preview.exampleModel}-preview-${prevHeadlineFamily}+${prevBodyFamily}.png`
       )
 
       target.removeChild(style)
