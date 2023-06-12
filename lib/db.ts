@@ -37,7 +37,9 @@ async function getAll(): Promise<DBCombination[] | null> {
    try {
       const combinations = await indexedDB.getItem<DBCombination[]>(DB_COMBINATION_KEY)
       if (!combinations) {
-         console.log('[db-getAll] - Combinations key do not exist.')
+         if (import.meta.env.DEV) {
+            console.log('[db-getAll] - Combinations key do not exist.')
+         }
          return null
       }
       return combinations.sort((a, b) => b.lastUpdated - a.lastUpdated)
@@ -101,7 +103,7 @@ export async function update(
       if (Array.isArray(combinations)) {
          const item = combinations.find((item) => item.id === id)
          if (item) {
-            console.log('[db-update] - Combination updated.')
+            if (import.meta.env.DEV) console.log('[db-update] - Combination updated.')
             const newItem = { ...item, ...options, lastUpdated: Date.now() }
             await indexedDB.setItem(
                DB_COMBINATION_KEY,

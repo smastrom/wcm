@@ -44,7 +44,7 @@ try {
 
    await injectEditorFonts([headlineFamily, bodyFamily])
 } catch (error) {
-   console.log(error)
+   console.error(error)
    throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 
@@ -53,7 +53,7 @@ try {
    const first15Fonts = store.editor.activeFontsComputed.slice(0, 15)
    await injectEditorFonts(first15Fonts)
 } catch (error) {
-   console.log(error)
+   console.error(error)
    throw new Error(`[editor-route-editor-fonts] - ${APP_CRITICAL_ERROR}`)
 }
 </script>

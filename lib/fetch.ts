@@ -60,7 +60,7 @@ export async function downloadSingleFonts(family: string, weight: AppFontWeights
          fileSaver(woff2Font[0].files[googleWeight], `${family}-web-${googleWeight}.woff2`)
       }
    } catch (error) {
-      console.log(error)
+      console.error(error)
       throw new Error('[download-single-fonts] - Error fetching single fonts.')
    }
 }

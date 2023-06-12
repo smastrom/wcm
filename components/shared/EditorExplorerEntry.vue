@@ -126,7 +126,7 @@ async function onAssignHeadingClick() {
       store.preview.actions.setHeadlineFont({ family, weight }) // Also update the preview
    } catch (error) {
       // If there's an error we'll see it in the header and that's it, prev values will be kept
-      console.log(error)
+      console.error(error)
    }
 }
 
@@ -140,7 +140,7 @@ async function onAssignBodyClick() {
       await store.editor.actions.saveFontToDB('body', { family, weight })
       store.preview.actions.setBodyFont({ family, weight })
    } catch (error) {
-      console.log(error)
+      console.error(error)
    }
 }
 
@@ -150,7 +150,7 @@ async function onDownloadClick() {
    try {
       await downloadSingleFonts(props.familyName, internalWeight.value)
    } catch (error) {
-      console.log(error)
+      console.error(error)
    }
 }
 

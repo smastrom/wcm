@@ -34,8 +34,8 @@ export async function injectEditorFonts(fonts: AppFont[]): Promise<void> {
             })
          }
       }
-   } catch (err) {
-      console.log(err)
+   } catch (error) {
+      console.error(error)
       throw new Error('[get-explorer-fonts] - Error fetching fonts.')
    }
 }
