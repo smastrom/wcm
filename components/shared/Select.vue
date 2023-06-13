@@ -3,7 +3,7 @@ const props = defineProps<{
    isAsync: boolean
    id: string
    modelValue: T
-   isDisabled?: boolean
+   isLoading: boolean
    options: readonly {
       label: string
       value: T
@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
    (event: 'update:modelValue', value: T): void
-   (event: 'asyncChange', value: T): void
+   (event: 'asyncChange', value: T): Promise<void>
 }>()
 
 function onChange(event: Event) {
@@ -27,7 +27,7 @@ function onChange(event: Event) {
 </script>
 
 <template>
-   <select :id="id" @change="onChange" class="Select" :disabled="isDisabled">
+   <select :id="id" @change="onChange" class="Select" :disabled="isLoading">
       <option
          v-for="option in options"
          :value="option.value"
@@ -51,14 +51,20 @@ function onChange(event: Event) {
    transition: all 100ms var(--easing);
 
    background-color: var(--bg-elv-color);
-   background-image: url("data:image/svg+xml;charset=utf8, %3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+   background-image: url("data:image/svg+xml;charset=utf8, %3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
    background-position: right 0.45em top 50%;
    background-repeat: no-repeat;
    padding-right: 1.4em;
    background-size: auto 16px;
 
    &[disabled] {
-      @apply --disabled-effect;
+      @apply --field-loading-effect;
+   }
+
+   &:focus,
+   &:hover:not([disabled]) {
+      outline: none;
+      box-shadow: var(--field-shadow);
    }
 }
 </style>

@@ -26,7 +26,8 @@ const subtitle = defineProp('Enjoy creating webfonts combinations.')
 
    background-color: var(--bg-color);
    padding: var(--padding);
-   min-height: 100vh;
+   height: 100svh;
+   height: 100vh;
    display: flex;
    justify-content: center;
    align-items: center;

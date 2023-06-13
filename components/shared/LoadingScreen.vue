@@ -13,6 +13,7 @@ import SpinnerIcon from './SpinnerIcon.vue'
    display: flex;
    justify-content: center;
    align-items: center;
+   height: 100svh;
    height: 100vh;
 }
 </style>

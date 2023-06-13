@@ -64,7 +64,7 @@ const randomName = randomID()
    transition: opacity 100ms var(--easing);
 
    &[data-radiogroup-disabled='true'] {
-      @apply --disabled-effect;
+      @apply --field-loading-effect;
    }
 
    &:hover > .Circle {

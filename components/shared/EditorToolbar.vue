@@ -65,7 +65,11 @@ const categoryLabelId = randomID()
             type="search"
             id="editor_search"
             maxlength="25"
-            :placeholder="`Search ${store.editor.activeCategoryModel} fonts...`"
+            :placeholder="`Search ${
+               store.editor.activeCategoryModel === 'handwriting'
+                  ? 'script'
+                  : store.editor.activeCategoryModel
+            } fonts...`"
             @input="debounceOnSearchInput"
             :disabled="store.editor.isLoadingAllFonts"
          />
@@ -81,7 +85,7 @@ const categoryLabelId = randomID()
             :options="SORT_CRITERIA"
             v-model="store.editor.sortCriteriaModel"
             @asyncChange="onAsyncSelectChange"
-            :isDisabled="store.editor.isLoadingAllFonts"
+            :isLoading="store.editor.isLoadingAllFonts"
          />
       </div>
 
@@ -116,7 +120,7 @@ const categoryLabelId = randomID()
    transition: opacity 100ms var(--easing);
 
    &[disabled] {
-      @apply --disabled-effect;
+      @apply --field-loading-effect;
    }
 }
 .Nav {

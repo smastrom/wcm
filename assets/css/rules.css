@@ -39,6 +39,8 @@ html {
 }
 
 .Global_InputField {
+   appearance: none;
+   -webkit-appearance: none;
    padding: 0.6em 1.2em;
    border-radius: var(--radius-3);
    background-color: var(--bg-elv-color);
@@ -49,10 +51,29 @@ html {
    }
 
    &:focus,
-   &:hover {
+   &:hover:not([disabled]) {
       outline: none;
-      box-shadow: inset 0 0 0 2px var(--accent-color);
+      box-shadow: var(--field-shadow);
    }
+
+   &::-webkit-search-decoration,
+   &::-webkit-search-cancel-button,
+   &::-webkit-search-results-button,
+   &::-webkit-search-results-decoration {
+      display: none;
+   }
+}
+
+.Global_VisuallyHidden {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   margin: -1px;
+   padding: 0;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
 }
 
 :root {
@@ -77,18 +98,6 @@ html {
    }
 }
 
-.Global_VisuallyHidden {
-   position: absolute;
-   width: 1px;
-   height: 1px;
-   margin: -1px;
-   padding: 0;
-   overflow: hidden;
-   clip: rect(0, 0, 0, 0);
-   white-space: nowrap;
-   border: 0;
-}
-
 :root {
    --preview-content-reset {
       letter-spacing: 0.1px !important;
@@ -100,7 +109,7 @@ html {
 }
 
 :root {
-   --disabled-effect {
+   --field-loading-effect {
       opacity: 0.75;
       cursor: wait;
    }
