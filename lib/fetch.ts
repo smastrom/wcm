@@ -53,11 +53,11 @@ export async function downloadSingleFonts(family: string, weight: AppFontWeights
       const googleWeight: GoogleAPIWeights = weight === '400' ? 'regular' : weight
 
       const ttfFont = await fetchFonts({ family })
-      if (ttfFont) fileSaver(ttfFont[0].files[googleWeight], `${family}-${googleWeight}.ttf`)
+      if (ttfFont) fileSaver(ttfFont[0].files[googleWeight], `${family}-${weight}.ttf`)
 
       const woff2Font = await fetchFonts({ family, capability: 'WOFF2' })
       if (woff2Font) {
-         fileSaver(woff2Font[0].files[googleWeight], `${family}-web-${googleWeight}.woff2`)
+         fileSaver(woff2Font[0].files[googleWeight], `${family}-web-${weight}.woff2`)
       }
    } catch (error) {
       console.error(error)
