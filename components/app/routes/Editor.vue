@@ -8,18 +8,10 @@ import Preview from '@/components/shared/Preview.vue'
 import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
 import { getFamily } from '@/lib/fontUtils'
-import { db } from '@/lib/db'
 import { injectEditorFonts } from '@/lib/injectFonts'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
-import type { DBCombination } from '@/types/db'
-
 const store = useStore()
-const route = useRoute()
-
-// 1. At this point the entry is 100% in the DB (route guard in index.ts)
-const entry = (await db.get(route.params.id as string)) as DBCombination
-store.editor.actions.setCurrentEntry(entry)
 
 /**
  * 2. Always set the query on mount, if invalid, either restore it

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useStore } from '@/lib/store'
 import { db } from '@/lib/db'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
@@ -7,7 +6,6 @@ import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
 
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
-const store = useStore()
 const router = useRouter()
 
 const newCombinationName = ref('')
@@ -23,7 +21,6 @@ async function onCreateClick() {
 
    try {
       const newEntry = await db.create(newCombinationName.value)
-      store.editor.actions.setCurrentEntry(newEntry)
       await router.push({ name: 'editor', params: { id: newEntry.id } })
    } catch (error) {
       console.error(error)

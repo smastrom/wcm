@@ -1,31 +1,22 @@
 <script setup lang="ts">
-import { db } from '@/lib/db'
-
 import Preview from '@/components/shared/Preview.vue'
 import ContentLayout from '@/components/shared/ContentLayout.vue'
 import CombinationListHeader from '@/components/shared/CombinationListHeader.vue'
 import CombinationListCreate from '@/components/shared/CombinationListCreate.vue'
 import CombinationListEntry from '@/components/shared/CombinationListEntry.vue'
 
+import { db } from '@/lib/db'
 import { APP_CRITICAL_ERROR, SORT_CRITERIA } from '@/lib/constants'
 import { getMemoryOrDBInstanceKey, injectFontFace, injectedFonts } from '@/lib/injectFonts'
 import { getFamily } from '@/lib/fontUtils'
 import { useStore } from '@/lib/store'
 
-import type { DBCombination } from '@/types/db'
-import { reloadPage } from '@/lib/utils'
-
-const entries = await db.getAll()
-if (!entries) {
-   throw new Error(`[combination-list-view] - Failed fetching combinations! ${APP_CRITICAL_ERROR}`)
-}
-
 const route = useRoute()
-const router = useRouter()
 const store = useStore()
 
-const combinations = ref<DBCombination[]>(entries)
-const activeEntry = ref(combinations.value[0])
+if (!store.combinations.data.value) throw new Error(`[combination-list-view] - No combinations!`)
+
+const activeEntry = ref(store.combinations.data.value[0])
 
 // 1. Highlight active id from query
 try {
@@ -34,7 +25,7 @@ try {
       const entry = await db.get(id as string)
 
       if (entry) {
-         const currEntry = combinations.value.find(({ id: dbId }) => dbId === id)
+         const currEntry = store.combinations.data.value.find(({ id: dbId }) => dbId === id)
          if (currEntry) activeEntry.value = currEntry
       }
    }
@@ -53,7 +44,7 @@ if (!store.fonts.data.value) {
 
 // 3. Inject fonts and weights needed for the preview
 try {
-   for (const { headline, body } of combinations.value) {
+   for (const { headline, body } of store.combinations.data.value) {
       for (const { family, weight } of [headline, body]) {
          const key = getMemoryOrDBInstanceKey(family, weight)
 
@@ -77,26 +68,6 @@ try {
 store.preview.actions.setActiveId(activeEntry.value.id)
 store.preview.actions.setBodyFont(activeEntry.value.body)
 store.preview.actions.setHeadlineFont(activeEntry.value.headline)
-
-// Events
-
-async function onDelete(id: string) {
-   try {
-      const newCombinations = combinations.value.filter((entry) => entry.id !== id)
-      // If deleting last combination
-      if (newCombinations.length === 0) {
-         await router.replace({ query: {} }) // Remove query
-         await db.remove(id) // Delete it from DB, do not update the UI
-
-         reloadPage() // Route guard will send to first-combination if no combinations left
-      } else {
-         combinations.value = newCombinations
-         await db.remove(id) // Delete in background
-      }
-   } catch (error) {
-      console.error(error) // Do not show error, just log it
-   }
-}
 </script>
 
 <template>
@@ -113,10 +84,9 @@ async function onDelete(id: string) {
 
             <ul class="CombinationList_Grid">
                <CombinationListEntry
-                  v-for="combination in combinations"
+                  v-for="combination in store.combinations.data.value"
                   :key="combination.id"
                   :combination="combination"
-                  @delete="onDelete(combination.id)"
                />
             </ul>
          </section>
@@ -175,7 +145,7 @@ async function onDelete(id: string) {
       margin-bottom: var(--size-2);
    }
 
-   & > div:last-of-type {
+   & > li:last-of-type {
       border: none;
    }
 }

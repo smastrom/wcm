@@ -4,10 +4,8 @@ import SplashScreen from '@/components/shared/SplashScreen.vue'
 import { db } from '@/lib/db'
 import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
 import { APP_CRITICAL_ERROR } from '@/lib/constants'
-import { useStore } from '@/lib/store'
 
 const router = useRouter()
-const store = useStore()
 const combinationName = ref('')
 const inputRef = ref<HTMLInputElement | null>(null)
 
@@ -26,7 +24,6 @@ async function onSubmit() {
       await db.init()
 
       const entry = await db.create(combinationName.value)
-      store.editor.actions.setCurrentEntry(entry)
       await router.push({ name: 'editor', params: { id: entry.id } })
    } catch (error) {
       throw new Error(`[first-combination-route] - ${APP_CRITICAL_ERROR}`)
@@ -39,10 +36,10 @@ const nameTextId = randomID()
 <template>
    <SplashScreen
       title="Create a combination."
-      subtitle="Enter a name of you choice, you can change it later."
+      subtitle="Enter a name of you choice for your first combination."
    >
       <form @submit.prevent="onSubmit" class="Form">
-         <label :for="nameTextId" class="Global_VisuallyHidden">Email</label>
+         <label :for="nameTextId" class="Global_VisuallyHidden">Name</label>
          <input
             :id="nameTextId"
             class="Global_InputField InputField"

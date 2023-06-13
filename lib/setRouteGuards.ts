@@ -7,12 +7,17 @@ export function setRouteGuards(router: Router) {
    router.beforeEach(async (to, from) => {
       if (to.name === from.name) return true
 
+      const store = useStore()
+
       if (to.name === 'editor') {
-         const isValidParam = await db.get(to.params.id as string)
-         if (!isValidParam) {
-            console.error('[editor-route-guard] - @beforeEach - Invalid param!')
-            return { name: 'combinations' }
+         const entry = await db.get(to.params.id as string)
+
+         if (entry) {
+            store.editor.actions.setCurrentEntry(entry)
+            return true
          }
+         console.error('[editor-route-guard] - @beforeEach - Invalid param!')
+         return { name: 'combinations' }
       }
 
       if (to.name === 'combinations') {
@@ -22,6 +27,8 @@ export function setRouteGuards(router: Router) {
          if (isNewUser) {
             return { name: 'first-combination' }
          }
+
+         store.combinations.actions.setCombinations(entries)
          return true
       }
 

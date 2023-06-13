@@ -5,13 +5,10 @@ import { db } from '@/lib/db'
 import { downloadSingleFonts } from '@/lib/fetch'
 
 import type { DBCombination } from '@/types/db'
+import { reloadPage } from '@/lib/utils'
 
 const props = defineProps<{
    combination: DBCombination
-}>()
-
-const emit = defineEmits<{
-   (event: 'delete', value: string): Promise<void>
 }>()
 
 const store = useStore()
@@ -37,12 +34,25 @@ const isActive = computed(() => store.preview.activeId === props.combination.id)
 const isDeleteDisabled = ref(false)
 const isDownloadDisabled = ref(false)
 
-async function onDelete() {
+async function onDelete(id: string) {
    try {
       isDeleteDisabled.value = true
-      await emit('delete', props.combination.id)
+
+      if (!store.combinations.data.value) return
+
+      const newCombinations = store.combinations.data.value.filter((entry) => entry.id !== id)
+      // If deleting last combination
+      if (newCombinations.length === 0) {
+         await router.replace({ query: {} }) // Remove query
+         await db.remove(id) // Delete it from DB, do not update the UI
+
+         reloadPage() // Route guard will send to first-combination if no combinations left
+      } else {
+         store.combinations.actions.setCombinations(newCombinations) // Update UI
+         await db.remove(id) // Delete in background
+      }
    } catch (error) {
-      console.error(error)
+      console.error(error) // Do not throw critical error, just log it
    } finally {
       isDeleteDisabled.value = false
    }
@@ -61,8 +71,6 @@ async function onEditClick() {
    if (!entry) {
       console.error('[combination-list-view] - Trying to navigate to a non existent entry .')
    } else {
-      store.editor.actions.setCurrentEntry(entry)
-      await nextTick()
       await router.push({ name: 'editor', params: { id: props.combination.id } })
    }
 }
@@ -136,7 +144,11 @@ async function onDownloadClick() {
             <button @click="onDownloadClick" :disabled="isDeleteDisabled" class="Download_Button">
                Download
             </button>
-            <button @click="onDelete" :disabled="isDeleteDisabled" class="Delete_Button">
+            <button
+               @click="onDelete(props.combination.id)"
+               :disabled="isDeleteDisabled"
+               class="Delete_Button"
+            >
                Delete
             </button>
          </div>
@@ -226,7 +238,7 @@ async function onDownloadClick() {
 }
 
 .Preview_Button {
-   &:hover:not(:disabled) {
+   &:hover:not([disabled]) {
       text-decoration: underline;
       color: var(--accent-color);
    }

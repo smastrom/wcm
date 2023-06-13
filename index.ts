@@ -20,7 +20,9 @@ db.config()
 
 const app = createApp(App)
 
-export const router = createRouter({
+app.provide(storeInjectionKey, createStore())
+
+const router = createRouter({
    history: createWebHistory(),
    routes: [
       {
@@ -34,7 +36,7 @@ export const router = createRouter({
          name: 'combinations'
       },
       {
-         path: '/combination/new',
+         path: '/combinations/new',
          component: FirstCombinationPage,
          name: 'first-combination'
       },
@@ -54,5 +56,4 @@ export const router = createRouter({
 setRouteGuards(router)
 
 app.use(router)
-app.provide(storeInjectionKey, createStore())
 app.mount('#app')

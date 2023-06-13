@@ -52,6 +52,14 @@ export function createStore() {
       }
    }
 
+   /* Combinations */
+
+   const combinations = shallowRef<DBCombination[] | null>(null)
+
+   function setCombinations(value: DBCombination[]) {
+      combinations.value = value
+   }
+
    /* Editor */
 
    const editor: StoreEditor = reactive<StoreEditor>({
@@ -192,6 +200,10 @@ export function createStore() {
    })
 
    return {
+      combinations: {
+         data: combinations,
+         actions: { setCombinations }
+      },
       fonts: {
          data: appFonts,
          actions: { setFonts, fetchAndSetFonts }
