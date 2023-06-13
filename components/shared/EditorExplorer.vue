@@ -40,11 +40,10 @@ watch(
          await injectEditorFonts(first15Fonts)
 
          explorerFonts.value = first15Fonts
-
-         store.editor.actions.setIsLoadingAllFonts(false)
       } catch (error) {
          isFetchError.value = true
       } finally {
+         store.editor.actions.setIsLoadingAllFonts(false)
          rootRef.value?.scrollTo({ top: 0 })
       }
    }
@@ -66,15 +65,15 @@ onMounted(() => {
 
                await injectEditorFonts(next10Fonts)
 
-               isFetchingAdditionalFonts.value = false
-
                explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10Fonts)
             } catch (error) {
                isFetchError.value = true
+            } finally {
+               isFetchingAdditionalFonts.value = false
             }
          }
       },
-      { root: rootRef.value, rootMargin: '-200px 0px 600px 0px', threshold: [0.75, 1] }
+      { root: rootRef.value, rootMargin: '-200px 0px 600px 0px', threshold: 0.8 }
    )
 
    if (!sentinelRef.value) return

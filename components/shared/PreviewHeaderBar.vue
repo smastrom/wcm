@@ -25,7 +25,7 @@ function onHeadlineClick() {
    try {
       downloadSingleFonts(props.headingCombination.family, props.headingCombination.weight)
    } catch (error) {
-      //
+      console.error(error)
    }
 }
 
@@ -33,7 +33,7 @@ function onBodyClick() {
    try {
       downloadSingleFonts(props.bodyCombination.family, props.bodyCombination.weight)
    } catch (error) {
-      //
+      console.error(error)
    }
 }
 </script>
