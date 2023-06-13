@@ -1,5 +1,3 @@
-import { toAppWeight } from './utils'
-
 import type { GoogleFont, GoogleAPIFontCateogry, GoogleAPIWeights } from '@/types/fetch'
 import type { AppFontWeights, AppFont, CategorizedAppFonts } from '@/types/store'
 
@@ -27,10 +25,10 @@ const unallowedPrefixes = ['Baloo', 'Libre Barcode', 'Slabo', 'M PLUS']
 const allowedWeights: GoogleAPIWeights[] = ['300', 'regular', '500', '700']
 
 /** Removes language-specific duplicates, e.g. remove 'Noto Sans Thai' but keep 'Noto Sans' */
-function removeDupesFromFonts<T extends GoogleFont>(fonts: T[], familyNames: string[]): T[] {
+function removeDupes<T extends GoogleFont>(fonts: T[]): T[] {
    return fonts.filter(
       ({ family }) =>
-         !familyNames.some(
+         !duplicateFamilies.some(
             (familyToRemove) => family.startsWith(familyToRemove) && family !== familyToRemove
          )
    )
@@ -75,7 +73,7 @@ function prepareWeights(fonts: GoogleFont[]): AppFont[] {
 /** Prepares fonts to save in the Vue app. */
 export function prepareFonts(fonts: GoogleFont[]): CategorizedAppFonts {
    fonts = removeBitmapFamilies(fonts)
-   fonts = removeDupesFromFonts(fonts, duplicateFamilies)
+   fonts = removeDupes(fonts)
    fonts = prepareWeights(fonts)
 
    const sans = getGoogleCategory(fonts as AppFont[], 'sans-serif')
@@ -98,4 +96,8 @@ export function getFamily(appFonts: CategorizedAppFonts, family: string): AppFon
    if (!appFamily) throw new Error(`[get-family] - ${family} not found.`)
 
    return appFamily
+}
+
+function toAppWeight(weight: GoogleAPIWeights): AppFontWeights {
+   return weight === 'regular' ? '400' : weight
 }

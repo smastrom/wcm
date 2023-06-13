@@ -93,7 +93,7 @@ async function create(name: DBCombination['name']): Promise<DBCombination> {
    }
 }
 
-export async function update(
+async function update(
    id: string,
    options: Partial<Omit<DBCombination, 'id' | 'lastUpdated'>>
 ): Promise<DBCombination> {
@@ -141,11 +141,9 @@ async function remove(id: string): Promise<string | null> {
    }
 }
 
-export async function getFontBuffer(key: string, fontUrl: string): Promise<ArrayBuffer> {
+async function getFontBuffer(key: string, fontUrl: string): Promise<ArrayBuffer> {
    const now = performance.now()
-
-   let fetchIter = 0
-   let dbIter = 0
+   let isFetch = false
 
    try {
       let buffer: ArrayBuffer | null = await indexedDB.getItem(key)
@@ -153,18 +151,17 @@ export async function getFontBuffer(key: string, fontUrl: string): Promise<Array
       if (!buffer) {
          const bufferFromGoogle = await fetch(fontUrl).then((res) => res.arrayBuffer())
          buffer = await indexedDB.setItem(key, bufferFromGoogle)
-         fetchIter++
-      } else {
-         dbIter++
+         isFetch = true
       }
 
       if (import.meta.env.DEV) {
-         if (fetchIter) {
-            console.log(`Fetching ${key} from Google took ` + (performance.now() - now) + 'ms')
-         }
-         if (dbIter) {
-            console.log(`Retrieving ${key} from DB took ` + (performance.now() - now) + 'ms')
-         }
+         console.log(
+            `${isFetch ? 'Fetching' : 'Retrieving'} ${key} from ${
+               isFetch ? 'Google' : 'DB'
+            } took ` +
+               parseInt(`${performance.now() - now}`) +
+               'ms'
+         )
       }
 
       return buffer

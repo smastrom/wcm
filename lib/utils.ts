@@ -1,10 +1,3 @@
-import type { GoogleAPIWeights } from '@/types/fetch'
-import type { AppFontWeights } from '@/types/store'
-
-export function getRandomIntRange(min: number, max: number): number {
-   return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
 export function reloadPage() {
    location.reload()
 }
@@ -24,10 +17,6 @@ export function validateName(name: unknown) {
 }
 
 export const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
-
-export function toAppWeight(weight: GoogleAPIWeights): AppFontWeights {
-   return weight === 'regular' ? '400' : weight
-}
 
 export function debounce<T extends (...args: any[]) => any>(
    fn: T,
