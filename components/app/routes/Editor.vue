@@ -9,7 +9,7 @@ import { useEditorQuery } from '@/lib/useEditorQuery'
 import { useStore } from '@/lib/store'
 import { getFamily } from '@/lib/fontUtils'
 import { injectEditorFonts } from '@/lib/injectFonts'
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
+import { VueAppCriticalError } from '@/lib/utils'
 
 const store = useStore()
 
@@ -26,7 +26,7 @@ if (!store.fonts.data.value) {
    await store.fonts.actions.fetchAndSetFonts(store.editor.sortCriteriaModel)
 }
 if (!store.fonts.data.value) {
-   throw new Error(`[editor-route-store-fonts] - ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[editor-route-store-fonts] - No fonts in store!')
 }
 
 // 4. Inject fonts for preview, on initial mount they are equal to assigned fonts
@@ -37,7 +37,7 @@ try {
    await injectEditorFonts([headlineFamily, bodyFamily])
 } catch (error) {
    console.error(error)
-   throw new Error(`[editor-route-preview-fonts] - ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[editor-route-preview-fonts] - Failed injecting preview fonts!')
 }
 
 // 5. Inject the first 15 fonts for the explorer
@@ -46,7 +46,7 @@ try {
    await injectEditorFonts(first15Fonts)
 } catch (error) {
    console.error(error)
-   throw new Error(`[editor-route-editor-fonts] - ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[editor-route-explorer-fonts] - Failed injecting explorer fonts!')
 }
 </script>
 

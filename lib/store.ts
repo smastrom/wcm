@@ -5,7 +5,6 @@ import { prepareFonts } from './fontUtils'
 import {
    SORT_CRITERIA,
    StoreEditingStatus,
-   APP_CRITICAL_ERROR,
    EDITOR_CATEGORIES,
    PREVIEW_OPTIONS,
    DEFAULT_HEADLINE_FONT,
@@ -23,6 +22,7 @@ import type {
    PreviewComputedStyles
 } from '@/types/store'
 import type { DBFontFamilyData, DBCombination, DBVariantTarget } from '@/types/db'
+import { VueAppCriticalError } from './utils'
 
 export const storeInjectionKey = Symbol('')
 
@@ -48,7 +48,7 @@ export function createStore() {
             setFonts(categorizedFonts)
          }
       } catch (error) {
-         throw new Error(`[store-set-fonts] - ${APP_CRITICAL_ERROR}`)
+         throw VueAppCriticalError('[store-set-fonts]')
       }
    }
 

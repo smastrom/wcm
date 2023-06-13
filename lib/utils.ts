@@ -34,3 +34,9 @@ export function randomID() {
    if (!window.crypto || !window.crypto?.randomUUID) return Math.random().toString(36).substr(2, 9)
    return window.crypto.randomUUID()
 }
+
+export const APP_CRITICAL_ERROR = randomID()
+
+export function VueAppCriticalError(message: string) {
+   return new Error(message + ' ' + APP_CRITICAL_ERROR)
+}

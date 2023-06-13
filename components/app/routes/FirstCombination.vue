@@ -2,8 +2,7 @@
 import SplashScreen from '@/components/shared/SplashScreen.vue'
 
 import { db } from '@/lib/db'
-import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
+import { VueAppCriticalError, normalizeSpaces, randomID, validateName } from '@/lib/utils'
 
 const router = useRouter()
 const combinationName = ref('')
@@ -26,7 +25,7 @@ async function onSubmit() {
       const entry = await db.create(combinationName.value)
       await router.push({ name: 'editor', params: { id: entry.id } })
    } catch (error) {
-      throw new Error(`[first-combination-route] - ${APP_CRITICAL_ERROR}`)
+      throw VueAppCriticalError('[first-combination-route] - Failed creating combination!')
    }
 }
 

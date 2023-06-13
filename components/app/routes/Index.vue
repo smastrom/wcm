@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import SplashScreen from '@/components/shared/SplashScreen.vue'
 
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
 import { db } from '@/lib/db'
+import { VueAppCriticalError } from '@/lib/utils'
 
 import type { RouteLocationNamedRaw } from 'vue-router'
 
@@ -15,7 +15,7 @@ try {
       destination.value.name = 'first-combination'
    }
 } catch (error) {
-   throw new Error(`[index-route] - ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[index-route] - Failed fetching combinations!')
 }
 </script>
 

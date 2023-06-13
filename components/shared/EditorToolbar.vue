@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { useStore } from '@/lib/store'
-import { debounce, randomID } from '@/lib/utils'
-import {
-   SORT_CRITERIA,
-   EDITOR_CATEGORIES as CATEGORIES,
-   FONT_SIZE_OPTIONS,
-   APP_CRITICAL_ERROR
-} from '@/lib/constants'
+import { VueAppCriticalError, debounce, randomID } from '@/lib/utils'
+import { SORT_CRITERIA, EDITOR_CATEGORIES as CATEGORIES, FONT_SIZE_OPTIONS } from '@/lib/constants'
 
 import RangeSlider from './RangeSlider.vue'
 import RadioGroup from './RadioGroup.vue'
@@ -31,7 +26,7 @@ async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
       await store.fonts.actions.fetchAndSetFonts(value)
       store.editor.actions.setSortCriteria(value)
    } catch (error) {
-      throw new Error(`[editor-toolbar-select] - ${APP_CRITICAL_ERROR}`)
+      throw VueAppCriticalError(`[editor-toolbar-select] - Failed fetching fonts from Google!`)
    }
 }
 

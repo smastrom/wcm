@@ -3,9 +3,9 @@ import LoadingScreen from '@/components/shared/LoadingScreen.vue'
 import SplashScreen from '../shared/SplashScreen.vue'
 
 import { reloadPage } from '@/lib/utils'
-import { useAppErrors } from '@/lib/useAppErrors'
+import { useAppCriticalError } from '@/lib/useAppCriticalError'
 
-const { isCriticalError } = useAppErrors()
+const { isCriticalError } = useAppCriticalError()
 
 // Each route has async logic that needs to be loaded before the route can be rendered.
 </script>

@@ -6,10 +6,11 @@ import CombinationListCreate from '@/components/shared/CombinationListCreate.vue
 import CombinationListEntry from '@/components/shared/CombinationListEntry.vue'
 
 import { db } from '@/lib/db'
-import { APP_CRITICAL_ERROR, SORT_CRITERIA } from '@/lib/constants'
+import { SORT_CRITERIA } from '@/lib/constants'
 import { getMemoryOrDBInstanceKey, injectFontFace, injectedFonts } from '@/lib/injectFonts'
 import { getFamily } from '@/lib/fontUtils'
 import { useStore } from '@/lib/store'
+import { VueAppCriticalError } from '@/lib/utils'
 
 const route = useRoute()
 const store = useStore()
@@ -30,16 +31,14 @@ try {
       }
    }
 } catch (error) {
-   throw new Error(
-      `[combination-list-view] - Failed setting latest active ID! ${APP_CRITICAL_ERROR}`
-   )
+   throw VueAppCriticalError('[combination-list-view] - Failed setting latest active ID!')
 }
 
 // 2. If no fonts in the store (new visit), fetch them. Here we don't care about the sort.
 // Just need them for the download URLs.
 if (!store.fonts.data.value) await store.fonts.actions.fetchAndSetFonts(SORT_CRITERIA[0].value)
 if (!store.fonts.data.value) {
-   throw new Error(`[combination-list-view] - Failed fetching fonts! ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[combination-list-view] - Failed fetching fonts!')
 }
 
 // 3. Inject fonts and weights needed for the preview
@@ -60,7 +59,7 @@ try {
       }
    }
 } catch (error) {
-   throw new Error(`[combination-list-view] - Failed injecting fonts! ${APP_CRITICAL_ERROR}`)
+   throw VueAppCriticalError('[combination-list-view] - Failed injecting fonts!')
 }
 
 // 5. Set current preview fonts, at this point Suspense resolves

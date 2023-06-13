@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { db } from '@/lib/db'
-import { APP_CRITICAL_ERROR } from '@/lib/constants'
 
-import { normalizeSpaces, randomID, validateName } from '@/lib/utils'
+import { VueAppCriticalError, normalizeSpaces, randomID, validateName } from '@/lib/utils'
 
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 
@@ -24,7 +23,7 @@ async function onCreateClick() {
       await router.push({ name: 'editor', params: { id: newEntry.id } })
    } catch (error) {
       console.error(error)
-      throw new Error(`[combination-list-view] - Creation failed. ${APP_CRITICAL_ERROR}`)
+      throw VueAppCriticalError('[combination-list-view] - Creation failed.')
    }
 }
 

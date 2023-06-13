@@ -1,3 +1,5 @@
+import { randomID } from './utils'
+
 import type { DBVariantTarget } from '@/types/db'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
@@ -88,4 +90,4 @@ export const DEFAULT_BODY_FONT = {
 
 export const API_GOOGLE_FONTS_BASEURL = 'https://www.googleapis.com/webfonts/v1/webfonts'
 
-export const APP_CRITICAL_ERROR = 'Critical error.'
+export const APP_CRITICAL_ERROR = `Vue App Critical Error - ${randomID()}`
