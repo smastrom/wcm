@@ -2,6 +2,8 @@
 
 > :warning: Place a VITE_GOOGLE_FONTS_API_KEY in a .env file in the root of the project.
 
+> Plase ignore this branch and keep into account the `master` branch because there are edits done after the deadline.
+
 <br />
 
 ## Recommended IDE Setup

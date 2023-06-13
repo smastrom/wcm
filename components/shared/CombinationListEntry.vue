@@ -3,9 +3,9 @@ import { formatDistanceToNow } from 'date-fns'
 import { useStore } from '@/lib/store'
 import { db } from '@/lib/db'
 import { downloadSingleFonts } from '@/lib/fetch'
+import { reloadPage } from '@/lib/utils'
 
 import type { DBCombination } from '@/types/db'
-import { reloadPage } from '@/lib/utils'
 
 const props = defineProps<{
    combination: DBCombination
