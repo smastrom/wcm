@@ -60,7 +60,6 @@ const bodyStyles = computed(() => store.preview.computedStyles.body)
 
    & h1 {
       font-size: var(--font-size-3);
-      margin-bottom: var(--size-1);
       color: #0f172a;
 
       @media (--size-max) {

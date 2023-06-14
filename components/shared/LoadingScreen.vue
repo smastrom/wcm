@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SpinnerIcon from './SpinnerIcon.vue'
+import SpinnerIcon from '@/components/shared/icons/SpinnerIcon.vue'
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import SpinnerIcon from './SpinnerIcon.vue'
    display: flex;
    justify-content: center;
    align-items: center;
-   height: 100svh;
    height: 100vh;
+   height: 100svh;
 }
 </style>

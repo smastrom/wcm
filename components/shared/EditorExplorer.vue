@@ -5,7 +5,7 @@ import { randomID, reloadPage } from '@/lib/utils'
 import { useViewport } from '@/lib/useViewport'
 
 import HorizontalSpinnerIcon from './icons/HorizontalSpinnerIcon.vue'
-import SpinnerIcon from './SpinnerIcon.vue'
+import SpinnerIcon from '@/components/shared/icons/SpinnerIcon.vue'
 import EditorExplorerEntry from './EditorExplorerEntry.vue'
 
 import type { AppFont } from '@/types/store'
@@ -54,7 +54,7 @@ watch(
 onMounted(() => {
    intersectionObserver = new IntersectionObserver(
       async ([{ isIntersecting }]) => {
-         if (explorerFonts.value.length > 0 && isIntersecting) {
+         if (explorerFonts.value.length > 0 && !store.editor.isLoadingAllFonts && isIntersecting) {
             try {
                isFetchingAdditionalFonts.value = true
 
@@ -103,6 +103,11 @@ const previewTextId = randomID()
          class="Global_InputField Explorer_InputField"
       />
 
+      <div v-if="store.editor.isLoadingAllFonts && !isFetchError" class="InitialSpinner_Wrapper">
+         <SpinnerIcon width="100px" />
+         <div class="Global_VisuallyHidden" v-bind="ariaProps">Loading additional fonts...</div>
+      </div>
+
       <div>
          <!-- Preview -->
 
@@ -120,26 +125,21 @@ const previewTextId = randomID()
             />
          </ul>
 
-         <div ref="sentinelRef" />
-
          <div v-if="explorerFonts.length === 0 && !store.editor.isLoadingAllFonts">
             <h2 class="Explorer_NoResults" v-bind="ariaProps">
                No results matched your search. Please try again.
             </h2>
          </div>
 
-         <!-- No results -->
-
-         <div v-if="store.editor.isLoadingAllFonts && !isFetchError" class="InitialSpinner_Wrapper">
-            <SpinnerIcon width="100px" />
-            <div class="Global_VisuallyHidden" v-bind="ariaProps">Loading additional fonts...</div>
-         </div>
+         <div ref="sentinelRef" />
 
          <HorizontalSpinnerIcon
             v-if="isFetchingAdditionalFonts && !isFetchError"
             width="80px"
             class="HorizontalSpinner_Wrapper"
          />
+
+         <!-- No results -->
 
          <div v-if="isFetchError" class="FetchError_Wrapper">
             <h2>There was an error with Google servers.</h2>
@@ -153,6 +153,9 @@ const previewTextId = randomID()
 .Explorer_Wrapper {
    overflow: auto;
    position: relative;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
 }
 
 .Explorer_InputField {
@@ -171,10 +174,7 @@ const previewTextId = randomID()
    display: flex;
    justify-content: center;
    align-items: center;
-
-   &:deep(svg) {
-      margin-top: 30vh;
-   }
+   height: 100%;
 }
 
 .HorizontalSpinner_Wrapper {

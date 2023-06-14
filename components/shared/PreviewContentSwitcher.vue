@@ -14,12 +14,7 @@ const previewTypeId = randomID()
    <nav class="Switcher_Wrapper">
       <label class="Fieldset_Label" :for="previewTypeId">Switch Preview</label>
 
-      <Select
-         :isAsync="false"
-         :id="previewTypeId"
-         :options="PREVIEW_OPTIONS"
-         v-model="store.preview.exampleModel"
-      />
+      <Select :id="previewTypeId" :options="PREVIEW_OPTIONS" v-model="store.preview.exampleModel" />
    </nav>
 </template>
 

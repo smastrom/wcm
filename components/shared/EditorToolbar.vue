@@ -19,6 +19,14 @@ const categoriesWithCount = computed(() =>
    }))
 )
 
+const categorySearchLabel = computed(() => {
+   const activeCategory = store.editor.activeCategoryModel
+
+   return activeCategory === 'handwriting'
+      ? 'Search script fonts'
+      : `Search ${activeCategory} fonts`
+})
+
 /* Events */
 
 async function onAsyncSelectChange(value: GoogleAPISortCriteria) {
@@ -52,19 +60,13 @@ const categoryLabelId = randomID()
       <!-- Search -->
 
       <div class="Fieldset">
-         <label class="Fieldset_Label" for="editor_search"
-            >Search {{ store.editor.activeCategoryModel }} fonts</label
-         >
+         <label class="Fieldset_Label" for="editor_search">{{ categorySearchLabel }}</label>
          <input
             class="Global_InputField SearchField"
             type="search"
             id="editor_search"
             maxlength="25"
-            :placeholder="`Search ${
-               store.editor.activeCategoryModel === 'handwriting'
-                  ? 'script'
-                  : store.editor.activeCategoryModel
-            } fonts...`"
+            :placeholder="`${categorySearchLabel}...`"
             @input="debounceOnSearchInput"
             :disabled="store.editor.isLoadingAllFonts"
          />

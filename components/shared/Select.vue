@@ -1,14 +1,21 @@
 <script setup lang="ts" generic="T extends string">
-const props = defineProps<{
-   isAsync: boolean
-   id: string
-   modelValue: T
-   isLoading: boolean
-   options: readonly {
-      label: string
-      value: T
-   }[]
-}>()
+const props = withDefaults(
+   defineProps<{
+      id: string
+      modelValue: T
+      options: readonly {
+         label: string
+         value: T
+      }[]
+      isAsync?: boolean
+      isLoading?: boolean
+   }>(),
+   {
+      isAsync: false,
+      id: '',
+      isLoading: false
+   }
+)
 
 const emit = defineEmits<{
    (event: 'update:modelValue', value: T): void
