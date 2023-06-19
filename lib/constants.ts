@@ -1,6 +1,6 @@
 import { randomID } from './utils'
 
-import type { DBVariantTarget } from '@/types/db'
+import type { DBFontFamilyData, DBVariantTarget } from '@/types/db'
 import type { GoogleAPISortCriteria } from '@/types/fetch'
 import type {
    StorePreviewTypes,
@@ -76,15 +76,15 @@ export const DEFAULT_WEIGHTS: Record<DBVariantTarget, AppFontWeights> = {
    body: '400'
 }
 
-export const DEFAULT_HEADLINE_FONT = {
+export const DEFAULT_HEADLINE_FONT: DBFontFamilyData = {
    family: DEFAULT_FONTS.headline,
    weight: DEFAULT_WEIGHTS.headline
-} as const
+}
 
-export const DEFAULT_BODY_FONT = {
+export const DEFAULT_BODY_FONT: DBFontFamilyData = {
    family: DEFAULT_FONTS.body,
    weight: DEFAULT_WEIGHTS.body
-} as const
+}
 
 /* API */
 

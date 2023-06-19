@@ -270,7 +270,6 @@ const commonRangeStyles = {
                <!-- Download -->
 
                <ActionButton
-                  :isActive="false"
                   label="Download font"
                   activeColor="var(--accent-color)"
                   @click="onDownloadClick"

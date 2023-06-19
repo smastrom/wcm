@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
    initialValue: string
-   steps: string[]
+   steps: readonly string[]
    id?: string
    width?: string
    fontSize?: string

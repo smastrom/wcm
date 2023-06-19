@@ -13,7 +13,7 @@ import type { AppFont } from '@/types/store'
 const store = useStore()
 const { isMatch: isMobile } = useViewport('1100px')
 
-const explorerFonts = ref<AppFont[]>(store.editor.activeFontsComputed.slice(0, 15))
+const explorerFonts = shallowRef<AppFont[]>(store.editor.activeFontsComputed.slice(0, 15))
 const previewText = ref('')
 
 /* UI */
@@ -65,7 +65,7 @@ onMounted(() => {
 
                await injectEditorFonts(next10Fonts)
 
-               explorerFonts.value.splice(explorerFonts.value.length, 0, ...next10Fonts)
+               explorerFonts.value = explorerFonts.value.concat(next10Fonts)
             } catch (error) {
                isFetchError.value = true
             } finally {

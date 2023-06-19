@@ -2,7 +2,13 @@
 import { useStore } from '@/lib/store'
 
 import PreviewHeaderBar from './PreviewHeaderBar.vue'
-import { DEFAULT_FONTS, DEFAULT_WEIGHTS } from '@/lib/constants'
+
+import {
+   DEFAULT_BODY_FONT,
+   DEFAULT_FONTS,
+   DEFAULT_HEADLINE_FONT,
+   DEFAULT_WEIGHTS
+} from '@/lib/constants'
 
 const hideAssigned = defineProp(false, false)
 
@@ -46,8 +52,8 @@ const isPreviewingAssignedBody = computed(() => {
       <PreviewHeaderBar
          v-if="!hideAssigned"
          label="Assigned"
-         :headingCombination="store.editor.assignedHeadlineFont"
-         :bodyCombination="store.editor.assignedBodyFont"
+         :headingCombination="store.editor.assignedHeadlineFont ?? DEFAULT_HEADLINE_FONT"
+         :bodyCombination="store.editor.assignedBodyFont ?? DEFAULT_BODY_FONT"
          :displayHeadingChip="isDefaultHeadingAssigned"
          :displayBodyChip="isDefaultBodyAssigned"
          chipText="Default"

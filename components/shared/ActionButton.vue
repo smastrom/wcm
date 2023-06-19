@@ -1,9 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{
-   activeColor: string
-   label: string
-   isActive?: boolean
-}>()
+const props = withDefaults(
+   defineProps<{
+      activeColor: string
+      label: string
+      isActive?: boolean
+   }>(),
+   { isActive: false }
+)
 
 const emit = defineEmits<{
    (event: 'click', value: void): void

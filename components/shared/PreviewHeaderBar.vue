@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { downloadSingleFonts } from '@/lib/fetch'
-
 import ActionButton from './ActionButton.vue'
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
+
+import { downloadSingleFonts } from '@/lib/fetch'
 
 import type { DBFontFamilyData } from '@/types/db'
 
@@ -57,7 +57,6 @@ function onBodyClick() {
          </div>
 
          <ActionButton
-            :isActive="false"
             label="Download heading combination"
             @click="onHeadlineClick"
             :activeColor="props.accentColor"
